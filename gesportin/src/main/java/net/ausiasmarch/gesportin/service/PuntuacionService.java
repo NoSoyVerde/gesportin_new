@@ -20,11 +20,11 @@ public class PuntuacionService {
     AleatorioService oAleatorioService;
 
     // @Autowired
-    // SessionService
+    // SessionService oSessionService;
 
-    // constructor
-    public PuntuacionService() {
-
+    // get quantity of records in the DB
+    public Long count() {
+        return oPuntuacionRepository.count();
     }
 
     // get page
@@ -32,16 +32,65 @@ public class PuntuacionService {
         return oPuntuacionRepository.findAll(oPageable);
     }
 
-    // get by id
+    // get record by id
     public PuntuacionEntity get(@NotNull Long id) {
         return oPuntuacionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("The record not found in DB."));
+                .orElseThrow(() -> new ResourceNotFoundException("The record not found in the database."));
     }
 
-    // create
+    // create a new record 
     public Long create(PuntuacionEntity oPuntuacionEntity) {
         oPuntuacionEntity.setId(null);
         oPuntuacionRepository.save(oPuntuacionEntity);
         return oPuntuacionEntity.getId();
     }
+
+    // update the record
+    public Long update(PuntuacionEntity oPuntuacionEntity) {
+        PuntuacionEntity existingRecord = oPuntuacionRepository.findById(oPuntuacionEntity.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("The record not found."));
+        
+        existingRecord.setPuntuacion(oPuntuacionEntity.getPuntuacion());
+        existingRecord.setIdArticulo(oPuntuacionEntity.getIdArticulo());
+        existingRecord.setIdUsuario(oPuntuacionEntity.getIdUsuario());
+        
+        oPuntuacionRepository.save(existingRecord);
+
+        return existingRecord.getId();
+    }
+
+    // delete the record by id
+    public Long delete(@NotNull Long id) {
+        oPuntuacionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The record not found."));
+
+        oPuntuacionRepository.deleteById(id);
+
+        return id;
+    }
+
+    // delete all records
+    public Long deleteAll() {
+        Long total = oPuntuacionRepository.count();
+        oPuntuacionRepository.deleteAll();
+
+        return total;
+    }
+
+    // fill database with fake data
+    public Long fillDatabase() {
+
+        for (int i = 0; i < 50; i++) {
+            PuntuacionEntity newEntity = new PuntuacionEntity();
+            
+            newEntity.setPuntuacion(oAleatorioService.GenerarNumeroAleatorioEnteroEnRango(1, 5));
+            newEntity.setIdArticulo(Long.valueOf(oAleatorioService.GenerarNumeroAleatorioEnteroEnRango(1, 50)));
+            newEntity.setIdUsuario(Long.valueOf(oAleatorioService.GenerarNumeroAleatorioEnteroEnRango(1, 50)));
+            
+            oPuntuacionRepository.save(newEntity);
+        }
+
+        return oPuntuacionRepository.count();
+    }
+
 }
