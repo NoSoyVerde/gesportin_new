@@ -162,7 +162,6 @@ CREATE TABLE `jugador` (
 
 --
 -- Estructura de tabla para la tabla `noticia`
---
 
 CREATE TABLE `noticia` (
   `id` bigint NOT NULL,

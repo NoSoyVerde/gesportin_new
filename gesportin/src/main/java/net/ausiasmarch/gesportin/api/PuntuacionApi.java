@@ -64,7 +64,7 @@ public class PuntuacionApi {
     }
 
     // DELETE all records
-    @DeleteMapping("")
+    @DeleteMapping("/empty")
     public ResponseEntity<Long> deleteAll() {
         return ResponseEntity.ok(oPuntuacionService.deleteAll());
     }
