@@ -17,8 +17,6 @@ public class FacturaService {
     @Autowired
     FacturaRepository oFacturaRepository;
 
-
-
     public FacturaEntity get(Long id) {
     return oFacturaRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Factura no encontrada"));
@@ -59,7 +57,7 @@ public class FacturaService {
         return oFacturaRepository.count();
     }
 
-    public Long rellenaFacturas(int numQuestions) {
+    public Long fillFacturas(int numQuestions) {
         for (int i = 0; i < numQuestions; i++) {
             FacturaEntity oFacturaEntity = new FacturaEntity();
             oFacturaEntity.setFecha(LocalDateTime.now());
@@ -80,7 +78,6 @@ public class FacturaService {
     public Long empty() {
         Long total = oFacturaRepository.count();
         oFacturaRepository.deleteAll();
-        oFacturaRepository.flush();
         return total;
     }
 }

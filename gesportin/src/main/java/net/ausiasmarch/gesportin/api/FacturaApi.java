@@ -28,14 +28,16 @@ public class FacturaApi{
     @Autowired
     FacturaService oFacturaService;
 
+    //Get de Factura
     @GetMapping("/{id}")
     public ResponseEntity<FacturaEntity> get(@PathVariable Long id) {
-        try {
-            FacturaEntity e = oFacturaService.get(id);
-            return ResponseEntity.ok(e);
-        } catch (RuntimeException ex) {
-           return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(oFacturaService.get(id));
+    }
+
+    //GetPage de Factura
+    @GetMapping("")
+    public ResponseEntity<Page<FacturaEntity>> getPage(Pageable oPageable) {
+        return ResponseEntity.ok(oFacturaService.getPage(oPageable));
     }
 
     //Crear Factura
@@ -57,15 +59,9 @@ public class FacturaApi{
     }
 
     //Borrar Todas las Facturas
-    @GetMapping("/empty")
+    @DeleteMapping("/empty")
     public ResponseEntity<Long> empty() {
         return ResponseEntity.ok(oFacturaService.empty());
-    }
-
-    //GetPage de Factura
-    @GetMapping("")
-    public ResponseEntity<Page<FacturaEntity>> getPage(Pageable oPageable) {
-        return ResponseEntity.ok(oFacturaService.getPage(oPageable));
     }
 
     //Cuenta las Facturas
@@ -75,29 +71,8 @@ public class FacturaApi{
     }
 
     //Crea Facturas
-    @GetMapping("/rellena/{numFacturas}")
-    public ResponseEntity<Long> rellenaFacturas(@PathVariable int numFacturas) {
-        return ResponseEntity.ok(oFacturaService.rellenaFacturas(numFacturas));
-    }
-
-    @GetMapping(value = "/view/{id}", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<String> view(@PathVariable Long id) {
-        try {
-            FacturaEntity e = oFacturaService.get(id);
-            StringBuilder sb = new StringBuilder();
-            sb.append("<!doctype html><html><head><meta charset=\"utf-8\"><title>Factura ").append(e.getId())
-                    .append("</title></head><body>");
-            sb.append("<h1>Factura #").append(e.getId()).append("</h1>");
-            sb.append("<ul>");
-            sb.append("<li>Fecha: ").append(e.getFecha() != null ? e.getFecha().toString() : "(sin fecha)")
-                    .append("</li>");
-            sb.append("<li>Id usuario: ").append(e.getId_usuario()).append("</li>");
-            sb.append("</ul>");
-            sb.append("</body></html>");
-            return ResponseEntity.ok(sb.toString());
-        } catch (RuntimeException ex) {
-            String body = "<!doctype html><html><head><meta charset=\"utf-8\"><title>Factura no encontrada</title></head><body><h1>Factura no encontrada</h1></body></html>";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-        }
+    @GetMapping("/fill/{numFacturas}")
+    public ResponseEntity<Long> fillFacturas(@PathVariable int numFacturas) {
+        return ResponseEntity.ok(oFacturaService.fillFacturas(numFacturas));
     }
 }
