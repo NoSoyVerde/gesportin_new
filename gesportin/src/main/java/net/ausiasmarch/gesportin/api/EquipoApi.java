@@ -1,6 +1,8 @@
 package net.ausiasmarch.gesportin.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,9 +25,15 @@ public class EquipoApi {
     @Autowired
     EquipoService equipoService;
 
+    // Obtener uno por ID
     @GetMapping("/{id}")
     public ResponseEntity<EquipoEntity> get(@PathVariable Long id) {
         return ResponseEntity.ok(equipoService.get(id));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Page<EquipoEntity>> getPage(Pageable pageable) {
+        return ResponseEntity.ok(equipoService.getPage(pageable));
     }
 
     @GetMapping("/count")
