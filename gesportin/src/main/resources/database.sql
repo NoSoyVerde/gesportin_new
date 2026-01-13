@@ -77,10 +77,10 @@ CREATE TABLE `club` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comentarios`
+-- Estructura de tabla para la tabla `comentario`
 --
 
-CREATE TABLE `comentarios` (
+CREATE TABLE `comentario` (
   `id` bigint NOT NULL,
   `contenido` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `id_articulo` bigint NOT NULL,
@@ -294,9 +294,9 @@ ALTER TABLE `club`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `comentarios`
+-- Indices de la tabla `comentario`
 --
-ALTER TABLE `comentarios`
+ALTER TABLE `comentario`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -406,9 +406,9 @@ ALTER TABLE `club`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `comentarios`
+-- AUTO_INCREMENT de la tabla `comentario`
 --
-ALTER TABLE `comentarios`
+ALTER TABLE `comentario`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --

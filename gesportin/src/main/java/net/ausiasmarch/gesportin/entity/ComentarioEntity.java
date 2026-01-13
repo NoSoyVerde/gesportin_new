@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comentarios")
+@Table(name = "comentario")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ComentariosEntity {
+public class ComentarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

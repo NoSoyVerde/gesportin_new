@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.ausiasmarch.gesportin.entity.ComentariosEntity;
+import net.ausiasmarch.gesportin.entity.ComentarioEntity;
 import net.ausiasmarch.gesportin.service.AleatorioService;
-import net.ausiasmarch.gesportin.service.ComentariosService;
+import net.ausiasmarch.gesportin.service.ComentarioService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/comentarios")
-public class ComentariosAPI {
+@RequestMapping("/comentario")
+public class ComentarioAPI {
 
     @Autowired
     AleatorioService oAleatorioService;
 
     @Autowired
-    ComentariosService oComentariosService;
+    ComentarioService oComentariosService;
 
     @GetMapping("/saludar")
     public ResponseEntity<String> saludar() {
@@ -68,19 +68,19 @@ public class ComentariosAPI {
 
     // Obtener comentario por id
     @GetMapping("/{id}")
-    public ResponseEntity<ComentariosEntity> get(@PathVariable Long id) {
+    public ResponseEntity<ComentarioEntity> get(@PathVariable Long id) {
         return ResponseEntity.ok(oComentariosService.get(id));
     }
 
     // Crear comentario
     @PostMapping("")
-    public ResponseEntity<Long> create(@RequestBody ComentariosEntity comentariosEntity) {
+    public ResponseEntity<Long> create(@RequestBody ComentarioEntity comentariosEntity) {
         return ResponseEntity.ok(oComentariosService.create(comentariosEntity));
     }
 
     // Modificar comentario
     @PutMapping("")
-    public ResponseEntity<Long> update(@RequestBody ComentariosEntity comentariosEntity) {
+    public ResponseEntity<Long> update(@RequestBody ComentarioEntity comentariosEntity) {
         return ResponseEntity.ok(oComentariosService.update(comentariosEntity));
     }
 
@@ -98,7 +98,7 @@ public class ComentariosAPI {
 
     // Listado paginado de comentarios
     @GetMapping("")
-    public ResponseEntity<Page<ComentariosEntity>> getPage(Pageable oPageable) {
+    public ResponseEntity<Page<ComentarioEntity>> getPage(Pageable oPageable) {
         return ResponseEntity.ok(oComentariosService.getPage(oPageable));
     }
 

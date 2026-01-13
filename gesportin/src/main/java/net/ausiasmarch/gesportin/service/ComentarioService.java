@@ -7,22 +7,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.ausiasmarch.gesportin.entity.ComentariosEntity;
+import net.ausiasmarch.gesportin.entity.ComentarioEntity;
 import net.ausiasmarch.gesportin.exception.ResourceNotFoundException;
-import net.ausiasmarch.gesportin.repository.ComentariosRepository;
+import net.ausiasmarch.gesportin.repository.ComentarioRepository;
 
 @Service
-public class ComentariosService {
+public class ComentarioService {
 
     @Autowired
-    ComentariosRepository oComentariosRepository;
+    ComentarioRepository oComentariosRepository;
 
     @Autowired
     AleatorioService oAleatorioService;
 
     ArrayList<String> alComentarios = new ArrayList<>();
 
-    public ComentariosService() {
+    public ComentarioService() {
         alComentarios.add("Excelente artículo, muy informativo.");
         alComentarios.add("No estoy de acuerdo con algunos puntos.");
         alComentarios.add("Muy interesante, gracias por compartir.");
@@ -42,7 +42,7 @@ public class ComentariosService {
 
     public Long rellenaComentarios(Long numComentarios) {
         for (long j = 0; j < numComentarios; j++) {
-            ComentariosEntity oComentariosEntity = new ComentariosEntity();
+            ComentarioEntity oComentariosEntity = new ComentarioEntity();
             
             // Generar contenido aleatorio
             String contenidoGenerado = "";
@@ -64,12 +64,12 @@ public class ComentariosService {
     }
 
     // ----------------------------CRUD---------------------------------
-    public ComentariosEntity get(Long id) {
+    public ComentarioEntity get(Long id) {
         return oComentariosRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Comentario not found"));
     }
 
-    public Long create(ComentariosEntity comentariosEntity) {
+    public Long create(ComentarioEntity comentariosEntity) {
         // Si no se especifican id_articulo o id_usuario, generar valores aleatorios
         if (comentariosEntity.getId_articulo() == null) {
             comentariosEntity.setId_articulo((Long) (long) oAleatorioService.GenerarNumeroAleatorioEnteroEnRango(0, 50));
@@ -81,8 +81,8 @@ public class ComentariosService {
         return comentariosEntity.getId();
     }
 
-    public Long update(ComentariosEntity comentariosEntity) {
-        ComentariosEntity existingComentario = oComentariosRepository.findById(comentariosEntity.getId())
+    public Long update(ComentarioEntity comentariosEntity) {
+        ComentarioEntity existingComentario = oComentariosRepository.findById(comentariosEntity.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Comentario not found"));
         existingComentario.setContenido(comentariosEntity.getContenido());
         existingComentario.setId_articulo(comentariosEntity.getId_articulo());
@@ -96,7 +96,7 @@ public class ComentariosService {
         return id;
     }
 
-    public Page<ComentariosEntity> getPage(Pageable oPageable) {
+    public Page<ComentarioEntity> getPage(Pageable oPageable) {
         return oComentariosRepository.findAll(oPageable);
     }
 
