@@ -32,13 +32,13 @@ public class LigaApi {
         return ResponseEntity.ok(oLigaService.get(id));
     }
 
-    @GetMapping
-    public ResponseEntity<Page<LigaEntity>> getPage(
-            @PageableDefault(size = 1000) Pageable pageable,
-            @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) Long idEquipo) {
-        return ResponseEntity.ok(oLigaService.getPage(pageable, nombre, idEquipo));
-    }
+    // @GetMapping
+    // public ResponseEntity<Page<LigaEntity>> getPage(
+    //         @PageableDefault(size = 1000) Pageable pageable,
+    //         @RequestParam(required = false) String nombre,
+    //         @RequestParam(required = false) Long idEquipo) {
+    //     return ResponseEntity.ok(oLigaService.getPage(pageable, nombre, idEquipo));
+    // }
 
     @PostMapping
     public ResponseEntity<LigaEntity> create(@RequestBody LigaEntity liga) {
