@@ -41,6 +41,6 @@ public class FacturaEntity {
     @JoinColumn(name = "id_usuario")
     private UsuarioEntity usuario;
 
-    @OneToMany(mappedBy = "Factura", fetch = FetchType. LAZY)
+    @OneToMany(mappedBy = "factura", fetch = FetchType. LAZY)
     private List<CompraEntity> compras;
 }
