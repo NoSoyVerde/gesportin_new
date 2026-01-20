@@ -18,9 +18,6 @@ public class FacturaService {
     private FacturaRepository oFacturaRepository;
 
     @Autowired
-    private FacturaEntity oFacturaEntity;
-
-    @Autowired
     private UsuarioService oUsuarioService;
 
     public FacturaEntity get(Long id) {
@@ -32,19 +29,19 @@ public class FacturaService {
         return oFacturaRepository.findAll(pageable);
     }
 
-    public FacturaEntity create(FacturaEntity factura) {
-        factura.setId(null);
-        factura.setFecha(LocalDateTime.now());
-        factura.setUsuario(oUsuarioService.get(oFacturaEntity.getUsuario().getId()));
-        return oFacturaRepository.save(factura);
+    public FacturaEntity create(FacturaEntity oFacturaEntity) {
+        oFacturaEntity.setId(null);
+        oFacturaEntity.setFecha(LocalDateTime.now());
+        oFacturaEntity.setUsuario(oUsuarioService.get(oFacturaEntity.getUsuario().getId()));
+        return oFacturaRepository.save(oFacturaEntity);
     }
 
-    public FacturaEntity update(FacturaEntity factura) {
-        FacturaEntity existingFactura = oFacturaRepository.findById(factura.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Factura no encontrado con id: " + factura.getId()));
-        existingFactura.setUsuario(oUsuarioService.get(oFacturaEntity.getUsuario().getId()));
-        existingFactura.setFecha(factura.getFecha());
-        return oFacturaRepository.save(existingFactura);
+    public FacturaEntity update(FacturaEntity oFacturaEntity) {
+        FacturaEntity facturaExistente = oFacturaRepository.findById(oFacturaEntity.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Factura no encontrado con id: " + oFacturaEntity.getId()));
+        facturaExistente.setUsuario(oUsuarioService.get(oFacturaEntity.getUsuario().getId()));
+        facturaExistente.setFecha(oFacturaEntity.getFecha());
+        return oFacturaRepository.save(facturaExistente);
     }
 
     public Long delete(Long id) {
