@@ -1,6 +1,7 @@
 package net.ausiasmarch.gesportin.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -38,4 +40,7 @@ public class FacturaEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
     private UsuarioEntity usuario;
+
+    @OneToMany(mappedBy = "factura", fetch = FetchType.LAZY)
+    private List<CompraEntity> compras;
 }

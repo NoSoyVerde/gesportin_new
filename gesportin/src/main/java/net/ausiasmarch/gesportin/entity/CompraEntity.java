@@ -38,11 +38,11 @@ public class CompraEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_articulo")
-    private ArticuloEntity Articulo;
+    private ArticuloEntity articulo;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_factura")
-    private FacturaEntity Factura;
+    private FacturaEntity factura;
 
 }

@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.ausiasmarch.gesportin.entity.CuotaEntity;
-import net.ausiasmarch.gesportin.entity.EquipoEntity;
 import net.ausiasmarch.gesportin.exception.ResourceNotFoundException;
 import net.ausiasmarch.gesportin.repository.CuotaRepository;
 
@@ -19,6 +18,9 @@ public class CuotaService {
 
     @Autowired
     private CuotaRepository oCuotaRepository;
+
+    @Autowired
+    private EquipoService oEquipoService;
 
     public CuotaEntity get(Long id) {
         return oCuotaRepository.findById(id)
@@ -66,19 +68,28 @@ public class CuotaService {
 
         Random random = new Random();
 
-        String[] nombres = { "Matrícula", "Mensualidad", "Cuota Extra", "Inscripción", "Cuota Anual" };
+        String[] nombres = {"Matrícula", "Mensualidad", "Cuota Extra", "Inscripción", "Cuota Anual"};
 
         for (int i = 0; i < cantidad; i++) {
             CuotaEntity cuota = new CuotaEntity();
             cuota.setDescripcion(nombres[random.nextInt(nombres.length)] + " " + (random.nextInt(9000) + 1000));
             cuota.setCantidad(BigDecimal.valueOf(random.nextDouble() * 100.0 + 1.0));
             cuota.setFecha(LocalDateTime.now().minusDays(random.nextInt(365)));
-            // cuota.setEquipo((Equipo) (random.nextInt(5) + 1));
+            cuota.setEquipo(oEquipoService.getOneRandom());
             oCuotaRepository.save(cuota);
 
         }
 
         return cantidad;
-
     }
+
+    public CuotaEntity getOneRandom() {
+        Long count = oCuotaRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = (int) (Math.random() * count);
+        return oCuotaRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
+    }
+
 }

@@ -20,6 +20,12 @@ public class ComentarioartService {
     @Autowired
     AleatorioService oAleatorioService;
 
+    @Autowired
+    UsuarioService oUsuarioService;
+
+    @Autowired
+    ArticuloService oArticuloService;
+
     ArrayList<String> alComentarios = new ArrayList<>();
 
     public ComentarioartService() {
@@ -52,12 +58,8 @@ public class ComentarioartService {
                         .get(oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, alComentarios.size() - 1)) + " ";
             }
             oComentarioartEntity.setContenido(contenidoGenerado.trim());
-
-            // Generar id_articulo e id_usuario aleatorios entre 0 y 50
-            // oComentarioartEntity.setIdArticulo((Long) (long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, 50));
-            // oComentarioartEntity.setIdUsuario((Long) (long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, 50));
-
-            // Guardar entity en base de datos
+            oComentarioartEntity.setArticulo(oArticuloService.getOneRandom());
+            oComentarioartEntity.setUsuario(oUsuarioService.getOneRandom());
             oComentarioartRepository.save(oComentarioartEntity);
         }
         return oComentarioartRepository.count();
@@ -69,7 +71,7 @@ public class ComentarioartService {
                 .orElseThrow(() -> new ResourceNotFoundException("Comentarioart not found"));
     }
 
-    public Long create(ComentarioartEntity comentarioartEntity) {
+    public Long create(ComentarioartEntity oComentarioartEntity) {
         // Si no se especifican id_articulo o id_usuario, generar valores aleatorios
         // if (comentarioartEntity.getIdArticulo() == null) {
         //     comentarioartEntity.setIdArticulo((Long) (long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, 50));
@@ -77,8 +79,12 @@ public class ComentarioartService {
         // if (comentarioartEntity.getIdUsuario() == null) {
         //     comentarioartEntity.setIdUsuario((Long) (long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, 50));
         // }
-        oComentarioartRepository.save(comentarioartEntity);
-        return comentarioartEntity.getId();
+
+        oComentarioartEntity.setArticulo(oComentarioartEntity.getArticulo());
+        oComentarioartEntity.setUsuario(oComentarioartEntity.getUsuario());
+
+        oComentarioartRepository.save(oComentarioartEntity);
+        return oComentarioartEntity.getId();
     }
 
     public Long update(ComentarioartEntity comentarioartEntity) {

@@ -11,12 +11,15 @@ import net.ausiasmarch.gesportin.repository.CategoriaRepository;
 
 @Service
 public class CategoriaService {
-    
+
     @Autowired
     private AleatorioService oAleatorioService;
 
     @Autowired
     private CategoriaRepository oCategoriaRepository;
+
+    @Autowired
+    private TemporadaService oTemporadaService;
 
     private static final String[] CATEGORIAS = {"Querubín", "Pre-benjamín", "Benjamín", "Alevín", "Infantil", "Cadete", "Juvenil", "Amateur"};
 
@@ -28,15 +31,16 @@ public class CategoriaService {
         return oCategoriaRepository.findAll(pageable);
     }
 
-    public CategoriaEntity create(CategoriaEntity categoria) {
-        categoria.setId(null);
-        return oCategoriaRepository.save(categoria);
+    public CategoriaEntity create(CategoriaEntity oCategoriaEntity) {        
+        oCategoriaEntity.setId(null);
+        oCategoriaEntity.setTemporada(oCategoriaEntity.getTemporada());
+        return oCategoriaRepository.save(oCategoriaEntity);
     }
 
-    public CategoriaEntity update(CategoriaEntity categoria) {
-        CategoriaEntity existingCategoria = oCategoriaRepository.findById(categoria.getId()).orElseThrow(() -> new ResourceNotFoundException("Categoria no encontrado con id: " + categoria.getId()));
-        existingCategoria.setNombre(categoria.getNombre());
-        existingCategoria.setIdTemporada(categoria.getIdTemporada());
+    public CategoriaEntity update(CategoriaEntity oCategoriaEntity) {
+        CategoriaEntity existingCategoria = oCategoriaRepository.findById(oCategoriaEntity.getId()).orElseThrow(() -> new ResourceNotFoundException("Categoria no encontrado con id: " + oCategoriaEntity.getId()));
+        existingCategoria.setNombre(oCategoriaEntity.getNombre());
+        existingCategoria.setTemporada(oCategoriaEntity.getTemporada());
         return oCategoriaRepository.save(existingCategoria);
     }
 
@@ -59,11 +63,20 @@ public class CategoriaService {
 
     public Long fill(Long cantidad) {
         for (long j = 0; j < cantidad; j++) {
-            CategoriaEntity categoria = new CategoriaEntity();
-            categoria.setNombre(CATEGORIAS[oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, CATEGORIAS.length - 1)]);
-            categoria.setIdTemporada((long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(1, 50));
-            oCategoriaRepository.save(categoria);
+            CategoriaEntity oCategoria = new CategoriaEntity();
+            oCategoria.setNombre(CATEGORIAS[oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, CATEGORIAS.length - 1)]);
+            oCategoria.setTemporada(oTemporadaService.getOneRandom());
+            oCategoriaRepository.save(oCategoria);
         }
         return cantidad;
+    }
+
+    public CategoriaEntity getOneRandom() {
+        Long count = oCategoriaRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = (int) (Math.random() * count);
+        return oCategoriaRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
     }
 }

@@ -20,6 +20,9 @@ public class FacturaService {
     @Autowired
     private AleatorioService oAleatorioService;
 
+    @Autowired
+    private UsuarioService oUsuarioService;
+
     public FacturaEntity get(Long id) {
         return oFacturaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Factura no encontrado con id: " + id));
@@ -69,10 +72,19 @@ public class FacturaService {
         for (int i = 0; i < cantidad; i++) {
             FacturaEntity factura = new FacturaEntity();
             factura.setFecha(LocalDateTime.now());
-            // factura.setIdUsuario((long)
-            // oAleatorioService.generarNumeroAleatorioEnteroEnRango(1, 50));
+            factura.setUsuario(oUsuarioService.getOneRandom());
             oFacturaRepository.save(factura);
         }
         return cantidad;
     }
+
+    public FacturaEntity getOneRandom() {
+        Long count = oFacturaRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = (int) (Math.random() * count);
+        return oFacturaRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
+    }
+
 }

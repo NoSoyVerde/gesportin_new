@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,4 +35,7 @@ public class LigaEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_equipo")
     private EquipoEntity equipo;
+
+    @OneToMany(mappedBy = "liga", fetch = FetchType.LAZY)
+    private java.util.List<PartidoEntity> partidos;
 }

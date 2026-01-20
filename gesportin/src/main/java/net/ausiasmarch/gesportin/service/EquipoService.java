@@ -18,6 +18,12 @@ public class EquipoService {
     @Autowired
     private AleatorioService oAleatorioService;
 
+    @Autowired
+    private UsuarioService oUsuarioService;
+
+    @Autowired
+    private CategoriaService oCategoriaService;
+
     public EquipoEntity get(Long id) {
         return oEquipoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Equipo no encontrado con id: " + id));
     }
@@ -60,10 +66,19 @@ public class EquipoService {
         for (int i = 0; i < cantidad; i++) {
             EquipoEntity equipo = new EquipoEntity();
             equipo.setNombre("Equipo " + i);
-            // equipo.setIdEntrenador((long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(1, 50));
-            // equipo.setIdCategoria((long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(1, 50));
+            equipo.setEntrenador(oUsuarioService.getOneRandom());
+            equipo.setCategoria(oCategoriaService.getOneRandom());
             oEquipoRepository.save(equipo);
         }
         return cantidad;
+    }
+
+    public EquipoEntity getOneRandom() {
+        Long count = oEquipoRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = (int) (Math.random() * count);
+        return oEquipoRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
     }
 }

@@ -18,6 +18,12 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository oUsuarioRepository;
 
+    @Autowired
+    private ClubService oClubService;
+
+    @Autowired
+    private TipousuarioService oTipousuarioService; 
+
     private final Random random = new Random();
 
     private final String[] nombres = {
@@ -46,12 +52,12 @@ public class UsuarioService {
             return oUsuarioRepository.findByNombreContainingIgnoreCase(nombre, pageable);
         } else if (username != null && !username.isEmpty()) {
             return oUsuarioRepository.findByUsernameContainingIgnoreCase(username, pageable);
-         }//  else if (idTipousuario != null) {
+        }//  else if (idTipousuario != null) {
         //     return oUsuarioRepository.findByIdTipousuario(idTipousuario, pageable);
         //  } // else if (idClub != null) {
         //     // return oUsuarioRepository.findByIdClub(idClub, pageable);
-         //} else {
-            {
+        //} else {
+        {
             return oUsuarioRepository.findAll(pageable);
         }
     }
@@ -64,7 +70,7 @@ public class UsuarioService {
     public UsuarioEntity update(UsuarioEntity usuario) {
         UsuarioEntity usuarioExistente = oUsuarioRepository.findById(usuario.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + usuario.getId()));
-        
+
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setApellido1(usuario.getApellido1());
         usuarioExistente.setApellido2(usuario.getApellido2());
@@ -72,9 +78,9 @@ public class UsuarioService {
         usuarioExistente.setPassword(usuario.getPassword());
         usuarioExistente.setFechaAlta(usuario.getFechaAlta());
         usuarioExistente.setGenero(usuario.getGenero());
-        // usuarioExistente.setIdTipousuario(usuario.getIdTipousuario());
-        // usuarioExistente.setIdClub(usuario.getIdClub());
-        
+        usuarioExistente.setTipousuario(oTipousuarioService.getOneRandom());
+        usuarioExistente.setClub(oClubService.getOneRandom());
+
         return oUsuarioRepository.save(usuarioExistente);
     }
 
@@ -105,10 +111,19 @@ public class UsuarioService {
             usuario.setPassword("password" + (i + 1));
             usuario.setFechaAlta(LocalDateTime.now().minusDays(random.nextInt(365)));
             usuario.setGenero(random.nextInt(2));
-            // usuario.setIdTipousuario((long) (random.nextInt(5) + 1));
-            // usuario.setIdClub((long) (random.nextInt(50) + 1));
+            usuario.setTipousuario(oTipousuarioService.getOneRandom());
+            usuario.setClub(oClubService.getOneRandom());
             oUsuarioRepository.save(usuario);
         }
         return cantidad;
+    }
+
+    public UsuarioEntity getOneRandom() {
+        Long count = oUsuarioRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = (int) (Math.random() * count);
+        return oUsuarioRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
     }
 }

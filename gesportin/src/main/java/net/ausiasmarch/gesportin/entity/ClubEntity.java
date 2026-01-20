@@ -1,6 +1,7 @@
 package net.ausiasmarch.gesportin.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -40,17 +42,29 @@ public class ClubEntity {
     @Column(name = "fecha_alta", nullable = false)
     private LocalDateTime fechaAlta;
 
+    @Lob
+    @Column(nullable = false)
+    private byte[] imagen;
+
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_presidente")
     private UsuarioEntity presidente;
-    
+
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_vicepresidente")
     private UsuarioEntity vicepresidente;
 
-    @Lob
-    @Column(nullable = false)
-    private byte[] imagen;
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
+    private List<TemporadaEntity> temporadas;
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
+    private List<NoticiaEntity> noticias;
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
+    private List<TipoarticuloEntity> tipoarticulos;
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
+    private List<UsuarioEntity> usuarios;
 }

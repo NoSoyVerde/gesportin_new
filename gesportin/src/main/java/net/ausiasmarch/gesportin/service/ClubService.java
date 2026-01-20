@@ -18,6 +18,9 @@ public class ClubService {
     @Autowired
     private ClubRepository oClubRepository;
 
+    @Autowired
+    private UsuarioService oUsuarioService;
+
     private final Random random = new Random();
 
     public ClubEntity get(Long id) {
@@ -29,25 +32,25 @@ public class ClubService {
         return oClubRepository.findAll(pageable);
     }
 
-    public ClubEntity create(ClubEntity club) {
-        club.setId(null);
-        club.setFechaAlta(LocalDateTime.now());
-        return oClubRepository.save(club);
+    public ClubEntity create(ClubEntity oClubEntity) {
+        oClubEntity.setId(null);
+        oClubEntity.setFechaAlta(LocalDateTime.now());
+        oClubEntity.setPresidente(oClubEntity.getPresidente());
+        oClubEntity.setVicepresidente(oClubEntity.getVicepresidente());
+        return oClubRepository.save(oClubEntity);
     }
 
-    public ClubEntity update(ClubEntity club) {
-        ClubEntity clubExistente = oClubRepository.findById(club.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Club no encontrado con id: " + club.getId()));
-        
-        clubExistente.setNombre(club.getNombre());
-        clubExistente.setDireccion(club.getDireccion());
-        clubExistente.setTelefono(club.getTelefono());
-        clubExistente.setFechaAlta(club.getFechaAlta());
-        //clubExistente.setIdPresidente(club.getIdPresidente());
-        //clubExistente.setIdVicepresidente(club.getIdVicepresidente());
-        clubExistente.setImagen(club.getImagen());
-        
-        return oClubRepository.save(clubExistente);
+    public ClubEntity update(ClubEntity oClubEntity) {
+        ClubEntity oClubExistente = oClubRepository.findById(oClubEntity.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Club no encontrado con id: " + oClubEntity.getId()));
+
+        oClubExistente.setNombre(oClubEntity.getNombre());
+        oClubExistente.setDireccion(oClubEntity.getDireccion());
+        oClubExistente.setTelefono(oClubEntity.getTelefono());
+        oClubExistente.setFechaAlta(oClubEntity.getFechaAlta());
+        oClubExistente.setPresidente(oClubEntity.getPresidente());
+        oClubExistente.setVicepresidente(oClubEntity.getVicepresidente());
+        return oClubRepository.save(oClubExistente);
     }
 
     public Long delete(Long id) {
@@ -74,11 +77,20 @@ public class ClubService {
             club.setDireccion("Dirección " + i);
             club.setTelefono("600000" + i);
             club.setFechaAlta(LocalDateTime.now());
-            //club.setIdPresidente((long) (random.nextInt(50) + 1));
-            //club.setIdVicepresidente((long) (random.nextInt(50) + 1));
-            club.setImagen(("imagen" + i).getBytes());
+            // club.setImagen(("imagen" + i).getBytes());
+            club.setPresidente(oUsuarioService.getOneRandom());
+            club.setVicepresidente(oUsuarioService.getOneRandom());
             oClubRepository.save(club);
         }
         return cantidad;
+    }
+
+    public ClubEntity getOneRandom() {
+        Long count = oClubRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = random.nextInt(count.intValue());
+        return oClubRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
     }
 }

@@ -17,6 +17,9 @@ public class LigaService {
     @Autowired
     private LigaRepository oLigaRepository;
 
+    @Autowired
+    private EquipoService oEquipoService;
+
     private final Random random = new Random();
 
     private final String[] nombres = {
@@ -53,10 +56,10 @@ public class LigaService {
     public LigaEntity update(LigaEntity liga) {
         LigaEntity ligaExistente = oLigaRepository.findById(liga.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Liga no encontrado con id: " + liga.getId()));
-        
+
         ligaExistente.setNombre(liga.getNombre());
         // ligaExistente.setIdEquipo(liga.getIdEquipo());
-        
+
         return oLigaRepository.save(ligaExistente);
     }
 
@@ -81,9 +84,18 @@ public class LigaService {
         for (int i = 0; i < cantidad; i++) {
             LigaEntity liga = new LigaEntity();
             liga.setNombre(nombres[i % nombres.length] + " " + (i + 1));
-            // liga.setIdEquipo((long) (random.nextInt(50) + 1));
+            liga.setEquipo(oEquipoService.getOneRandom());
             oLigaRepository.save(liga);
         }
         return cantidad;
+    }
+
+    public LigaEntity getOneRandom() {
+        Long count = oLigaRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = (int) (Math.random() * count);
+        return oLigaRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
     }
 }

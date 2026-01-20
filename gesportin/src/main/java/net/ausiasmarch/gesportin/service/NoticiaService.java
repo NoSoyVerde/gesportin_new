@@ -21,6 +21,9 @@ public class NoticiaService {
     @Autowired
     private AleatorioService oAleatorioService;
 
+    @Autowired
+    private ClubService oClubService;
+
     ArrayList<String> alFrases = new ArrayList<>();
 
     public NoticiaService() {
@@ -99,10 +102,20 @@ public class NoticiaService {
             }
             noticia.setContenido(contenidoGenerado.trim());
             noticia.setFecha(LocalDateTime.now());
-            //noticia.setIdClub((long) oAleatorioService.generarNumeroAleatorioEnteroEnRango(1, 10));
+            noticia.setClub(oClubService.getOneRandom());
             noticia.setImagen(null);
             oNoticiaRepository.save(noticia);
         }
         return cantidad;
+    }
+
+    public NoticiaEntity getOneRandom() {
+        Long count = oNoticiaRepository.count();
+        if (count == 0) {
+            return null;
+        }
+        int index = (int) (Math.random() * count);
+        return oNoticiaRepository.findAll(Pageable.ofSize(1).withPage(index)).getContent().get(0);
+
     }
 }
