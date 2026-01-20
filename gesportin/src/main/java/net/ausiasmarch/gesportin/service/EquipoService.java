@@ -32,16 +32,18 @@ public class EquipoService {
         return oEquipoRepository.findAll(pageable);
     }
 
-    public EquipoEntity create(EquipoEntity equipo) {
-        equipo.setId(null);
-        return oEquipoRepository.save(equipo);
+    public EquipoEntity create(EquipoEntity oEquipoEntity) {
+        oEquipoEntity.setId(null);
+        oEquipoEntity.setEntrenador(oUsuarioService.get(oEquipoEntity.getEntrenador().getId()));
+        oEquipoEntity.setCategoria(oCategoriaService.get(oEquipoEntity.getCategoria().getId()));
+        return oEquipoRepository.save(oEquipoEntity);
     }
 
-    public EquipoEntity update(EquipoEntity equipo) {
-        EquipoEntity oEquipoEntity = oEquipoRepository.findById(equipo.getId()).orElseThrow(() -> new ResourceNotFoundException("Equipo no encontrado con id: " + equipo.getId()));
-        oEquipoEntity.setNombre(equipo.getNombre());
-        // oEquipoEntity.setIdEntrenador(equipo.getIdEntrenador());
-        // oEquipoEntity.setIdCategoria(equipo.getIdCategoria());
+    public EquipoEntity update(EquipoEntity oEquipoEntity) {
+        EquipoEntity oEquipoExistente = oEquipoRepository.findById(oEquipoEntity.getId()).orElseThrow(() -> new ResourceNotFoundException("Equipo no encontrado con id: " + oEquipoEntity.getId()));
+        oEquipoExistente.setNombre(oEquipoEntity.getNombre());
+        oEquipoExistente.setEntrenador(oUsuarioService.get(oEquipoEntity.getEntrenador().getId()));
+        oEquipoExistente.setCategoria(oCategoriaService.get(oEquipoEntity.getCategoria().getId()));
         return oEquipoRepository.save(oEquipoEntity);
     }
 
