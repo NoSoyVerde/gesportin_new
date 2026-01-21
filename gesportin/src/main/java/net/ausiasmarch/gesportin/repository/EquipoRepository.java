@@ -8,7 +8,7 @@ import net.ausiasmarch.gesportin.entity.EquipoEntity;
 
 public interface EquipoRepository extends JpaRepository<EquipoEntity, Long> {
     
-        Page<EquipoEntity> findByDescripcionContainingIgnoreCase(String descripcion, Pageable pageable);
+        Page<EquipoEntity> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
 
         Page<EquipoEntity> findByCuotaId(Long idCuota, Pageable pageable);    
 

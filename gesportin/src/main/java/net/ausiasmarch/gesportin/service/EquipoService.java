@@ -27,7 +27,7 @@ public class EquipoService {
 
     public Page<EquipoEntity> getPage(Pageable pageable, String descripcion, Long id_categoria, Long id_usuario) {
         if (descripcion != null && !descripcion.isEmpty()) {
-            return oEquipoRepository.findByDescripcionContainingIgnoreCase(descripcion, pageable);
+            return oEquipoRepository.findByNombreContainingIgnoreCase(descripcion, pageable);
         } else if (id_categoria != null) {
             return oEquipoRepository.findByCuotaId(id_categoria, pageable);
         } else if (id_usuario != null) {
