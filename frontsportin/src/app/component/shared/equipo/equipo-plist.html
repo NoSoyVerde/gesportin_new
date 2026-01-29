@@ -1,0 +1,204 @@
+<div class="plist-equipo container"><div class="plist-equipo container">
+
+  <div class="card shadow-sm">  <div class="card shadow-sm">
+
+    <div class="card-header bg-light">    <div class="card-header bg-light">
+
+      <div class="d-flex align-items-center top-bar">      <div class="d-flex align-items-center top-bar">
+
+        <!-- paginador (izquierda) -->        <!-- paginador (izquierda) -->
+
+        <div class="top-pager me-3">        <div class="top-pager me-3">
+
+          <ul class="pagination pagination-sm mb-0">          <ul class="pagination pagination-sm mb-0">
+
+            <li class="page-item" [class.disabled]="pageNumber==0">            <li class="page-item" [class.disabled]="pageNumber==0">
+
+              <a class="page-link" (click)="onPageChange(pageNumber-1)" href="javascript:void(0)">Previous</a>              <a class="page-link" (click)="onPageChange(pageNumber-1)" href="javascript:void(0)">Previous</a>
+
+            </li>            </li>
+
+
+
+            @for (p of getPages(); track $index) {            @for (p of getPages(); track $index) {
+
+            <li class="page-item" [class.active]="p==pageNumber">            <li class="page-item" [class.active]="p==pageNumber">
+
+              <a class="page-link" (click)="onPageChange(p)" href="javascript:void(0)">{{p + 1}}</a>              <a class="page-link" (click)="onPageChange(p)" href="javascript:void(0)">{{p + 1}}</a>
+
+            </li>            </li>
+
+            }            }
+
+
+
+            <li class="page-item" [class.disabled]="pageNumber+1==totalPages">            <li class="page-item" [class.disabled]="pageNumber+1==totalPages">
+
+              <a class="page-link" (click)="onPageChange(pageNumber+1)" href="javascript:void(0)">Next</a>              <a class="page-link" (click)="onPageChange(pageNumber+1)" href="javascript:void(0)">Next</a>
+
+            </li>            </li>
+
+          </ul>          </ul>
+
+        </div>        </div>
+
+
+
+        <!-- total (centro) -->        <!-- total (centro) -->
+
+        <div class="flex-fill text-center">        <div class="flex-fill text-center">
+
+          <small class="text-muted">Total registros: <strong>{{totalElements || 0}}</strong></small>          <small class="text-muted">Total registros: <strong>{{totalElements || 0}}</strong></small>
+
+        </div>        </div>
+
+
+
+        <!-- selector rpp (derecha) -->        <!-- selector rpp (derecha) -->
+
+        <div class="rpp-btn">        <div class="rpp-btn">
+
+          <div class="btn-group btn-group-sm" role="group" aria-label="Registros por página">          <div class="btn-group btn-group-sm" role="group" aria-label="Registros por página">
+
+            @for (size of rpp; track $index) {            @for (size of rpp; track $index) {
+
+            <button type="button"            <button type="button"
+
+                    class="btn"                    class="btn"
+
+                    [class.active]="size==pageSize"                    [class.active]="size==pageSize"
+
+                    (click)="onSizeChange(size)">                    (click)="onSizeChange(size)">
+
+              {{size}}              {{size}}
+
+            </button>            </button>
+
+            }            }
+
+          </div>          </div>
+
+        </div>        </div>
+
+      </div>      </div>
+
+    </div>    </div>
+
+
+
+    <div class="card-body">    <div class="card-body">
+
+      <!--      <!--
+
+        Ejemplo: mostrar campos ajenos a la entidad (one-to-many / many-to-one)        Ejemplo: mostrar campos ajenos a la entidad (one-to-many / many-to-one)
+
+        Para un componente de 'articulo' con relaciones tipoArticulo, carro y compra,        Para un componente de 'articulo' con relaciones tipoArticulo, carro y compra,
+
+        puedes mostrar el id y el nombre así:        puedes mostrar el id y el nombre así:
+
+          {{articulo.tipoArticulo?.id}} - {{articulo.tipoArticulo?.nombre}}          {{articulo.tipoArticulo?.id}} - {{articulo.tipoArticulo?.nombre}}
+
+          {{articulo.carro?.id}} - {{articulo.carro?.nombre}}          {{articulo.carro?.id}} - {{articulo.carro?.nombre}}
+
+          {{articulo.compra?.id}} - {{articulo.compra?.nombre}}          {{articulo.compra?.id}} - {{articulo.compra?.nombre}}
+
+        (usar el operador "?." para evitar errores cuando la relación viene null/undefined)        (usar el operador "?." para evitar errores cuando la relación viene null/undefined)
+
+      -->      -->
+
+
+
+      @if (loading) {      @if (loading) {
+
+      <div class="text-center py-3">Cargando...</div>      <div class="text-center py-3">Cargando...</div>
+
+      } @if (error) {      } @if (error) {
+
+      <div class="alert alert-danger">{{error}}</div>      <div class="alert alert-danger">{{error}}</div>
+
+      }      }
+
+
+
+      <div class="table-responsive">      <div class="table-responsive">
+
+        <table class="table table-striped table-hover table-sm mb-0">        <table class="table table-striped table-hover table-sm mb-0">
+
+          <thead class="thead-light">          <thead class="thead-light">
+
+            <tr>            <tr>
+
+              <th class="text-center" style="width: 80px">ID</th>              <th class="text-center" style="width: 80px">ID</th>
+
+              <th>Nombre</th>              <th>Nombre</th>
+
+              <th>Categoria</th>              <th>Categoria</th>
+
+              <th>Entrenador</th>              <th>Entrenador</th>
+
+              <th class="text-center" style="width: 110px">Jugadores</th>              <th class="text-center" style="width: 110px">Jugadores</th>
+
+            </tr>            </tr>
+
+          </thead>          </thead>
+
+          <tbody>          <tbody>
+
+            @for (equipo of aEquipos; track $index) {            @for (equipo of aEquipos; track $index) {
+
+            <tr>            <tr>
+
+              <td class="text-center align-middle">              <td class="text-center align-middle">
+
+                <span class="badge id-badge">{{equipo.id}}</span>                <span class="badge id-badge">{{equipo.id}}</span>
+
+              </td>              </td>
+
+              <td class="align-middle"><strong>{{equipo.nombre}}</strong></td>              <td class="align-middle"><strong>{{equipo.nombre}}</strong></td>
+
+              <td class="align-middle">              <td class="align-middle">
+
+                {{equipo.categoria?.nombre}} <small class="text-muted">({{equipo.categoria?.id}})</small>                {{equipo.categoria?.nombre}} <small class="text-muted">({{equipo.categoria?.id}})</small>
+
+              </td>              </td>
+
+              <td class="align-middle">              <td class="align-middle">
+
+                {{equipo.entrenador?.nombre}} {{equipo.entrenador?.apellido1}}                {{equipo.entrenador?.nombre}} {{equipo.entrenador?.apellido1}}
+
+                <small class="text-muted">({{equipo.entrenador?.id}})</small>                <small class="text-muted">({{equipo.entrenador?.id}})</small>
+
+              </td>              </td>
+
+              <td class="text-center align-middle">              <td class="text-center align-middle">
+
+                <span class="badge count-badge">{{equipo.jugadores}}</span>                <span class="badge count-badge">{{equipo.jugadores}}</span>
+
+              </td>              </td>
+
+            </tr>            </tr>
+
+            }            }
+
+          </tbody>          </tbody>
+
+        </table>        </table>
+
+      </div>      </div>
+
+    </div>    </div>
+
+  </div>  </div>
+
+
+
+  <!-- resumen abajo -->  <!-- resumen abajo -->
+
+  <div class="summary mt-2 text-center">Página {{pageNumber + 1}} de {{totalPages}} — Total: {{totalElements}}</div>  <div class="summary mt-2 text-center">Página {{pageNumber + 1}} de {{totalPages}} — Total: {{totalElements}}</div>
+
+
+
+    
+
+</div></div>
+
