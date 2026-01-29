@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { rpp as RPP, rpp } from '../../../environment/environment';
 import { EquipoService } from '../../../service/equipo';
 import { IEquipo } from '../../../model/equipo';
@@ -9,7 +10,7 @@ import { IPage } from '../../../model/plist';
 @Component({
   selector: 'app-plist-equipo',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './equipo-plist.html',
   styleUrls: ['./equipo-plist.css'],
 })
