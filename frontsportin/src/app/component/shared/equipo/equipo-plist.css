@@ -1,173 +1,168 @@
-.plist-equipo .controls {
-  .plist-equipo .controls {
-    display: flex;
-    display: flex;
+/* Cleaned and improved styles for equipo-plist component */
 
-    gap: 1rem;
-    gap: 1rem;
-
-    margin-bottom: 1rem;
-    margin-bottom: 1rem;
-
-    align-items: center;
-    align-items: center;
-  }
+.plist-equipo {
+  --primary: #0d6efd;
+  --muted-dark: #495057;
+  --muted-light: #f8f9fa;
+  font-family: inherit;
 }
 
-.plist-equipo .summary {
-  .plist-equipo .summary {
-    margin-top: 0.5rem;
-    margin-top: 0.5rem;
-  }
-}
-
-.plist-equipo table td,
-.plist-equipo table th {
-  .plist-equipo table td,
-  .plist-equipo table th {
-    vertical-align: middle;
-    vertical-align: middle;
-  }
-}
-
-.plist-equipo .card-header h3 small {
-  .plist-equipo .card-header h3 small {
-    font-size: 0.85rem;
-    font-size: 0.85rem;
-  }
-}
-
-.plist-equipo .badge {
-  .plist-equipo .badge {
-    font-size: 0.85em;
-    font-size: 0.85em;
-  }
-}
-
-/* Forzar color negro en los números/badges para que no aparezcan en blanco */ /* Forzar color negro en los números/badges para que no aparezcan en blanco */
-
-.plist-equipo .badge,
-.plist-equipo .badge,
-.plist-equipo .badge * {
-  .plist-equipo .badge * {
-    color: #000 !important;
-    color: #000 !important;
-  }
-}
-
-.plist-equipo .card {
-  .plist-equipo .card {
-    border-radius: 0.5rem;
-    border-radius: 0.5rem;
-  }
-}
-
-.plist-equipo .controls label {
-  .plist-equipo .controls label {
-    display: flex;
-    display: flex;
-
-    gap: 0.5rem;
-    gap: 0.5rem;
-
-    align-items: center;
-    align-items: center;
-  }
-}
-
-/* Top bar layout */ /* Top bar layout */
-
+/* Top bar */
 .plist-equipo .top-bar {
-  .plist-equipo .top-bar {
-    display: flex;
-    display: flex;
-
-    gap: 0.75rem;
-    gap: 0.75rem;
-
-    align-items: center;
-    align-items: center;
-  }
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-/* Pagination small spacing */ /* Pagination small spacing */
+.plist-equipo .top-pager {
+  flex: 0 0 auto;
+}
 
+.plist-equipo .flex-fill {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.plist-equipo .rpp-btn {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Pagination: compact, balanced, friendly */
 .plist-equipo .top-pager .pagination {
-  .plist-equipo .top-pager .pagination {
-    margin: 0;
-    margin: 0;
-  }
+  margin: 0;
+  display: flex;
+  gap: 0.18rem;
 }
 
-/* RPP button group */ /* RPP button group */
+.plist-equipo .top-pager .page-item {
+  list-style: none;
+}
 
+.plist-equipo .top-pager .page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.28rem 0.5rem;
+  min-width: 30px;
+  border-radius: 0.45rem;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: #fff;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0;
+  transition: background-color .12s ease, color .12s ease, box-shadow .12s ease;
+  cursor: pointer;
+}
+
+.plist-equipo .top-pager .page-link:hover {
+  background: #e9f2ff;
+  box-shadow: 0 6px 14px rgba(13,110,253,0.06);
+}
+
+.plist-equipo .top-pager .page-item.active .page-link {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.plist-equipo .page-item.disabled .page-link,
+.plist-equipo .page-link[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* RPP buttons */
 .plist-equipo .rpp-btn .btn {
-  .plist-equipo .rpp-btn .btn {
-    border: 1px solid #dee2e6;
-    border: 1px solid #dee2e6;
-
-    background: #fff;
-    background: #fff;
-
-    color: #000;
-    color: #000;
-
-    padding: 0.25rem 0.6rem;
-    padding: 0.25rem 0.6rem;
-  }
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  font-weight: 600;
+  margin-left: 0.35rem;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: var(--muted-light);
+  color: #212529;
+  cursor: pointer;
 }
 
-.plist-equipo .rpp-btn .btn.active {
-  .plist-equipo .rpp-btn .btn.active {
-    background-color: #0d6efd;
-    background-color: #0d6efd;
+.plist-equipo .rpp-btn .btn:hover { background: #eef4ff; }
+.plist-equipo .rpp-btn .btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-    color: #fff;
-    color: #fff;
-
-    border-color: #0d6efd;
-    border-color: #0d6efd;
-  }
+/* Table global tweaks */
+.plist-equipo table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
 
-/* Badges: fondo claro y texto negro (forzar) */ /* Badges: fondo claro y texto negro (forzar) */
+/* Force correct table display in case a global style overrides it */
+.plist-equipo table, .plist-equipo thead, .plist-equipo tbody { display: table; width: 100%; }
+.plist-equipo thead { display: table-header-group; }
+.plist-equipo tbody { display: table-row-group; }
+.plist-equipo tr { display: table-row; }
+.plist-equipo th, .plist-equipo td { display: table-cell; }
 
-.plist-equipo .badge,
-.plist-equipo .badge,
-.plist-equipo .id-badge,
-.plist-equipo .id-badge,
-.plist-equipo .count-badge {
-  .plist-equipo .count-badge {
-    background-color: #e9ecef;
-    background-color: #e9ecef;
+/* Subtle column separators to make layout clear */
+.plist-equipo table th, .plist-equipo table td { border-bottom: 1px solid rgba(0,0,0,0.06); }
 
-    color: #000 !important;
-    color: #000 !important;
-
-    font-weight: 600;
-    font-weight: 600;
-
-    padding: 0.35em 0.55em;
-    padding: 0.35em 0.55em;
-  }
-}
-
-/* Table compact and aligned */ /* Table compact and aligned */
-
-.plist-equipo table th,
 .plist-equipo table th,
 .plist-equipo table td {
-  .plist-equipo table td {
-    vertical-align: middle;
-    vertical-align: middle;
-  }
+  vertical-align: middle;
+  padding: 0.6rem 0.75rem;
 }
 
-.plist-equipo table tbody tr td {
-  color: #222;
+.plist-equipo table th:first-child,
+.plist-equipo table td:first-child {
+  width: 80px;
+  text-align: center;
+  white-space: nowrap;
 }
-.plist-equipo table tbody tr td {
-  color: #222;
+
+/* Badges: keep them small, inline and consistent */
+.plist-equipo .badge,
+.plist-equipo .id-badge,
+.plist-equipo .count-badge {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0.22rem 0.46rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  margin: 0;
+  min-width: 28px;
+  text-align: center;
+  border-radius: 0.45rem;
+  box-shadow: none;
+}
+
+/* ID and count badges: white text on muted dark background */
+.plist-equipo .id-badge,
+.plist-equipo .count-badge {
+  color: #fff !important;
+  background-color: var(--muted-dark) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+.plist-equipo .id-badge *,
+.plist-equipo .count-badge * { color: inherit !important; }
+
+/* Summary */
+.plist-equipo .summary { font-size: 0.9rem; color: #444; margin-top: 0.6rem; }
+
+/* Small visual polish */
+.plist-equipo .card { border-radius: 0.5rem; }
+.plist-equipo .top-pager .page-link:focus,
+.plist-equipo .rpp-btn .btn:focus { outline: 3px solid rgba(13,110,253,0.16); outline-offset: 2px; }
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .plist-equipo .top-bar { flex-direction: column; gap: 0.5rem; align-items: stretch; }
+  .plist-equipo .top-pager { order: 1; }
+  .plist-equipo .flex-fill { order: 2; text-align: center; }
+  .plist-equipo .rpp-btn { order: 3; text-align: right; }
+  .plist-equipo table th:first-child, .plist-equipo table td:first-child { width: 56px; }
+  .plist-equipo .top-pager .page-link { padding: 0.22rem 0.36rem; min-width: 28px; }
+  .plist-equipo .rpp-btn .btn { padding: 0.28rem 0.45rem; margin-left: 0.2rem; }
 }
 
 /* Smaller summary */ /* Smaller summary */
@@ -198,6 +193,20 @@
 
     .plist-equipo .top-pager {
       order: 1;
+
+    /* --- Make ID and Jugadores badges white text with dark background --- */
+    .plist-equipo .id-badge,
+    .plist-equipo .count-badge {
+      color: #fff !important;
+      background-color: #343a40 !important; /* dark gray for contrast */
+      border-radius: 0.25rem;
+    }
+
+    /* Ensure any child elements inside these badges also use white text */
+    .plist-equipo .id-badge *,
+    .plist-equipo .count-badge * {
+      color: #fff !important;
+    }
     }
     .plist-equipo .top-pager {
       order: 1;

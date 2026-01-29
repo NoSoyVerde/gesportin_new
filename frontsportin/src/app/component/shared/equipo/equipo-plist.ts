@@ -1,4 +1,5 @@
 import { Component, ChangeDetectorRef, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { rpp as RPP, rpp } from '../../../environment/environment';
 import { EquipoService } from '../../../service/equipo';
 import { IEquipo } from '../../../model/equipo';
@@ -6,9 +7,10 @@ import { IPage } from '../../../model/plist';
 
 @Component({
   selector: 'app-plist-equipo',
-  imports: [],
-  templateUrl: './plist-equipo.html',
-  styleUrl: './plist-equipo.css',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './equipo-plist.html',
+  styleUrls: ['./equipo-plist.css'],
 })
 export class PlistEquipo {
   private cd: ChangeDetectorRef = inject(ChangeDetectorRef);
