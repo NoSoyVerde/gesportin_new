@@ -1,0 +1,143 @@
+<div class="container py-5">
+  <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+    <div
+      class="card-header bg-white border-0 py-4 px-4 d-flex justify-content-between align-items-center"
+    >
+      <div>
+        <h2 class="mb-1 fw-bold text-primary gradient-text">Partidos jugados</h2>
+      </div>
+    </div>
+
+    @if (strResult()) {
+      <div class="px-4">
+        <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="alert">
+          <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+          <div>{{ strResult() }}</div>
+        </div>
+      </div>
+    }
+
+    <div class="card-body p-0">
+      <div
+        class="px-4 py-3 bg-light bg-opacity-50 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-3"
+      >
+        <div class="d-flex align-items-center gap-3">
+          <app-botonera-rpp [numRpp]="nRpp()" (rppChange)="onSetRpp($event)"> </app-botonera-rpp>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th
+                class="ps-4 text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                style="width: 5%"
+              >
+                ID
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                style="width: 20%"
+              >
+                Rival
+              </th>
+              <th 
+                class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                style="width: 10%; cursor: pointer;"
+                (click)="setOrder('id_liga')"
+              >
+                ID Liga
+
+                @if (sortField() === 'id_liga' && sortDirection() === 'asc') {
+                  <i class="bi bi-caret-up-fill"></i>
+                }
+                
+                @if (sortField() === 'id_liga' && sortDirection() === 'desc') {
+                  <i class="bi bi-caret-down-fill"></i>
+                }
+              </th>
+              <th
+                class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+              >
+                Local
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                Resultado
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (partido of oPage()?.content; track partido.id) {
+              <tr>
+                <td class="ps-4 fw-bold text-muted">#{{ partido.id }}</td>
+
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="fw-bold text-dark">{{ partido.rival | trim:25 }}</span>
+                  </div>
+                </td>
+
+                <td class="text-center">
+                  <span class="text-muted fw-bold">
+                    {{ partido.liga.id }}
+                  </span>
+                </td>
+
+                <td class="text-center">
+                  @if (partido.local) {
+                    <span
+                      class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-3"
+                    >
+                      Local
+                    </span>
+                  } @else {
+                    <span
+                      class="badge rounded-pill bg-danger-subtle text-danger border border-danger-subtle px-3"
+                    >
+                      Visitante
+                    </span>
+                  }
+                </td>
+
+                <td class="text-center small text-secondary">
+                  <i class="bi bi-calendar-event me-1"></i>
+                  {{ partido.resultado }}
+                </td>
+              </tr>
+            }
+
+            @if (!oPage() || oPage()?.content?.length === 0) {
+              <tr>
+                <td colspan="7" class="text-center py-5">
+                  <div class="d-flex flex-column align-items-center opacity-50">
+                    <i class="bi bi-folder-x fs-1 mb-2"></i>
+                    <h5>No se encontraron resultados</h5>
+                    <p class="small">
+                      @if (filter()) {
+                        Prueba con otra palabra clave o limpia el filtro.
+                      } @else {
+                        ¡Prueba a generar partidos nuevos!
+                      }
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-footer bg-white border-0 py-3">
+      <div class="d-flex justify-content-center">
+        <app-paginacion
+          [numPage]="oPage() ? oPage()!.number : 0"
+          [numPages]="oPage() ? oPage()!.totalPages : 0"
+          (pageChange)="onSetPage($event)"
+        >
+        </app-paginacion>
+      </div>
+    </div>
+  </div>
+</div>
