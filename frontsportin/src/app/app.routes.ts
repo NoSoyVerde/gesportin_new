@@ -7,5 +7,5 @@ export const routes: Routes = [
     { path: 'tipousuario', component: TipousuarioPlistAdminRouted},
     { path: '', component: Home },
     { path: 'articulo', component: ArticuloPlistAdminRouted},
-    { path: 'articulo?:id_tipoarticulo', component: ArticuloPlistAdminRouted} //pte
+    { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted}    
 ];
