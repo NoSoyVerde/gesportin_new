@@ -85,13 +85,13 @@ export class TipoarticuloPlistAdminRouted {
       });
   }
 
-  doRppChange(rpp: number): void {
+  onRppChange(rpp: number): void {
     this.numRpp.set(rpp);
     this.numPage.set(0);
     this.getPage();
   }
 
-  doPageChange(page: number): void {
+  goToPage(page: number): void {
     this.numPage.set(page);
     this.getPage();
   }
