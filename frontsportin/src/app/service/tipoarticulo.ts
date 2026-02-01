@@ -28,7 +28,7 @@ export class TipoarticuloService {
     if (club > 0) {
       return this.oHttp.get<IPage<ITipoarticulo>>(
         serverURL +
-          `/tipoarticulo?page=${page}&size=${rpp}&sort=${order},${direction}&club=${club}`,
+          `/tipoarticulo?page=${page}&size=${rpp}&sort=${order},${direction}&idClub=${club}`,
       );
     }
     if (descripcion && descripcion.length > 0) {

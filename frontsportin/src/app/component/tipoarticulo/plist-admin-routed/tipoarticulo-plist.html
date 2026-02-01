@@ -20,7 +20,7 @@
   <div class="d-flex justify-content-center my-3">
     <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
     @if (club() > 0) {
-      <small class="text-muted ms-3">Filtro: id de tipo de artículo = {{ club() }}</small>
+      <small class="text-muted ms-3">Filtro: id de club = {{ club() }}</small>
       <!-- quitar el filtro -->
       <a class="ms-2" [routerLink]="['/tipoarticulo']" role="button" title="Quitar filtro"
         ><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro</a
