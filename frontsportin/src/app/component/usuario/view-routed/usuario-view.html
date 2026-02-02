@@ -1,284 +1,174 @@
-<div class="container py-4 usuario-view">
-  <div class="row justify-content-center">
-    <div class="col-lg-10 col-xl-8">
-      <div class="hero card border-0 shadow-sm mb-4 text-white">
-        <div class="card-body p-4 p-lg-5 position-relative overflow-hidden">
-          <div class="glow"></div>
-          <div class="d-flex flex-wrap align-items-center gap-3 position-relative">
-            <div
-              class="icon-circle bg-white text-primary d-inline-flex align-items-center justify-content-center"
-            >
-              <i class="bi bi-chat-left-quote-fill"></i>
-            </div>
-            <div>
-              <div class="text-uppercase small fw-semibold opacity-75">Información del usuario</div>
-              <h1 class="h4 h3-lg mb-1">Detalle del usuario</h1>
-              <p class="mb-0 opacity-75">Datos administrativos del usuario registrado.</p>
-            </div>
-            <div class="ms-auto">
-              <a
-                class="btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2"
-                routerLink="/usuario"
-              >
-                <i class="bi bi-arrow-left"></i>
-                Volver al listado
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="container py-3 usuario-view">
+  <div class="page-header d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div>
+      <div class="page-subtitle">Panel administrativo</div>
+      <div class="page-title">Detalle del usuario</div>
     </div>
+    <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2" routerLink="/usuario">
+      <i class="bi bi-arrow-left"></i>
+      Volver
+    </a>
   </div>
 
-  @if (loading) {
+  @if (loading()) {
     <div class="row justify-content-center">
       <div class="col-lg-10 col-xl-8">
-        <div class="text-center py-5">
-          <div class="spinner-border text-primary" role="status">
+        <div class="text-center py-4">
+          <div class="spinner-border text-secondary" role="status">
             <span class="visually-hidden">Cargando...</span>
           </div>
-          <p class="text-muted mt-3 mb-0">Cargando detalle...</p>
+          <p class="text-muted mt-2 mb-0">Cargando detalle...</p>
         </div>
       </div>
     </div>
   }
 
-  @if (error) {
+  @if (error()) {
     <div class="row justify-content-center">
       <div class="col-lg-10 col-xl-8">
         <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
           <i class="bi bi-exclamation-triangle-fill"></i>
-          <span>{{ error }}</span>
+          <span>{{ error() }}</span>
         </div>
       </div>
     </div>
   }
 
-  @if (!loading && !error && oUsuario) {
-    <div class="row g-4 justify-content-center">
-      <div class="col-lg-10 col-xl-8">
-        <div class="card shadow-lg border-0 h-100">
-          <div class="card-body p-4 p-lg-5 d-flex flex-column gap-3">
-            <div class="d-flex align-items-start gap-3 flex-wrap">
-              <div
-                class="avatar bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center"
-              >
-                <span class="fw-bold">{{ oUsuario.nombre }}</span>
-              </div>
-              <div class="flex-grow-2">
-                <div class="d-flex align-items-center gap-2 flex-wrap">
-                  <h2 class="h4 mb-0">
-                    {{ oUsuario.nombre }} {{ oUsuario.apellido1 }} {{ oUsuario.apellido2 }}
-                  </h2>
-                </div>
-                <div class="d-flex align-items-center gap-2 flex-wrap mt-1">
-                  <span class="badge bg-primary-subtle text-primary">ID {{ oUsuario.id }}</span>
-                  <span class="badge bg-light text-muted">@{{ oUsuario.username }}</span>
-                </div>
-              </div>
+  @if (!loading() && !error() && oUsuario()) {
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="card dashboard-card">
+          <div class="card-header">Identificación</div>
+          <div class="card-body">
+            <div class="identity-name">
+              {{ oUsuario()?.nombre }} {{ oUsuario()?.apellido1 }} {{ oUsuario()?.apellido2 }}
             </div>
+            <div class="identity-meta">
+              <span class="badge bg-secondary-subtle text-secondary">ID {{ oUsuario()?.id }}</span>
+              <span class="badge bg-light text-muted">@{{ oUsuario()?.username }}</span>
+            </div>
+            <div class="kv-list mt-3">
+              <div class="kv-label">Nombre</div>
+              <div class="kv-value">{{ oUsuario()?.nombre }}</div>
+              <div class="kv-label">Apellido 1</div>
+              <div class="kv-value">{{ oUsuario()?.apellido1 }}</div>
+              <div class="kv-label">Apellido 2</div>
+              <div class="kv-value">{{ oUsuario()?.apellido2 }}</div>
+              <div class="kv-label">Género</div>
+              <div class="kv-value">{{ oUsuario()?.genero }}</div>
+              <div class="kv-label">Fecha alta</div>
+              <div class="kv-value">{{ oUsuario()?.fechaAlta | datetime }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="info-box p-4 rounded-4 border bg-light">
-              <div class="d-flex align-items-center gap-2 mb-3 text-primary">
-                <i class="bi bi-person-vcard fs-4"></i>
-                <span class="fw-semibold">Ficha administrativa</span>
+      <div class="col-lg-4">
+        <div class="card dashboard-card">
+          <div class="card-header">Relaciones</div>
+          <div class="card-body">
+            <div class="kv-list">
+              <div class="kv-label">Club</div>
+              <div class="kv-value">
+                @if (oUsuario()?.club?.nombre) {
+                  {{ oUsuario()?.club?.nombre }} ({{ oUsuario()?.club?.id }})
+                } @else {
+                  Sin club
+                }
               </div>
-              <div class="row g-3 align-items-stretch">
-                <div class="col-sm-6 col-lg-4">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Nombre</div>
-                    <div class="fw-semibold">{{ oUsuario.nombre }}</div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Apellido 1</div>
-                    <div class="fw-semibold">{{ oUsuario.apellido1 }}</div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Apellido 2</div>
-                    <div class="fw-semibold">{{ oUsuario.apellido2 }}</div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Usuario</div>
-                    <div class="fw-semibold">{{ oUsuario.username }}</div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Género</div>
-                    <div class="fw-semibold">{{ oUsuario.genero }}</div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Fecha de alta</div>
-                    <div class="d-flex align-items-center gap-2">
-                      <i class="bi bi-calendar-event text-primary"></i>
-                      <span>{{ oUsuario.fechaAlta | datetime }}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Club</div>
-                    @if (oUsuario.club.nombre) {
-                      <div class="fw-semibold">{{ oUsuario.club.nombre }}</div>
-                    } @else {
-                      <div class="fw-semibold">Sin club</div>
-                    }
-                  </div>
-                </div>
+              <div class="kv-label">Tipo usuario</div>
+              <div class="kv-value">
+                @if (oUsuario()?.tipousuario) {
+                  {{ oUsuario()?.tipousuario?.descripcion }} ({{ oUsuario()?.tipousuario?.id }})
+                } @else {
+                  Sin asignar
+                }
+              </div>
+              <div class="kv-label">Rol usuario</div>
+              <div class="kv-value">
+                @if (oUsuario()?.rolusuario) {
+                  {{ oUsuario()?.rolusuario?.descripcion }} ({{ oUsuario()?.rolusuario?.id }})
+                } @else {
+                  Sin asignar
+                }
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="info-box p-4 rounded-4 border bg-light">
-              <div class="d-flex align-items-center gap-2 mb-3 text-primary">
-                <i class="bi bi-diagram-3 fs-4"></i>
-                <span class="fw-semibold">Tipo y rol</span>
+      <div class="col-lg-4">
+        <div class="card dashboard-card">
+          <div class="card-header">Actividad</div>
+          <div class="card-body">
+            <div class="stat-grid">
+              <div class="stat">
+                <div class="stat-label">Comentarios</div>
+                <div class="stat-number">{{ oUsuario()?.comentarios }}</div>
               </div>
-              <div class="row g-3 align-items-stretch">
-                <div class="col-md-6">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Tipo de usuario</div>
-                    @if (oUsuario.tipousuario) {
-                      <div class="fw-semibold">{{ oUsuario.tipousuario.descripcion }}</div>
-                      <div class="meta-line">
-                        ID {{ oUsuario.tipousuario.id }} · Usuarios
-                        {{ oUsuario.tipousuario.usuarios }}
-                      </div>
-                    } @else {
-                      <div class="fw-semibold text-muted">Sin asignar</div>
-                    }
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Rol de usuario</div>
-                    @if (oUsuario.rolusuario) {
-                      <div class="fw-semibold">{{ oUsuario.rolusuario.descripcion }}</div>
-                      <div class="meta-line">
-                        ID {{ oUsuario.rolusuario.id }} · Usuarios
-                        {{ oUsuario.rolusuario.usuarios }}
-                      </div>
-                    } @else {
-                      <div class="fw-semibold text-muted">Sin asignar</div>
-                    }
-                  </div>
-                </div>
+              <div class="stat">
+                <div class="stat-label">Puntuaciones</div>
+                <div class="stat-number">{{ oUsuario()?.puntuaciones }}</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Comentario art.</div>
+                <div class="stat-number">{{ oUsuario()?.comentarioarts }}</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Carritos</div>
+                <div class="stat-number">{{ oUsuario()?.carritos }}</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Facturas</div>
+                <div class="stat-number">{{ oUsuario()?.facturas }}</div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="info-box p-4 rounded-4 border bg-light">
-              <div class="d-flex align-items-center gap-2 mb-3 text-primary">
-                <i class="bi bi-building fs-4"></i>
-                <span class="fw-semibold">Club</span>
-              </div>
-              @if (oUsuario.club) {
-                <div class="row g-3 align-items-stretch">
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Nombre</div>
-                      <div class="fw-semibold">{{ oUsuario.club.nombre }}</div>
-                      <div class="meta-line">ID {{ oUsuario.club.id }}</div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Dirección</div>
-                      <div class="fw-semibold">{{ oUsuario.club.direccion }}</div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Teléfono</div>
-                      <div class="fw-semibold">{{ oUsuario.club.telefono }}</div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Fecha de alta</div>
-                      <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-calendar-event text-primary"></i>
-                        <span>{{ oUsuario.club.fechaAlta | datetime }}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Usuarios</div>
-                      <div class="stat-number">{{ oUsuario.club.usuarios }}</div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Temporadas</div>
-                      <div class="stat-number">{{ oUsuario.club.temporadas }}</div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Noticias</div>
-                      <div class="stat-number">{{ oUsuario.club.noticias }}</div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-lg-4">
-                    <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                      <div class="text-muted small mb-1">Tipos de artículos</div>
-                      <div class="stat-number">{{ oUsuario.club.tipoarticulos }}</div>
-                    </div>
-                  </div>
+      <div class="col-12">
+        <div class="card dashboard-card">
+          <div class="card-header">Club (detalle)</div>
+          <div class="card-body">
+            @if (oUsuario()?.club) {
+              <div class="kv-grid">
+                <div class="kv-item">
+                  <div class="kv-label">Nombre</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.nombre }}</div>
                 </div>
-              } @else {
-                <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                  <div class="text-muted small mb-1">Club</div>
-                  <div class="fw-semibold text-muted">Sin asignar</div>
+                <div class="kv-item">
+                  <div class="kv-label">Dirección</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.direccion }}</div>
                 </div>
-              }
-            </div>
-
-            <div class="info-box p-4 rounded-4 border bg-light">
-              <div class="d-flex align-items-center gap-2 mb-3 text-primary">
-                <i class="bi bi-activity fs-4"></i>
-                <span class="fw-semibold">Actividad</span>
-              </div>
-              <div class="row g-3 align-items-stretch">
-                <div class="col-6 col-lg-3">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Comentarios</div>
-                    <div class="stat-number">{{ oUsuario.comentarios }}</div>
-                  </div>
+                <div class="kv-item">
+                  <div class="kv-label">Teléfono</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.telefono }}</div>
                 </div>
-                <div class="col-6 col-lg-3">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Puntuaciones</div>
-                    <div class="stat-number">{{ oUsuario.puntuaciones }}</div>
-                  </div>
+                <div class="kv-item">
+                  <div class="kv-label">Fecha alta</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.fechaAlta | datetime }}</div>
                 </div>
-                <div class="col-6 col-lg-3">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Comentario artículos</div>
-                    <div class="stat-number">{{ oUsuario.comentarioarts }}</div>
-                  </div>
+                <div class="kv-item">
+                  <div class="kv-label">Usuarios</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.usuarios }}</div>
                 </div>
-                <div class="col-6 col-lg-3">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Carritos</div>
-                    <div class="stat-number">{{ oUsuario.carritos }}</div>
-                  </div>
+                <div class="kv-item">
+                  <div class="kv-label">Temporadas</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.temporadas }}</div>
                 </div>
-                <div class="col-6 col-lg-3">
-                  <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
-                    <div class="text-muted small mb-1">Facturas</div>
-                    <div class="stat-number">{{ oUsuario.facturas }}</div>
-                  </div>
+                <div class="kv-item">
+                  <div class="kv-label">Noticias</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.noticias }}</div>
+                </div>
+                <div class="kv-item">
+                  <div class="kv-label">Tipos artículos</div>
+                  <div class="kv-value">{{ oUsuario()?.club?.tipoarticulos }}</div>
                 </div>
               </div>
-            </div>
+            } @else {
+              <div class="text-muted">Sin club asignado.</div>
+            }
           </div>
         </div>
       </div>

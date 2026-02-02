@@ -117,7 +117,7 @@
             </td>
             <td>
               @if (oPuntuacion.noticia) {
-                <a [routerLink]="['/noticia', '/view', oPuntuacion.noticia.id]">
+                <a [routerLink]="['/noticia', 'view', oPuntuacion.noticia.id]">
                   {{ (oPuntuacion.noticia.titulo || 'Noticia ' + oPuntuacion.noticia.id) | trim: 50 }}
                   {{ ' (' + oPuntuacion.noticia.id + ')' }}
                 </a>
@@ -134,7 +134,7 @@
             </td>
             <td>
               @if (oPuntuacion.usuario) {
-                <a [routerLink]="['/usuario', '/view', oPuntuacion.usuario.id]">
+                <a [routerLink]="['/usuario', 'view', oPuntuacion.usuario.id]">
                   {{
                     (oPuntuacion.usuario.nombre +
                       ' ' +
