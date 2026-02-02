@@ -126,7 +126,11 @@
                 <div class="col-sm-6 col-lg-4">
                   <div class="detail-tile shadow-sm rounded-4 p-3 h-100">
                     <div class="text-muted small mb-1">Club</div>
-                    <div class="fw-semibold">{{ oUsuario.club.nombre }}</div>
+                    @if (oUsuario.club.nombre) {
+                      <div class="fw-semibold">{{ oUsuario.club.nombre }}</div>
+                    } @else {
+                      <div class="fw-semibold">Sin club</div>
+                    }
                   </div>
                 </div>
               </div>

@@ -1,0 +1,140 @@
+import { Component, signal, computed } from '@angular/core';
+import { IPage } from '../../../model/plist';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Paginacion } from '../../shared/paginacion/paginacion';
+import { BotoneraRpp } from '../../shared/botonera-rpp/botonera-rpp';
+import { TrimPipe } from '../../../pipe/trim-pipe';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTimeSearch } from '../../../environment/environment';
+
+@Component({
+  selector: 'app-puntuacion-plist',
+  imports: [Paginacion, BotoneraRpp, TrimPipe, RouterLink],
+  templateUrl: './puntuacion-plist.html',
+  styleUrl: './puntuacion-plist.css',
+})
+export class PuntuacionPlistAdminRouted {
+  oPage = signal<IPage<IPuntuacion> | null>(null);
+  numPage = signal<number>(0);
+  numRpp = signal<number>(5);
+  rellenaCantidad = signal<number>(10);
+  rellenando = signal<boolean>(false);
+  rellenaOk = signal<number | null>(null);
+  rellenaError = signal<string | null>(null);
+  publishingId = signal<number | null>(null);
+  publishingAction = signal<'publicar' | 'despublicar' | null>(null);
+
+  // Mensajes y total
+  message = signal<string | null>(null);
+  totalRecords = computed(() => this.oPage()?.totalElements ?? 0);
+
+  // Variables de ordenamiento
+  orderField = signal<string>('id');
+  orderDirection = signal<'asc' | 'desc'>('asc');
+
+  // Variables de filtro
+  noticia = signal<number>(0);
+  usuario = signal<number>(0);
+
+  // Variables de búsqueda
+  descripcion = signal<string>('');
+  private searchSubject = new Subject<string>();
+  private searchSubscription?: Subscription;
+
+  constructor(
+    private oPuntuacionService: PuntuacionService,
+    private route: ActivatedRoute,
+  ) {}
+
+  ngOnInit() {
+    const idUsuario = this.route.snapshot.paramMap.get('usuario');
+    if (idUsuario) {
+      this.usuario.set(+idUsuario);
+    }
+
+    const idNoticia = this.route.snapshot.paramMap.get('noticia');
+    if (idNoticia) {
+      this.noticia.set(+idNoticia);
+    }
+
+    // Configurar el debounce para la búsqueda
+    this.searchSubscription = this.searchSubject
+      .pipe(
+        debounceTime(debounceTimeSearch), // Espera 800ms después de que el usuario deje de escribir
+        distinctUntilChanged(), // Solo emite si el valor cambió
+      )
+      .subscribe((searchTerm: string) => {
+        this.descripcion.set(searchTerm);
+        this.numPage.set(0);
+        this.getPage();
+      });
+
+    this.getPage();
+  }
+
+  ngOnDestroy() {
+    // Limpiar la suscripción para evitar memory leaks
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
+
+  getPage() {
+    this.oPuntuacionService
+      .getPage(
+        this.numPage(),
+        this.numRpp(),
+        this.orderField(),
+        this.orderDirection(),
+        this.descripcion(),
+        this.noticia(),
+        this.usuario(),
+      )
+      .subscribe({
+        next: (data: IPage<IPuntuacion>) => {
+          this.oPage.set(data);
+          if (this.numPage() > 0 && this.numPage() >= data.totalPages) {
+            this.numPage.set(data.totalPages - 1);
+            this.getPage();
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error(error);
+        },
+      });
+  }
+
+  onOrder(order: string) {
+    if (this.orderField() === order) {
+      this.orderDirection.set(this.orderDirection() === 'asc' ? 'desc' : 'asc');
+    } else {
+      this.orderField.set(order);
+      this.orderDirection.set('asc');
+    }
+    this.numPage.set(0);
+    this.getPage();
+  }
+
+  goToPage(numPage: number) {
+    this.numPage.set(numPage);
+    this.getPage();
+  }
+
+  onRppChange(n: number) {
+    this.numRpp.set(n);
+    this.numPage.set(0);
+    this.getPage();
+  }
+
+  onCantidadChange(value: string) {
+    this.rellenaCantidad.set(+value);
+  }
+
+  onSearchDescription(value: string) {
+    // Emitir el valor al Subject para que sea procesado con debounce
+    this.searchSubject.next(value);
+  }
+
+}
