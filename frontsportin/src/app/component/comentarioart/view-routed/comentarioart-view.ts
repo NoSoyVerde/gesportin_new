@@ -4,10 +4,11 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComentarioartService } from '../../../service/comentarioart';
 import { IComentarioart } from '../../../model/comentarioart';
+import { DatetimePipe } from '../../../pipe/datetime-pipe';
 
 @Component({
   selector: 'app-comentarioart-view',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, DatetimePipe],
   templateUrl: './comentarioart-view.html',
   styleUrl: './comentarioart-view.css',
 })
