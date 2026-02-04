@@ -1,6 +1,6 @@
 <div class="container my-2">
   <div class="d-flex justify-content-center my-3">
-    <h1>Lista de Equipos</h1>
+    <h1>Equipos</h1>
   </div>
 
   <!-- Aviso (mensaje desde queryParams) -->
@@ -24,21 +24,6 @@
         [value]="nombre()"
         name="searchNombre"
       />
-      <div class="input-group" style="max-width: 250px;">
-        <input
-          class="form-control"
-          type="number"
-          placeholder="Buscar por ID"
-          aria-label="Search by ID"
-          [(ngModel)]="searchId"
-          (input)="onSearchIdChange()"
-          name="searchId"
-          min="1"
-        />
-        <button class="btn btn-outline-primary" type="button" (click)="onSearchById()" title="Buscar por ID">
-          <i class="bi bi-search" aria-hidden="true"></i>
-        </button>
-      </div>
     </div>
   }
 

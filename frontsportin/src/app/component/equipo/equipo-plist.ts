@@ -168,23 +168,6 @@ export class PlistEquipo {
     this.searchSubject.next(value);
   }
 
-  onSearchIdChange() {
-    // Si se borra el campo de ID, quitar el filtro
-    if (!this.searchId || this.searchId <= 0) {
-      this.filtroId.set(0);
-      this.numPage.set(0);
-      this.filterAndPaginate();
-    }
-  }
-
-  onSearchById() {
-    if (this.searchId && this.searchId > 0) {
-      this.filtroId.set(this.searchId);
-      this.numPage.set(0);
-      this.filterAndPaginate();
-    }
-  }
-
   clearIdFilter() {
     this.searchId = null;
     this.filtroId.set(0);
