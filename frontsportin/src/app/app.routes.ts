@@ -24,10 +24,11 @@ import { PagoPlistComponent } from './component/pago/plist-admin-routed/pago-pli
 import { PuntuacionPlistAdminRouted } from './component/puntuacion/plist-admin-routed/puntuacion-plist';
 import { ViewAdminRouted } from './component/noticia/view-admin-routed/view-admin-routed';
 import { ComentarioartPlistAdminRouted } from './component/comentarioart/comentarioart-plist';
+import { ComentarioartViewRouted } from './component/comentarioart/view-routed/comentarioart-view';
 
 
 export const routes: Routes = [
-    
+
     { path: '', component: Home },
     { path: 'usuario', component: UsuarioPlist },
     { path: 'usuario/tipousuario/:id_tipousuario', component: UsuarioPlist },
@@ -50,8 +51,8 @@ export const routes: Routes = [
     { path: 'compra', component: CompraPlistAdminRouted },
     { path: 'compra/articulo/:id_articulo', component: CompraPlistAdminRouted },
     { path: 'compra/factura/:id_factura', component: CompraPlistAdminRouted },
-    { path: 'rolusuario', component: RolusuarioPlist },  
-    { path: 'tipoarticulo', component : TipoarticuloPlistAdminRouted}, 
+    { path: 'rolusuario', component: RolusuarioPlist },
+    { path: 'tipoarticulo', component : TipoarticuloPlistAdminRouted},
     { path: 'tipoarticulo/club/:id_club', component : TipoarticuloPlistAdminRouted},
     { path: 'jugador', component: JugadorPlisComponent},
     { path: 'jugador/usuario/:id_usuario', component: JugadorPlisComponent},
@@ -81,5 +82,6 @@ export const routes: Routes = [
     { path: 'comentarioart', component: ComentarioartPlistAdminRouted},
     { path: 'comentarioart/articulo/:id_articulo', component: ComentarioartPlistAdminRouted},
     { path: 'comentarioart/usuario/:id_usuario', component: ComentarioartPlistAdminRouted},
+    { path: 'comentarioart/view/:id', component: ComentarioartViewRouted},
 
 ];
