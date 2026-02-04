@@ -24,6 +24,7 @@ import { PagoPlistComponent } from './component/pago/plist-admin-routed/pago-pli
 import { PuntuacionPlistAdminRouted } from './component/puntuacion/plist-admin-routed/puntuacion-plist';
 import { ViewAdminRouted } from './component/noticia/view-admin-routed/view-admin-routed';
 import { ComentarioartPlistAdminRouted } from './component/comentarioart/comentarioart-plist';
+import { TipousuarioViewRouted } from './component/tipousario/view-admin-routed/tipousuario-view';
 
 
 export const routes: Routes = [
@@ -64,6 +65,7 @@ export const routes: Routes = [
     { path: 'cuota', component: CuotaPlistAdminRouted},
     { path: 'cuota/equipo/:id_equipo', component: CuotaPlistAdminRouted},
     { path: 'tipousuario', component: TipousuarioPlistAdminRouted},
+    { path: 'tipousuario/view/:id', component: TipousuarioViewRouted },
     { path: 'equipo', component: PlistEquipo },
     { path: 'equipo/categoria/:id_categoria', component: PlistEquipo },
     { path: 'carrito', component: CarritoPlistAdminRouted },

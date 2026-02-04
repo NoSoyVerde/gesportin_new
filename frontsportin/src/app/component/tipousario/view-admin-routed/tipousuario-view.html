@@ -1,0 +1,38 @@
+<div class="container py-3">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header text-center">
+          <h3>Detalle de Tipo de Usuario</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <td>{{ oTipousuario()?.id }}</td>
+              </tr>
+              <tr>
+                <th>Descripción</th>
+                <td>{{ oTipousuario()?.descripcion }}</td>
+              </tr>
+              <tr>
+                <th>Usuarios</th>
+                <td>
+                  <a [routerLink]="['/usuario/tipousuario', oTipousuario()?.id]">{{
+                    oTipousuario()?.usuarios
+                  }}</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-primary" [routerLink]="['/tipousuario']">
+            <i class="bi bi-arrow-left"></i> Volver
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
