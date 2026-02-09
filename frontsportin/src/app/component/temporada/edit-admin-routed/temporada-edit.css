@@ -32,3 +32,26 @@ input.form-control, textarea.form-control{
 .is-valid{ border-color:#198754 !important; }
 
 button.btn-primary{ border-radius:8px; }
+
+.detail-row {
+  display: flex;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  gap: 1rem;
+  border-bottom: none;
+}
+
+.detail-label {
+  min-width: 140px;
+  font-weight: 600;
+  color: #64748b;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  flex: 1;
+  color: #1e293b;
+  word-break: break-word;
+}

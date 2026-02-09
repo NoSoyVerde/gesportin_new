@@ -1,16 +1,16 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TemporadaService } from '../../../service/temporada';
 import { ITemporada } from '../../../model/temporada';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Location } from '@angular/common';
 import { IClub } from '../../../model/club';
+// import { ClubService } from '../../../service/club';
 
 @Component({
     selector: 'app-temporada-edit',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, RouterLink],
     templateUrl: './temporada-edit.html',
     styleUrl: './temporada-edit.css',
 })
@@ -19,11 +19,12 @@ export class TemporadaEditAdminRouted implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private temporadaService = inject(TemporadaService);
+    // private clubService = inject(ClubService)
     private snackBar = inject(MatSnackBar);
-    private location = inject(Location);
 
+    // clubes = signal<IClub[]>([]);
     temporadaForm!: FormGroup;
-    // estado convertido a signals
+    temporada = signal<ITemporada | null>(null)
     temporadaId = signal<number | null>(null);
     loading = signal<boolean>(true);
     error = signal<string | null>(null);
@@ -57,10 +58,12 @@ export class TemporadaEditAdminRouted implements OnInit {
 
     getTemporada(id: number): void {
         this.temporadaService.get(id).subscribe({
-            next: (temporada: ITemporada) => {
+            next: (data: ITemporada) => {
+                this.temporada.set(data);
+                // this.loadClubes(temporada.club.id);
                 this.temporadaForm.patchValue({
-                    descripcion: temporada.descripcion,
-                    id_club: temporada.club.id,
+                    descripcion: data.descripcion,
+                    id_club: data.club.id,
                 });
                 this.loading.set(false);
             },
@@ -71,6 +74,28 @@ export class TemporadaEditAdminRouted implements OnInit {
             },
         });
     }
+
+    // loadClubes(idClubDeLaTemporada: number): void {
+    
+    //     this.clubService.getPage(0, 100, 'id', 'asc').subscribe({
+    //         next: (data) => {
+    //         this.clubes.set(data.content);
+
+            
+    //         const existe = this.clubes().some(c => c.id === idClubDeLaTemporada);
+
+            
+    //         if (!existe && idClubDeLaTemporada) {
+    //             this.clubService.get(idClubDeLaTemporada).subscribe({
+    //             next: (club) => {
+    //                 this.clubes().push(club);
+                    
+    //             }
+    //             });
+    //         }
+    //         }
+    //     });
+    // }
 
     onSubmit(): void {
         if (!this.temporadaForm.valid || !this.temporadaId()) {
@@ -106,11 +131,6 @@ export class TemporadaEditAdminRouted implements OnInit {
             },
         });
     }
-
-    goBack(): void {
-        this.location.back();
-    }
-
 
     get descripcion() {
         return this.temporadaForm.get('descripcion');
