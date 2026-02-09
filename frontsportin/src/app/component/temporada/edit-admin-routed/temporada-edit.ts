@@ -6,7 +6,6 @@ import { ITemporada } from '../../../model/temporada';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IClub } from '../../../model/club';
-// import { ClubService } from '../../../service/club';
 
 @Component({
     selector: 'app-temporada-edit',
@@ -18,11 +17,9 @@ export class TemporadaEditAdminRouted implements OnInit {
     private fb = inject(FormBuilder);
     private route = inject(ActivatedRoute);
     private router = inject(Router);
-    private temporadaService = inject(TemporadaService);
-    // private clubService = inject(ClubService)
+    private oTemporadaService = inject(TemporadaService);
     private snackBar = inject(MatSnackBar);
 
-    // clubes = signal<IClub[]>([]);
     temporadaForm!: FormGroup;
     temporada = signal<ITemporada | null>(null)
     temporadaId = signal<number | null>(null);
@@ -46,18 +43,17 @@ export class TemporadaEditAdminRouted implements OnInit {
         this.temporadaForm = this.fb.group({
             descripcion: ['', [
                 Validators.required,
-                Validators.minLength(6),
-                Validators.maxLength(100)
+                Validators.minLength(3),
+                Validators.maxLength(255)
             ]],
             id_club: [null, [
-                Validators.required,
-                Validators.min(1)
+                Validators.required
             ]],
         });
     }
 
     getTemporada(id: number): void {
-        this.temporadaService.get(id).subscribe({
+        this.oTemporadaService.get(id).subscribe({
             next: (data: ITemporada) => {
                 this.temporada.set(data);
                 // this.loadClubes(temporada.club.id);
@@ -75,28 +71,6 @@ export class TemporadaEditAdminRouted implements OnInit {
         });
     }
 
-    // loadClubes(idClubDeLaTemporada: number): void {
-    
-    //     this.clubService.getPage(0, 100, 'id', 'asc').subscribe({
-    //         next: (data) => {
-    //         this.clubes.set(data.content);
-
-            
-    //         const existe = this.clubes().some(c => c.id === idClubDeLaTemporada);
-
-            
-    //         if (!existe && idClubDeLaTemporada) {
-    //             this.clubService.get(idClubDeLaTemporada).subscribe({
-    //             next: (club) => {
-    //                 this.clubes().push(club);
-                    
-    //             }
-    //             });
-    //         }
-    //         }
-    //     });
-    // }
-
     onSubmit(): void {
         if (!this.temporadaForm.valid || !this.temporadaId()) {
             this.temporadaForm.markAllAsTouched();
@@ -112,7 +86,7 @@ export class TemporadaEditAdminRouted implements OnInit {
             },
         } as unknown as Partial<ITemporada> & { club?: Partial<IClub> };
 
-        this.temporadaService.update(payload).subscribe({
+        this.oTemporadaService.update(payload).subscribe({
             next: () => {
                 this.submitting.set(false);
                 // mark form as pristine so canDeactivate guard won't ask confirmation
