@@ -4,6 +4,7 @@ import { Home } from './component/shared/home/home';
 import { UsuarioPlist } from './component/usuario/usuario-plist/usuario-plist';
 import { ArticuloPlistAdminRouted } from './component/articulo/plist-admin-routed/articulo-plist';
 import { ArticuloViewAdminRouted } from './component/articulo/view-admin-routed/articulo-view';
+import { ArticuloDeleteAdminRouted } from './component/articulo/delete-admin-routed/articulo-delete';
 import { ArticuloEditAdminRouted } from './component/articulo/edit-admin-routed/articulo-edit';
 import { UsuarioViewRouted } from './component/usuario/view-routed/usuario-view';
 import { CategoriaPlistAdminRouted } from './component/categoria/plist-admin-routed/categoria-plist';
@@ -79,6 +80,7 @@ export const routes: Routes = [
     { path: 'usuario/:id', component: UsuarioViewRouted},
     { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted},
     { path: 'articulo/view/:id', component: ArticuloViewAdminRouted},
+    { path: 'articulo/delete/:id', component: ArticuloDeleteAdminRouted},
     { path: 'articulo/edit/:id', component: ArticuloEditAdminRouted },
     { path: 'categoria', component: CategoriaPlistAdminRouted},
     { path: 'categoria/temporada/:id_temporada', component: CategoriaPlistAdminRouted},
