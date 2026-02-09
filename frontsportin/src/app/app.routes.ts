@@ -4,6 +4,7 @@ import { Home } from './component/shared/home/home';
 import { UsuarioPlist } from './component/usuario/usuario-plist/usuario-plist';
 import { ArticuloPlistAdminRouted } from './component/articulo/plist-admin-routed/articulo-plist';
 import { ArticuloViewAdminRouted } from './component/articulo/view-admin-routed/articulo-view';
+import { ArticuloEditAdminRouted } from './component/articulo/edit-admin-routed/articulo-edit';
 import { UsuarioViewRouted } from './component/usuario/view-routed/usuario-view';
 import { CategoriaPlistAdminRouted } from './component/categoria/plist-admin-routed/categoria-plist';
 import { PartidoPlistAdminRouted } from './component/partido/plist-admin-routed/partido-plist';
@@ -11,6 +12,7 @@ import { PartidoViewAdminRouted } from './component/partido/view-admin-routed/pa
 import { FacturaPlistAdminRouted } from './component/factura/plist-admin-routed/factura-plist';
 import { CompraPlistAdminRouted } from './component/compra/plist-admin-routed/compra-plist';
 import { CompraViewRouted } from './component/compra/view-routed/compra-view';
+import { CompraDeleteAdminRouted } from './component/compra/delete-admin-routed/compra-delete';
 import { RolusuarioPlist } from './component/rolusuario/plist-admin-routed/rolusuario-plist';
 import { TipoarticuloPlistAdminRouted } from './component/tipoarticulo/plist-admin-routed/tipoarticulo-plist';
 import { TipoarticuloViewAdminRouted } from './component/tipoarticulo/view-admin-routed/tipoarticulo-view';
@@ -71,6 +73,7 @@ export const routes: Routes = [
     { path: 'usuario/:id', component: UsuarioViewRouted},
     { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted},
     { path: 'articulo/view/:id', component: ArticuloViewAdminRouted},
+    { path: 'articulo/edit/:id', component: ArticuloEditAdminRouted },
     { path: 'categoria', component: CategoriaPlistAdminRouted},
     { path: 'categoria/temporada/:id_temporada', component: CategoriaPlistAdminRouted},
     { path: 'categoria/view/:id', component: CategoriaViewAdminRouted },
@@ -87,7 +90,8 @@ export const routes: Routes = [
     { path: 'compra/articulo/:id_articulo', component: CompraPlistAdminRouted },
     { path: 'compra/factura/:id_factura', component: CompraPlistAdminRouted },
     { path: 'compra/view/:id', component: CompraViewRouted },
-    { path: 'rolusuario', component: RolusuarioPlist },  
+    { path: 'compra/delete/:id', component: CompraDeleteAdminRouted },
+    { path: 'rolusuario', component: RolusuarioPlist },
     { path: 'rolusuario/view/:id', component: RolusuarioViewAdminRouted},
     { path: 'tipoarticulo', component : TipoarticuloPlistAdminRouted},
     { path: 'tipoarticulo/club/:id_club', component : TipoarticuloPlistAdminRouted},
