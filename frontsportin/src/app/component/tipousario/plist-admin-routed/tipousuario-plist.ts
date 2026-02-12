@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PlistAdminUnrouted } from "../plist-admin-unrouted/tipousuario-plist";
+import { TipoUsuarioPlistAdminUnrouted } from "../plist-admin-unrouted/tipousuario-plist";
 
 @Component({
   selector: 'app-tipousuario-plist',
-  imports: [CommonModule, PlistAdminUnrouted],
+  imports: [CommonModule, TipoUsuarioPlistAdminUnrouted],
   templateUrl: './tipousuario-plist.html',
   styleUrl: './tipousuario-plist.css',
 })

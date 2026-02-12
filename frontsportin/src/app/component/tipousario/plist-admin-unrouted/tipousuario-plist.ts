@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ITipousuario } from '../../../model/tipousuario';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TipousuarioService } from '../../../service/tipousuario';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-plist-admin-unrouted',
@@ -10,12 +11,13 @@ import { TipousuarioService } from '../../../service/tipousuario';
   templateUrl: './tipousuario-plist.html',
   styleUrl: './tipousuario-plist.css',
 })
-export class PlistAdminUnrouted {
+export class TipoUsuarioPlistAdminUnrouted {
   tipousuarios = signal<ITipousuario[]>([]);
   // Variables de ordenamiento
   orderField = signal<string>('id');
   orderDirection = signal<'asc' | 'desc'>('asc');
   oTipousuarioService = inject(TipousuarioService);
+  private dialogRef = inject(MatDialogRef<TipoUsuarioPlistAdminUnrouted>, { optional: true });
 
   ngOnInit() {
     this.getAll();
@@ -63,4 +65,13 @@ export class PlistAdminUnrouted {
       });
     }
   }
+
+  isDialogMode(): boolean {
+      return !!this.dialogRef;
+    }
+  
+    onSelect(tipousuario: ITipousuario): void {
+      this.dialogRef?.close(tipousuario);
+    }
+
 }
