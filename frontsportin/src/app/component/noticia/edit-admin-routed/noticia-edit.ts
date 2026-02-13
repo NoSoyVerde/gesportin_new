@@ -197,7 +197,7 @@ export class NoticiaEditAdminRouted implements OnInit {
   openClubFinderModal(): void {
     const dialogRef = this.dialog.open(ClubPlistAdminUnrouted, {
       height: '800px',
-      width: '1100px',
+      width: '1300px',
       maxWidth: '95vw',
       panelClass: 'club-dialog',
       data: {
