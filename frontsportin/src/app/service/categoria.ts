@@ -67,5 +67,9 @@ export class CategoriaService {
     return this.oHttp.put<ICategoria>(`${serverURL}/categoria`, categoria);
   }
 
+  create(categoria: Partial<ICategoria>): Observable<ICategoria> {
+    return this.oHttp.post<ICategoria>(`${serverURL}/categoria`, categoria);
+  }
+
 
 }

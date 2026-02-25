@@ -53,6 +53,7 @@ import { CarritoViewAdminRouted } from './component/carrito/view-admin-routed/vi
 import { RolusuarioViewAdminRouted } from './component/rolusuario/view-admin-routed/rolusuario-view';
 import { CategoriaViewAdminRouted } from './component/categoria/view-admin-routed/categoria-view';
 import { CategoriaEditAdminRouted } from './component/categoria/edit-admin-routed/categoria-edit';
+import { CategoriaNewAdminRouted } from './component/categoria/new-admin-routed/categoria-new';
 import { LigaViewRouted } from './component/liga/view-routed/liga-view';
 import { LigaDeleteAdminRouted } from './component/liga/delete-admin-routed/liga-delete';
 import { ComentarioartViewRouted } from './component/comentarioart/view-routed/comentarioart-view';
@@ -123,6 +124,7 @@ export const routes: Routes = [
     { path: 'categoria/temporada/:id_temporada', component: CategoriaPlistAdminRouted},
     { path: 'categoria/view/:id', component: CategoriaViewAdminRouted },
     { path: 'categoria/edit/:id', component: CategoriaEditAdminRouted },
+    { path: 'categoria/new', component: CategoriaNewAdminRouted },
     { path: 'partido', component: PartidoPlistAdminRouted},
     { path: 'partido/liga/:id_liga', component: PartidoPlistAdminRouted},
     { path: 'partido/view/:id', component: PartidoViewAdminRouted},

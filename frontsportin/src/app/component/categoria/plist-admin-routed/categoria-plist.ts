@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { CategoriaPlistAdminUnrouted } from '../plist-admin-unrouted/categoria-plist-admin-unrouted';
 
 @Component({
   selector: 'app-categoria-plist',
-  imports: [CategoriaPlistAdminUnrouted],
+  standalone: true,
+  imports: [CommonModule, RouterLink, CategoriaPlistAdminUnrouted],
   templateUrl: './categoria-plist.html',
   styleUrl: './categoria-plist.css',
 })
