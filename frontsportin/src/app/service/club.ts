@@ -38,4 +38,8 @@ export class ClubService {
      update(club: Partial<IClub>): Observable<number> {
      return this.http.put<number>(serverURL + '/club', club);
    }
+  // create
+  create(club: IClub): Observable<number> {
+    return this.http.post<number>(serverURL + '/club', club);
+  }
 }

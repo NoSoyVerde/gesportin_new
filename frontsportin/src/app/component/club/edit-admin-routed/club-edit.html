@@ -3,7 +3,7 @@
     <div class="col-12 col-lg-8">
       <div class="form-card">
         <header class="mb-4">
-          <h1 class="h3 mb-0">Editar Club</h1>
+          <h1 class="h3 mb-0">Editar club</h1>
         </header>
 
         @if (loading()) {
@@ -14,110 +14,19 @@
           </div>
         }
 
-        @if (!loading() && oClubForm) {
-          <form [formGroup]="oClubForm" (ngSubmit)="onSubmit()" novalidate>
+        @if (error()) {
+          <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>{{ error() }}
+          </div>
+        }
 
-            <!-- Identificación -->
-            <div class="mb-4">
-              <label for="id" class="form-label">ID del Club</label>
-              <input type="text" class="form-control" id="id" formControlName="id" readonly />
-            </div>
-
-            <div class="mb-4">
-              <label for="nombre" class="form-label">
-                Nombre del Club <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="nombre"
-                formControlName="nombre"
-                [class.is-invalid]="oClubForm.get('nombre')?.invalid && oClubForm.get('nombre')?.touched"
-              />
-              @if (oClubForm.get('nombre')?.invalid && oClubForm.get('nombre')?.touched) {
-                <div class="invalid-feedback">
-                  @if (oClubForm.get('nombre')?.errors?.['required']) {
-                    <span>El nombre es obligatorio.</span>
-                  }
-                  @if (oClubForm.get('nombre')?.errors?.['minlength']) {
-                    <span>Mínimo 3 caracteres.</span>
-                  }
-                </div>
-              }
-            </div>
-
-            <!-- Contacto -->
-            <div class="mb-4">
-              <label for="direccion" class="form-label">
-                Dirección <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="direccion"
-                formControlName="direccion"
-                [class.is-invalid]="oClubForm.get('direccion')?.invalid && oClubForm.get('direccion')?.touched"
-              />
-              @if (oClubForm.get('direccion')?.hasError('required') && oClubForm.get('direccion')?.touched) {
-                <div class="invalid-feedback">
-                  La dirección es obligatoria.
-                </div>
-              }
-            </div>
-
-            <div class="mb-4">
-              <label for="telefono" class="form-label">Teléfono</label>
-              <input type="text" class="form-control" id="telefono" formControlName="telefono" />
-            </div>
-
-            <!-- Fecha -->
-            <div class="mb-4">
-              <label for="fechaAlta" class="form-label">Fecha de Alta</label>
-              <div class="input-group">
-                <span class="input-group-text bg-light">
-                  <i class="bi bi-calendar"></i>
-                </span>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="fechaAlta"
-                  formControlName="fechaAlta"
-                  readonly
-                />
-              </div>
-            </div>
-
-            <!-- Multimedia -->
-            <div class="mb-4">
-              <label for="imagen" class="form-label">Imagen (URL o Base64)</label>
-              <input
-                type="text"
-                class="form-control"
-                id="imagen"
-                formControlName="imagen"
-                placeholder="http://..."
-              />
-              <div class="form-text">
-                Introduce la URL de la imagen del escudo o logo.
-              </div>
-            </div>
-
-            <!-- Botones -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-              <button type="button" class="btn btn-outline-secondary" (click)="doCancel()">
-                Cancelar
-              </button>
-
-              <button
-                type="submit"
-                class="btn btn-primary"
-                [disabled]="oClubForm.invalid"
-              >
-                Guardar Cambios
-              </button>
-            </div>
-
-          </form>
+        @if (!loading() && !error()) {
+          <app-club-form-unrouted
+            [club]="club()"
+            [isEditMode]="true"
+            (formSubmit)="onFormSubmit($event)"
+            (formCancel)="onFormCancel()"
+          ></app-club-form-unrouted>
         }
       </div>
     </div>
