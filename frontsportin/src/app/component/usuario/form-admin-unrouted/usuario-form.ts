@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { UsuarioService } from '../../../service/usuarioService';
 import { ClubService } from '../../../service/club';
 import { TipousuarioService } from '../../../service/tipousuario';
 import { RolusuarioService } from '../../../service/rolusuario';
@@ -24,12 +25,13 @@ import { TipoUsuarioPlistAdminUnrouted } from '../../tipousario/plist-admin-unro
 export class UsuarioFormAdminUnrouted implements OnInit {
   @Input() usuario: IUsuario | null = null;
   @Input() mode: 'create' | 'edit' = 'create';
-  @Output() formSubmit = new EventEmitter<IUsuario>();
+  @Output() formSuccess = new EventEmitter<void>();
   @Output() formCancel = new EventEmitter<void>();
   @ViewChild('rolusuarioFinderDialog') rolusuarioFinderDialog!: TemplateRef<any>;
 
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+  private oUsuarioService = inject(UsuarioService);
   private oClubService = inject(ClubService);
   private oTipousuarioService = inject(TipousuarioService);
   private oRolusuarioService = inject(RolusuarioService);
@@ -353,6 +355,42 @@ export class UsuarioFormAdminUnrouted implements OnInit {
       }
     };
 
-    this.formSubmit.emit(payload);
+    if (this.mode === 'edit') {
+      this.saveUpdate(payload);
+    } else {
+      this.saveCreate(payload);
+    }
+  }
+
+  private saveCreate(usuarioData: any): void {
+    this.oUsuarioService.create(usuarioData).subscribe({
+      next: (id: number) => {
+        this.snackBar.open('Usuario creado exitosamente', 'Cerrar', { duration: 4000 });
+        this.submitting.set(false);
+        this.formSuccess.emit();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.error.set('Error creando el usuario');
+        this.snackBar.open('Error creando el usuario', 'Cerrar', { duration: 4000 });
+        console.error(err);
+        this.submitting.set(false);
+      },
+    });
+  }
+
+  private saveUpdate(usuarioData: any): void {
+    this.oUsuarioService.update(usuarioData).subscribe({
+      next: (usuario: IUsuario) => {
+        this.snackBar.open('Usuario actualizado exitosamente', 'Cerrar', { duration: 4000 });
+        this.submitting.set(false);
+        this.formSuccess.emit();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.error.set('Error actualizando el usuario');
+        this.snackBar.open('Error actualizando el usuario', 'Cerrar', { duration: 4000 });
+        console.error(err);
+        this.submitting.set(false);
+      },
+    });
   }
 }

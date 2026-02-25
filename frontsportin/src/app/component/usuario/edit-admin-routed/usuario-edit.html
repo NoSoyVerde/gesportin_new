@@ -24,7 +24,7 @@
           <app-usuario-form-unrouted 
             [usuario]="usuario()" 
             [mode]="'edit'"
-            (formSubmit)="onFormSubmit($event)"
+            (formSuccess)="onFormSuccess()"
             (formCancel)="onFormCancel()">
           </app-usuario-form-unrouted>
         }

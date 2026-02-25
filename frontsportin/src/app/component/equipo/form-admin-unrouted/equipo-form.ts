@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { EquipoService } from '../../../service/equipo';
 import { CategoriaService } from '../../../service/categoria';
 import { UsuarioService } from '../../../service/usuarioService';
 import { ICategoria } from '../../../model/categoria';
@@ -22,11 +23,12 @@ import { UsuarioPlistAdminUnrouted } from '../../usuario/plist-admin-unrouted/us
 export class EquipoFormAdminUnrouted implements OnInit {
   @Input() equipo: IEquipo | null = null;
   @Input() mode: 'create' | 'edit' = 'create';
-  @Output() formSubmit = new EventEmitter<IEquipo>();
+  @Output() formSuccess = new EventEmitter<void>();
   @Output() formCancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+  private oEquipoService = inject(EquipoService);
   private oCategoriaService = inject(CategoriaService);
   private oUsuarioService = inject(UsuarioService);
   private dialog = inject(MatDialog);
@@ -217,6 +219,8 @@ export class EquipoFormAdminUnrouted implements OnInit {
       return;
     }
 
+    this.submitting.set(true);
+
     const equipoData: any = {
       nombre: this.equipoForm.value.nombre,
       categoria: { id: Number(selectedCategoriaId) },
@@ -231,7 +235,43 @@ export class EquipoFormAdminUnrouted implements OnInit {
       equipoData.id = this.equipo.id;
     }
 
-    this.formSubmit.emit(equipoData as IEquipo);
+    if (this.mode === 'edit') {
+      this.saveUpdate(equipoData);
+    } else {
+      this.saveCreate(equipoData);
+    }
+  }
+
+  private saveCreate(equipoData: any): void {
+    this.oEquipoService.create(equipoData).subscribe({
+      next: (id: number) => {
+        this.snackBar.open('Equipo creado exitosamente', 'Cerrar', { duration: 4000 });
+        this.submitting.set(false);
+        this.formSuccess.emit();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.error.set('Error creando el equipo');
+        this.snackBar.open('Error creando el equipo', 'Cerrar', { duration: 4000 });
+        console.error(err);
+        this.submitting.set(false);
+      },
+    });
+  }
+
+  private saveUpdate(equipoData: any): void {
+    this.oEquipoService.update(equipoData).subscribe({
+      next: (id: number) => {
+        this.snackBar.open('Equipo actualizado exitosamente', 'Cerrar', { duration: 4000 });
+        this.submitting.set(false);
+        this.formSuccess.emit();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.error.set('Error actualizando el equipo');
+        this.snackBar.open('Error actualizando el equipo', 'Cerrar', { duration: 4000 });
+        console.error(err);
+        this.submitting.set(false);
+      },
+    });
   }
 
   onCancel(): void {

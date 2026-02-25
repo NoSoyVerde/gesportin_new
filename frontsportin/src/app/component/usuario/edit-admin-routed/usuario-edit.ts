@@ -23,7 +23,6 @@ export class UsuarioEditAdminRouted implements OnInit {
   usuario = signal<IUsuario | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
-  submitting = signal(false);
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -60,27 +59,11 @@ export class UsuarioEditAdminRouted implements OnInit {
     });
   }
 
-  onFormSubmit(usuarioData: IUsuario): void {
-    this.submitting.set(true);
-
-    this.oUsuarioService.update(usuarioData).subscribe({
-      next: () => {
-        this.snackBar.open('Usuario actualizado exitosamente', 'Cerrar', { duration: 4000 });
-        this.submitting.set(false);
-        this.router.navigate(['/usuario']);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.snackBar.open('Error actualizando el usuario', 'Cerrar', { duration: 4000 });
-        console.error(err);
-        this.submitting.set(false);
-      },
-    });
+  onFormSuccess(): void {
+    this.router.navigate(['/usuario']);
   }
 
   onFormCancel(): void {
     this.router.navigate(['/usuario']);
   }
 }
-
-
-

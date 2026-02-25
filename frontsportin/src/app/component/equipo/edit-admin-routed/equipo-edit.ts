@@ -23,7 +23,6 @@ export class EquipoEditAdminRouted implements OnInit {
   equipo = signal<IEquipo | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
-  submitting = signal(false);
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -60,21 +59,8 @@ export class EquipoEditAdminRouted implements OnInit {
     });
   }
 
-  onFormSubmit(equipoData: IEquipo): void {
-    this.submitting.set(true);
-
-    this.oEquipoService.update(equipoData).subscribe({
-      next: () => {
-        this.snackBar.open('Equipo actualizado exitosamente', 'Cerrar', { duration: 4000 });
-        this.submitting.set(false);
-        this.router.navigate(['/equipo']);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.snackBar.open('Error actualizando el equipo', 'Cerrar', { duration: 4000 });
-        console.error(err);
-        this.submitting.set(false);
-      },
-    });
+  onFormSuccess(): void {
+    this.router.navigate(['/equipo']);
   }
 
   onFormCancel(): void {

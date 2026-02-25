@@ -24,7 +24,7 @@
           <app-equipo-form-unrouted 
             [equipo]="equipo()" 
             [mode]="'edit'"
-            (formSubmit)="onFormSubmit($event)"
+            (formSuccess)="onFormSuccess()"
             (formCancel)="onFormCancel()">
           </app-equipo-form-unrouted>
         }
