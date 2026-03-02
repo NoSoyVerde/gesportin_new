@@ -51,6 +51,7 @@ import { TemporadaViewAdminRouted } from './component/temporada/view-admin-route
 import { TemporadaDeleteAdminRouted } from './component/temporada/delete-admin-routed/temporada-delete';
 import { PagoViewAdminRouted } from './component/pago/view-admin-routed/pago-view';
 import { PagoEditAdminRouted } from './component/pago/edit-admin-routed/pago-edit';
+import { PagoNewAdminRouted } from './component/pago/new-admin-routed/pago-new';
 import { ClubViewAdminRouted } from './component/club/view-admin-routed/club-view';
 import { CuotaViewAdminRouted } from './component/cuota/view-admin-routed/cuota-view';
 import { TipousuarioViewAdminRouted } from './component/tipousario/view-admin-routed/tipousuario-view';
@@ -62,6 +63,7 @@ import { CategoriaEditAdminRouted } from './component/categoria/edit-admin-route
 import { CategoriaNewAdminRouted } from './component/categoria/new-admin-routed/categoria-new';
 import { LigaViewRouted } from './component/liga/view-routed/liga-view';
 import { LigaDeleteAdminRouted } from './component/liga/delete-admin-routed/liga-delete';
+import { LigaNewAdminRouted } from './component/liga/new-admin-routed/liga-new';
 import { ComentarioartViewRouted } from './component/comentarioart/view-routed/comentarioart-view';
 import { ComentarioartEditAdminRouted } from './component/comentarioart/edit-admin-routed/comentarioart-edit';
 import { ComentarioDeleteAdminRouted } from './component/comentario/delete-admin-routed/comentario-delete';
@@ -93,6 +95,7 @@ import { UsuarioEditAdminRouted } from './component/usuario/edit-admin-routed/us
 import { UsuarioNewAdminRouted } from './component/usuario/new-admin-routed/usuario-new';
 import { JugadorEditAdminRouted } from './component/jugador/edit-admin-routed/jugador-edit';
 import { CompraEditAdminRouted } from './component/compra/edit-admin-routed/compra-edit';
+import { CompraNewAdminRouted } from './component/compra/new-admin-routed/compra-new';
 import { PartidoEditAdminRouted } from './component/partido/edit-admin-routed/partido-edit';
 import { TemporadaNewAdminRouted } from './component/temporada/new-admin-routed/temporada-new';
 
@@ -112,6 +115,7 @@ export const routes: Routes = [
   { path: 'temporada/delete/:id', component: TemporadaDeleteAdminRouted },
   { path: 'temporada/new', component: TemporadaNewAdminRouted },
   { path: 'liga', component: LigaPlistAdminRouted },
+  { path: 'liga/new', component: LigaNewAdminRouted },
   { path: 'liga/view/:id', component: LigaViewRouted },
   { path: 'liga/delete/:id', component: LigaDeleteAdminRouted },
   { path: 'liga/edit/:id', component: LigaEditAdminRouted },
@@ -146,6 +150,7 @@ export const routes: Routes = [
   { path: 'compra/view/:id', component: CompraViewRouted },
   { path: 'compra/delete/:id', component: CompraDeleteAdminRouted },
   { path: 'compra/edit/:id', component: CompraEditAdminRouted },
+  { path: 'compra/new', component: CompraNewAdminRouted },
   { path: 'rolusuario', component: RolusuarioPlist },
   { path: 'rolusuario/new', component: RolusuarioNewAdminRouted },
   { path: 'rolusuario/view/:id', component: RolusuarioViewAdminRouted },
@@ -205,6 +210,7 @@ export const routes: Routes = [
   { path: 'comentario/edit/:id', component: ComentarioEditAdminRouted },
   { path: 'comentario/delete/:id', component: ComentarioDeleteAdminRouted },
   { path: 'pago', component: PagoPlistComponent },
+  { path: 'pago/new', component: PagoNewAdminRouted },
   { path: 'pago/cuota/:id_cuota', component: PagoPlistComponent },
   { path: 'pago/jugador/:id_jugador', component: PagoPlistComponent },
   { path: 'pago/view/:id', component: PagoViewAdminRouted },
