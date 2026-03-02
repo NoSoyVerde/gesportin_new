@@ -1,6 +1,10 @@
 <div class="container my-2">
-  <div class="d-flex justify-content-center my-3">
-    <h1>Jugadores</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Jugadores</h1>
+    <a [routerLink]="['/jugador/new']" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>Crear Jugador
+    </a>
   </div>
-<app-jugador-plist-admin-unrouted [usuario]="usuario" [equipo]="equipo"></app-jugador-plist-admin-unrouted>
+
+  <app-jugador-plist-admin-unrouted [usuario]="usuario" [equipo]="equipo"></app-jugador-plist-admin-unrouted>
 </div>

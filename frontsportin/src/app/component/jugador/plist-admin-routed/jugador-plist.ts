@@ -21,7 +21,8 @@ import { JugadorPlistAdminUnrouted } from '../plist-admin-unrouted/jugador-plist
   styleUrls: ['./jugador-plist.css'],
   imports: [
     CommonModule,JugadorPlistAdminUnrouted
-]
+    ,RouterLink
+  ]
 })
 export class JugadorPlist {
   usuario = signal<number>(0);
