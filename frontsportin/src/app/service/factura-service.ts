@@ -43,12 +43,12 @@ export class FacturaService {
   }
 
   update(factura: Partial<IFactura>): Observable<number> {
-    const body = this.sanitizer.sanitize(factura, { nestedIdFields: ['usuario'] });
+    const body = this.sanitizer.sanitize(factura, { nestedIdFields: ['usuario'], removeFields: ['compras'] });
     return this.oHttp.put<number>(serverURL + '/factura', body);
   } 
 
   create(factura: Partial<IFactura>): Observable<number> {
-    const body = this.sanitizer.sanitize(factura, { nestedIdFields: ['usuario'] });
+    const body = this.sanitizer.sanitize(factura, { nestedIdFields: ['usuario'], removeFields: ['compras'] });
     return this.oHttp.post<number>(serverURL + '/factura', body);
   }
 }

@@ -54,12 +54,12 @@ export class TemporadaService {
   }
 
   update(temporada: Partial<ITemporada> & { club?: Partial<IClub> }): Observable<ITemporada> {
-    const body = this.sanitizer.sanitize(temporada, { nestedIdFields: ['club'] });
+    const body = this.sanitizer.sanitize(temporada, { nestedIdFields: ['club'], removeFields: ['categorias'] });
     return this.oHttp.put<ITemporada>(`${serverURL}/temporada`, body);
   }
 
   create(temporada: Partial<ITemporada> & { club?: Partial<IClub> }): Observable<ITemporada> {
-    const body = this.sanitizer.sanitize(temporada, { nestedIdFields: ['club'] });
+    const body = this.sanitizer.sanitize(temporada, { nestedIdFields: ['club'], removeFields: ['categorias'] });
     return this.oHttp.post<ITemporada>(`${serverURL}/temporada`, body);
   }
 

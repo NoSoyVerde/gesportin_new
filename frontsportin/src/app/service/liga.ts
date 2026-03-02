@@ -55,12 +55,12 @@ export class LigaService {
   }
 
   create(liga: Partial<ILiga>): Observable<number> {
-    const body = this.sanitizer.sanitize(liga, { nestedIdFields: ['equipo'] });
+    const body = this.sanitizer.sanitize(liga, { nestedIdFields: ['equipo'], removeFields: ['partidos'] });
     return this.oHttp.post<number>(serverURL + '/liga', body);
   }
 
   update(liga: Partial<ILiga>): Observable<number> {
-    const body = this.sanitizer.sanitize(liga, { nestedIdFields: ['equipo'] });
+    const body = this.sanitizer.sanitize(liga, { nestedIdFields: ['equipo'], removeFields: ['partidos'] });
     return this.oHttp.put<number>(serverURL + '/liga', body);
   }
 }

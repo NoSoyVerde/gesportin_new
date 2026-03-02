@@ -51,12 +51,12 @@ export class CuotaService {
   //   return this.oHttp.post<number>(serverURL + '/cuota', cuota);
   // }
   create(cuota: Partial<ICuota>): Observable<number> {
-    const body = this.sanitizer.sanitize(cuota, { nestedIdFields: ['equipo'] });
+    const body = this.sanitizer.sanitize(cuota, { nestedIdFields: ['equipo'], removeFields: ['pagos'] });
     return this.oHttp.post<number>(serverURL + '/cuota', body);
   }
 
   update(cuota: Partial<ICuota>): Observable<number> {
-    const body = this.sanitizer.sanitize(cuota, { nestedIdFields: ['equipo'] });
+    const body = this.sanitizer.sanitize(cuota, { nestedIdFields: ['equipo'], removeFields: ['pagos'] });
     return this.oHttp.put<number>(serverURL + '/cuota', body);
   }
 

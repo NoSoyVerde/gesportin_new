@@ -63,12 +63,18 @@ export class UsuarioService {
   }
 
   create(usuario: Partial<IUsuario>): Observable<number> {
-    const body = this.sanitizer.sanitize(usuario, { nestedIdFields: ['tipousuario', 'rolusuario', 'club'] });
+    const body = this.sanitizer.sanitize(usuario, {
+      nestedIdFields: ['tipousuario', 'rolusuario', 'club'],
+      removeFields: ['comentarios', 'puntuaciones', 'comentarioarts', 'carritos', 'facturas', 'equiposentrenados', 'jugadores'],
+    });
     return this.oHttp.post<number>(`${serverURL}/usuario`, body);
   }
 
   update(usuario: Partial<IUsuario>): Observable<IUsuario> {
-    const body = this.sanitizer.sanitize(usuario, { nestedIdFields: ['tipousuario', 'rolusuario', 'club'] });
+    const body = this.sanitizer.sanitize(usuario, {
+      nestedIdFields: ['tipousuario', 'rolusuario', 'club'],
+      removeFields: ['comentarios', 'puntuaciones', 'comentarioarts', 'carritos', 'facturas', 'equiposentrenados', 'jugadores'],
+    });
     return this.oHttp.put<IUsuario>(`${serverURL}/usuario`, body);
   }
 

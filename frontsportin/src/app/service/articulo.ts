@@ -48,12 +48,12 @@ export class ArticuloService {
    }
 
   create(articulo: Partial<IArticulo>): Observable<number> {
-    const body = this.sanitizer.sanitize(articulo, { nestedIdFields: ['tipoarticulo'] });
+    const body = this.sanitizer.sanitize(articulo, { nestedIdFields: ['tipoarticulo'], removeFields: ['comentarioarts', 'compras', 'carritos'] });
     return this.oHttp.post<number>(serverURL + '/articulo', body);
   }
 
   update(articulo: Partial<IArticulo>): Observable<number> {
-    const body = this.sanitizer.sanitize(articulo, { nestedIdFields: ['tipoarticulo'] });
+    const body = this.sanitizer.sanitize(articulo, { nestedIdFields: ['tipoarticulo'], removeFields: ['comentarioarts', 'compras', 'carritos'] });
     return this.oHttp.put<number>(serverURL + '/articulo', body);
   }
 

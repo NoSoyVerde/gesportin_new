@@ -65,12 +65,12 @@ export class CategoriaService {
 
   // Actualizar una categoría existente
   update(categoria: Partial<ICategoria>): Observable<ICategoria> {
-    const body = this.sanitizer.sanitize(categoria, { nestedIdFields: ['temporada'] });
+    const body = this.sanitizer.sanitize(categoria, { nestedIdFields: ['temporada'], removeFields: ['equipos'] });
     return this.oHttp.put<ICategoria>(`${serverURL}/categoria`, body);
   }
 
   create(categoria: Partial<ICategoria>): Observable<ICategoria> {
-    const body = this.sanitizer.sanitize(categoria, { nestedIdFields: ['temporada'] });
+    const body = this.sanitizer.sanitize(categoria, { nestedIdFields: ['temporada'], removeFields: ['equipos'] });
     return this.oHttp.post<ICategoria>(`${serverURL}/categoria`, body);
   }
 

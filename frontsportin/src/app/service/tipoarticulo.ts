@@ -52,12 +52,12 @@ export class TipoarticuloService {
   }
 
    update(tipoarticulo: Partial<ITipoarticulo>): Observable<number> {
-  const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'] });
+  const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'], removeFields: ['articulos'] });
   return this.oHttp.put<number>(`${serverURL}/tipoarticulo`, body);
 }
 
   create(tipoarticulo: Partial<ITipoarticulo>): Observable<number> {
-    const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'] });
+    const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'], removeFields: ['articulos'] });
     return this.oHttp.post<number>(`${serverURL}/tipoarticulo`, body);
   }
 

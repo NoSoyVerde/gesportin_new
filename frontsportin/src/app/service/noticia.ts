@@ -14,7 +14,7 @@ export class NoticiaService {
 
 
   update(noticia: any): Observable<number> {
-    const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'] });
+    const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'], removeFields: ['comentarios', 'puntuaciones'] });
     return this.oHttp.put<number>(serverURL + '/noticia', body);
   }
 
@@ -61,7 +61,7 @@ export class NoticiaService {
 
   //create
   create(noticia: INoticia): Observable<number> {
-    const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'] });
+    const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'], removeFields: ['comentarios', 'puntuaciones'] });
     return this.oHttp.post<number>(serverURL + '/noticia', body);
   }
 
