@@ -82,7 +82,7 @@ public class PagoService {
             // la cuota y el jugador deben ser del mismo club -> pte
             oPagoNuevo.setCuota(oCuotaService.getOneRandom());
             oPagoNuevo.setJugador(oJugadorService.getOneRandom());
-            oPagoNuevo.setAbonado(oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, 1));
+            oPagoNuevo.setAbonado(oAleatorioService.generarNumeroAleatorioEnteroEnRango(0, 1) == 1);
             oPagoNuevo.setFecha(LocalDateTime.now());
             oPagoRepository.save(oPagoNuevo);
         }
