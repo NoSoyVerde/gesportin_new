@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import net.ausiasmarch.gesportin.bean.SessionBean;
 import net.ausiasmarch.gesportin.bean.TokenBean;
 import net.ausiasmarch.gesportin.entity.UsuarioEntity;
+import net.ausiasmarch.gesportin.exception.UnauthorizedException;
 import net.ausiasmarch.gesportin.repository.UsuarioRepository;
 
 @Service
@@ -18,14 +19,10 @@ public class SessionService {
     private UsuarioRepository oUsuarioRepository;
 
     public TokenBean login(SessionBean oSessionBean) {
-        // Lógica de autenticación aquí
-        // hardcoded
-        if ("admin".equals(oSessionBean.getUsername()) && "7e4b4f5529e084ecafb996c891cfbd5b5284f5b00dc155c37bbb62a9f161a72e".equalsIgnoreCase(oSessionBean.getPassword())) { //ausias
-            // generar el token JWT
-            return (new TokenBean(oJwtService.generateJWT(oSessionBean.getUsername())));
-        } else {
-            return null; // Autenticación fallida Rafa -> cambiar por excepcion
-        }
+        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByUsernameAndPassword(oSessionBean.getUsername(), oSessionBean.getPassword()).orElseThrow(() -> {
+            throw new UnauthorizedException("Usuario o contraseña incorrectos");
+        });
+        return (new TokenBean(oJwtService.generateJWT(oSessionBean.getUsername(), oUsuarioEntity.getTipousuario().getId(), oUsuarioEntity.getClub().getId())));
     }
 
     public boolean isSessionActive() {

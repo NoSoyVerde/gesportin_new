@@ -53,11 +53,13 @@ public class JWTService {
         }
     }
 
-    public String generateJWT(String username) {
+    public String generateJWT(String username, Long usertype, Long id_club) {
         return Jwts.builder()
                 .setIssuer(ISSUER)
                 .setSubject(SUBJECT)
                 .claim("username", username)
+                .claim("usertype", usertype)
+                .claim("id_club", id_club)
                 .setIssuedAt(new java.util.Date())
                 .setExpiration(new java.util.Date(System.currentTimeMillis() + 10800000)) // 3 horas
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
