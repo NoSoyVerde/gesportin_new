@@ -2,6 +2,8 @@ package net.ausiasmarch.gesportin.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import net.ausiasmarch.gesportin.bean.SessionBean;
 import net.ausiasmarch.gesportin.bean.TokenBean;
@@ -26,37 +28,40 @@ public class SessionService {
     }
 
     public boolean isSessionActive() {
-        String username = (String) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()
-                .getAttribute("username", org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST);
-        return username != null;
+        return getUsername() != null;
     }
 
     public String getUsername() {
-        String username = (String) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()
-                .getAttribute("username", org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST);
-        return username;
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            return null;
+        }
+        return (String) requestAttributes.getAttribute("username", RequestAttributes.SCOPE_REQUEST);
     }
 
     public boolean isAdmin() {
-        String username = (String) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()
-                .getAttribute("username", org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST);
-        // obtener el usuarioEntity relleno de la database utilizando el repository de usuario a partir del username y comprobar si es admin
+        String username = getUsername();
+        if (username == null) {
+            return false;
+        }
         UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByUsername(username).orElse(null);
         return oUsuarioEntity != null && oUsuarioEntity.getTipousuario().getId() == 1;
     }
 
     public boolean isEquipoAdmin() {
-        String username = (String) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()
-                .getAttribute("username", org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST);
-        // obtener el usuarioEntity relleno de la database utilizando el repository de usuario a partir del username y comprobar si es admin
+        String username = getUsername();
+        if (username == null) {
+            return false;
+        }
         UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByUsername(username).orElse(null);
         return oUsuarioEntity != null && oUsuarioEntity.getTipousuario().getId() == 2;
     }
 
     public boolean isUsuario() {
-        String username = (String) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()
-                .getAttribute("username", org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST);
-        // obtener el usuarioEntity relleno de la database utilizando el repository de usuario a partir del username y comprobar si es admin
+        String username = getUsername();
+        if (username == null) {
+            return false;
+        }
         UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByUsername(username).orElse(null);
         return oUsuarioEntity != null && oUsuarioEntity.getTipousuario().getId() == 3;
     }
