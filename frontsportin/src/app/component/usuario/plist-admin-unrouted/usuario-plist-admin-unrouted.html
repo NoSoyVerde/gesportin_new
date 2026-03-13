@@ -58,7 +58,7 @@
       </div>
       <div class="d-flex">
         <div class="w-100 d-flex justify-content-center">
-          <a *ngIf="!session.isClubAdmin()" [routerLink]="['/usuario/new']" class="btn btn-primary new-btn">
+          <a *ngIf="!session.isUser()" [routerLink]="['/usuario/new']" class="btn btn-primary new-btn">
             <i class="bi bi-plus-circle" aria-hidden="true"></i><span class="d-none d-sm-inline">Crear Usuario</span>
           </a>
         </div>
@@ -335,11 +335,37 @@
                 </div>
               } @else {
                 <div class="d-flex justify-content-center">
-                  <app-botonera-actions-plist
-                    [id]="oUsuario.id"
-                    strEntity="usuario"
-                  ></app-botonera-actions-plist>
-                </div>
+              <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+                <a
+                  class="btn btn-primary btn-sm"
+                  [routerLink]="['/usuario', 'view', oUsuario.id]"
+                  role="button"
+                  title="Ver"
+                >
+                  <i class="bi bi-eye" aria-hidden="true"></i>
+                </a>
+
+                <a
+                  *ngIf="!session.isUser() && (!session.isClubAdmin() || (oUsuario.club?.id === session.getClubId() && oUsuario.tipousuario?.id === 3))"
+                  class="btn btn-warning btn-sm"
+                  [routerLink]="['/usuario', 'edit', oUsuario.id]"
+                  role="button"
+                  title="Editar"
+                >
+                  <i class="bi bi-pencil" aria-hidden="true"></i>
+                </a>
+
+                <a
+                  *ngIf="!session.isUser() && (!session.isClubAdmin() || (oUsuario.club?.id === session.getClubId() && oUsuario.tipousuario?.id === 3))"
+                  class="btn btn-danger btn-sm"
+                  [routerLink]="['/usuario', 'delete', oUsuario.id]"
+                  role="button"
+                  title="Eliminar"
+                >
+                  <i class="bi bi-trash" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
               }
             </td>
           </tr>

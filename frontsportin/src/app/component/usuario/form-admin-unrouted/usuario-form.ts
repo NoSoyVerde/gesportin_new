@@ -8,6 +8,8 @@ import { UsuarioService } from '../../../service/usuarioService';
 import { ClubService } from '../../../service/club';
 import { TipousuarioService } from '../../../service/tipousuario';
 import { RolusuarioService } from '../../../service/rolusuario';
+import { SessionService } from '../../../service/session';
+import { SecurityService } from '../../../service/security.service';
 import { IUsuario } from '../../../model/usuario';
 import { IClub } from '../../../model/club';
 import { ITipousuario } from '../../../model/tipousuario';
@@ -36,6 +38,8 @@ export class UsuarioFormAdminUnrouted implements OnInit {
   private oTipousuarioService = inject(TipousuarioService);
   private oRolusuarioService = inject(RolusuarioService);
   private dialog = inject(MatDialog);
+  public session = inject(SessionService);
+  private security = inject(SecurityService);
 
   usuarioForm!: FormGroup;
   loading = signal(false);
@@ -93,7 +97,7 @@ export class UsuarioFormAdminUnrouted implements OnInit {
         [Validators.required, Validators.minLength(6), Validators.maxLength(255)]
       ],
       genero: [0, [Validators.required]],
-      fechaAlta: [{ value: '', disabled: true }],
+      fechaAlta: [{ value: new Date().toISOString().split('T')[0], disabled: this.mode === 'edit' }],
       id_club: [null, Validators.required],
       id_tipousuario: [null, Validators.required],
       id_rolusuario: [null, Validators.required]
@@ -128,9 +132,28 @@ export class UsuarioFormAdminUnrouted implements OnInit {
         this.displayIdRolusuario.set(null);
       }
     });
+
+    // For club admins, enforce club+user type constraints in the form UI
+    if (this.session.isClubAdmin()) {
+      const clubId = this.session.getClubId();
+      if (clubId) {
+        this.usuarioForm.patchValue({ id_club: clubId });
+        this.usuarioForm.get('id_club')?.disable();
+      }
+
+      // Club admins may only create/edit users of type "usuario" (id = 3)
+      this.usuarioForm.patchValue({ id_tipousuario: 3 });
+      this.usuarioForm.get('id_tipousuario')?.disable();
+    }
   }
 
   private loadUsuarioData(usuario: IUsuario): void {
+    if (this.session.isClubAdmin() && usuario.tipousuario?.id !== 3) {
+      this.error.set('No tiene permisos para editar este usuario');
+      this.usuarioForm.disable();
+      return;
+    }
+
     const clubId = usuario.club?.id ?? null;
     const tipousuarioId = usuario.tipousuario?.id ?? null;
     const rolusuarioId = usuario.rolusuario?.id ?? null;
@@ -143,7 +166,7 @@ export class UsuarioFormAdminUnrouted implements OnInit {
       username: usuario.username ?? '',
       password: usuario.password ?? '',
       genero: usuario.genero ?? 0,
-      fechaAlta: usuario.fechaAlta ?? '',
+      fechaAlta: this.toDateInputValue(usuario.fechaAlta ?? ''),
       id_club: clubId,
       id_tipousuario: tipousuarioId,
       id_rolusuario: rolusuarioId
@@ -163,7 +186,19 @@ export class UsuarioFormAdminUnrouted implements OnInit {
   private cargarClubs(): void {
     this.oClubService.getPage(0, 1000, 'nombre', 'asc').subscribe({
       next: (page) => {
-        this.clubs.set(page.content);
+        let clubs = page.content;
+        if (this.session.isClubAdmin()) {
+          const clubId = this.session.getClubId();
+          clubs = clubs.filter((club) => club.id === clubId);
+        }
+        this.clubs.set(clubs);
+        if (this.session.isClubAdmin()) {
+          const club = clubs.find((c) => c.id === this.session.getClubId());
+          if (club) {
+            this.selectedClub.set(club);
+            this.displayIdClub.set(club.id ?? null);
+          }
+        }
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error al cargar clubs', err);
@@ -175,7 +210,18 @@ export class UsuarioFormAdminUnrouted implements OnInit {
   private cargarTipousuarios(): void {
     this.oTipousuarioService.getAll().subscribe({
       next: (tipousuarios) => {
-        this.tipousuarios.set(tipousuarios);
+        let tipos = tipousuarios;
+        if (this.session.isClubAdmin()) {
+          tipos = tipos.filter((t) => t.id === 3);
+        }
+        this.tipousuarios.set(tipos);
+        if (this.session.isClubAdmin()) {
+          const tipo = tipos.find((t) => t.id === 3);
+          if (tipo) {
+            this.selectedTipousuario.set(tipo);
+            this.displayIdTipousuario.set(tipo.id ?? null);
+          }
+        }
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error al cargar tipos de usuario', err);
@@ -343,7 +389,7 @@ export class UsuarioFormAdminUnrouted implements OnInit {
       username: this.usuarioForm.value.username,
       password: this.usuarioForm.value.password || this.usuario?.password,
       genero: this.usuarioForm.value.genero,
-      fechaAlta: this.usuario?.fechaAlta,
+      fechaAlta: this.toLocalDateTime(this.usuarioForm.get('fechaAlta')?.value ?? this.usuario?.fechaAlta),
       club: {
         id: this.usuarioForm.value.id_club
       },
@@ -354,6 +400,15 @@ export class UsuarioFormAdminUnrouted implements OnInit {
         id: this.usuarioForm.value.id_rolusuario
       }
     };
+
+    if (this.session.isClubAdmin()) {
+      const clubId = this.session.getClubId();
+      if (clubId) {
+        payload.club = { id: clubId };
+      }
+      payload.tipousuario = { id: 3 };
+    }
+
 
     if (this.mode === 'edit') {
       this.saveUpdate(payload);
@@ -392,5 +447,32 @@ export class UsuarioFormAdminUnrouted implements OnInit {
         this.submitting.set(false);
       },
     });
+  }
+
+  private toLocalDateTime(value: string | undefined | null): string {
+    if (!value) {
+      return '';
+    }
+    const text = String(value);
+    if (text.includes('T')) {
+      const [datePart, timePart] = text.split('T');
+      return `${datePart}T${(timePart || '00:00:00').slice(0, 8)}`;
+    }
+    if (text.includes(' ')) {
+      const [datePart, timePart] = text.split(' ');
+      return `${datePart}T${(timePart || '00:00:00').slice(0, 8)}`;
+    }
+    return `${text}T00:00:00`;
+  }
+
+  private toDateInputValue(value: string | Date | undefined | null): string {
+    if (!value) {
+      return new Date().toISOString().split('T')[0];
+    }
+    if (value instanceof Date) {
+      return value.toISOString().split('T')[0];
+    }
+    const text = String(value);
+    return text.includes('T') ? text.split('T')[0] : text.split(' ')[0];
   }
 }

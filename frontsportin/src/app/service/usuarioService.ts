@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { serverURL } from '../environment/environment';
 import { IPage } from '../model/plist';
 import { IUsuario } from '../model/usuario';
@@ -28,6 +28,9 @@ export class UsuarioService {
     id_rol: number = 0,
     id_club: number = 0
   ): Observable<IPage<IUsuario>> {
+    // Enforce that club admins always filter by their own club regardless of passed parameters
+    const clubId = this.security.clubFilter(id_club);
+
     if (order === '') {
       order = 'id';
     }
@@ -39,32 +42,27 @@ export class UsuarioService {
 
     if (id_tipousuario > 0) {
       strUrl += `&id_tipousuario=${id_tipousuario}`;
-      return this.oHttp.get<IPage<IUsuario>>(strUrl);
     }
 
     if (id_rol > 0) {
       strUrl += `&id_rol=${id_rol}`;
-      return this.oHttp.get<IPage<IUsuario>>(strUrl);
     }
 
-    if (id_club > 0) {
-      strUrl += `&id_club=${id_club}`;
-      return this.oHttp.get<IPage<IUsuario>>(strUrl);
+    if (clubId > 0) {
+      strUrl += `&id_club=${clubId}`;
     }
 
     if (nombre && nombre.length > 0) {
       strUrl += `&nombre=${encodeURIComponent(nombre)}`;
-      return this.oHttp.get<IPage<IUsuario>>(strUrl);
     }
 
     const request$ = this.oHttp.get<IPage<IUsuario>>(strUrl);
     if (this.security.isClubAdmin()) {
-      // filter on client side in case backend doesn't support
-      const clubId = this.security.getClubId();
-      if (clubId != null) {
+      const myClubId = this.security.getClubId();
+      if (myClubId != null) {
         return request$.pipe(
           map((pageData) => {
-            const filtered = pageData.content.filter((u) => u.club?.id === clubId);
+            const filtered = pageData.content.filter((u) => u.club?.id === myClubId);
             return { ...pageData, content: filtered, totalElements: filtered.length } as IPage<IUsuario>;
           }),
         );
@@ -78,14 +76,29 @@ export class UsuarioService {
   }
 
   get(id: number): Observable<IUsuario> {
-    return this.oHttp.get<IUsuario>(`${serverURL}/usuario/${id}`);
+    return this.oHttp.get<IUsuario>(`${serverURL}/usuario/${id}`).pipe(
+      map((usuario) => {
+        if (this.security.isClubAdmin()) {
+          // Club admins can only access users from their club
+          this.security.ensureClubOwnership(usuario.club?.id ?? null);
+        }
+        return usuario;
+      }),
+    );
   }
 
   create(usuario: Partial<IUsuario>): Observable<number> {
     if (this.security.isClubAdmin()) {
       const clubId = usuario.club?.id;
       this.security.ensureClubOwnership(clubId ?? null);
+
+      // Club admins can only create users of type "usuario" (id = 3)
+      const tipo = usuario.tipousuario?.id;
+      if (tipo !== 3) {
+        throw new Error('Acción no permitida: solo se pueden crear usuarios del tipo "usuario"');
+      }
     }
+
     const body = this.sanitizer.sanitize(usuario, {
       nestedIdFields: ['tipousuario', 'rolusuario', 'club'],
       removeFields: ['comentarios', 'puntuaciones', 'comentarioarts', 'carritos', 'facturas', 'equiposentrenados', 'jugadores'],
@@ -97,12 +110,34 @@ export class UsuarioService {
     if (this.security.isClubAdmin()) {
       const clubId = usuario.club?.id;
       this.security.ensureClubOwnership(clubId ?? null);
+
+      // Club admins can only update users of type "usuario" (id = 3)
+      const tipo = usuario.tipousuario?.id;
+      if (tipo !== 3) {
+        throw new Error('Acción no permitida: solo se pueden modificar usuarios del tipo "usuario"');
+      }
     }
     const body = this.sanitizer.sanitize(usuario, {
       nestedIdFields: ['tipousuario', 'rolusuario', 'club'],
       removeFields: ['comentarios', 'puntuaciones', 'comentarioarts', 'carritos', 'facturas', 'equiposentrenados', 'jugadores'],
     });
     return this.oHttp.put<IUsuario>(`${serverURL}/usuario`, body);
+  }
+
+  delete(id: number): Observable<number> {
+    // Ensure club-admins can only delete users from their club and of type "usuario"
+    if (this.security.isClubAdmin()) {
+      return this.get(id).pipe(
+        switchMap((usuario) => {
+          const tipo = usuario.tipousuario?.id;
+          if (tipo !== 3) {
+            throw new Error('Acción no permitida: solo se pueden eliminar usuarios del tipo "usuario"');
+          }
+          return this.oHttp.delete<number>(`${serverURL}/usuario/${id}`);
+        }),
+      );
+    }
+    return this.oHttp.delete<number>(`${serverURL}/usuario/${id}`);
   }
 
   count(): Observable<number> {

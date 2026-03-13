@@ -96,6 +96,7 @@ import { ClubNewAdminRouted } from './component/club/new-admin-routed/club-new';
 import { CuotaDeleteAdminRouted } from './component/cuota/delete-admin-routed/cuota-delete';
 import { UsuarioEditAdminRouted } from './component/usuario/edit-admin-routed/usuario-edit';
 import { UsuarioNewAdminRouted } from './component/usuario/new-admin-routed/usuario-new';
+import { UsuarioDeleteAdminRouted } from './component/usuario/delete-admin-routed/usuario-delete';
 import { JugadorEditAdminRouted } from './component/jugador/edit-admin-routed/jugador-edit';
 import { CompraEditAdminRouted } from './component/compra/edit-admin-routed/compra-edit';
 import { CompraNewAdminRouted } from './component/compra/new-admin-routed/compra-new';
@@ -117,6 +118,7 @@ const protectedRoutes: Routes = [
   { path: 'usuario/view/:id', component: UsuarioViewRouted, data: { allowClubAdmin: true } },
   { path: 'usuario/new', component: UsuarioNewAdminRouted, data: { allowClubAdmin: true } },
   { path: 'usuario/edit/:id', component: UsuarioEditAdminRouted, data: { allowClubAdmin: true } },
+  { path: 'usuario/delete/:id', component: UsuarioDeleteAdminRouted, data: { allowClubAdmin: true } },
   { path: 'temporada', component: TemporadaPlist, data: { allowClubAdmin: true } },
   { path: 'temporada/club/:id_club', component: TemporadaPlist, data: { allowClubAdmin: true } },
   { path: 'temporada/edit/:id', component: TemporadaEditAdminRouted, data: { allowClubAdmin: true } },

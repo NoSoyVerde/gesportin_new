@@ -192,105 +192,151 @@
           class="form-control"
           id="fechaAlta"
           formControlName="fechaAlta"
-          readonly
+          [readonly]="mode === 'edit'"
         />
       </div>
 
       <!-- Sección: Club -->
       <div class="fk-box p-4 rounded mb-4">
-        <div class="mb-4">
-          <label for="id_club" class="form-label">Club<span class="text-danger">*</span></label>
-          <select
-            id="id_club"
-            style="cursor: pointer"
-            class="form-select"
-            [class.is-invalid]="id_club?.invalid && id_club?.touched"
-            [class.is-valid]="id_club?.valid && id_club?.touched"
-            formControlName="id_club"
-          >
-            <option [ngValue]="null" disabled>Selecciona un club</option>
-            @for (club of clubs(); track club.id) {
-              <option [ngValue]="club.id">{{ club.nombre }}</option>
+        <div *ngIf="!session.isClubAdmin()">
+          <div class="mb-4">
+            <label for="id_club" class="form-label">Club<span class="text-danger">*</span></label>
+            <select
+              id="id_club"
+              style="cursor: pointer"
+              class="form-select"
+              [class.is-invalid]="id_club?.invalid && id_club?.touched"
+              [class.is-valid]="id_club?.valid && id_club?.touched"
+              formControlName="id_club"
+            >
+              <option [ngValue]="null" disabled>Selecciona un club</option>
+              @for (club of clubs(); track club.id) {
+                <option [ngValue]="club.id">{{ club.nombre }}</option>
+              }
+            </select>
+            @if (id_club?.invalid && id_club?.touched) {
+              <div class="invalid-feedback">
+                <span>Debe seleccionar un club.</span>
+              </div>
             }
-          </select>
-          @if (id_club?.invalid && id_club?.touched) {
-            <div class="invalid-feedback">
-              <span>Debe seleccionar un club.</span>
+          </div>
+
+          <div class="d-flex gap-3 align-items-end flex-wrap">
+            <button type="button" class="btn btn-info" (click)="openClubFinderModal()">
+              <i class="bi bi-search me-2"></i>Buscar
+            </button>
+            <div>
+              <label for="display_id_club" class="form-label">ID Club</label>
+              <input
+                type="text"
+                class="form-control"
+                id="display_id_club"
+                [value]="displayIdClub() || ''"
+                readonly
+              />
             </div>
-          }
+            @if (selectedClub()) {
+              <div class="grow">
+                <label class="form-label">Nombre</label>
+                <p class="form-control-plaintext fw-semibold mb-0">
+                  {{ selectedClub()?.nombre }}
+                </p>
+              </div>
+            }
+          </div>
         </div>
 
-        <div class="d-flex gap-3 align-items-end flex-wrap">
-          <button type="button" class="btn btn-info" (click)="openClubFinderModal()">
-            <i class="bi bi-search me-2"></i>Buscar
-          </button>
-          <div>
-            <label for="display_id_club" class="form-label">ID Club</label>
+        <div *ngIf="session.isClubAdmin()">
+          <div class="mb-4">
+            <label class="form-label">Club</label>
             <input
               type="text"
               class="form-control"
-              id="display_id_club"
-              [value]="displayIdClub() || ''"
+              [value]="selectedClub()?.nombre || 'Sin club'"
               readonly
             />
           </div>
-          @if (selectedClub()) {
-            <div class="grow">
-              <label class="form-label">Nombre</label>
-              <p class="form-control-plaintext fw-semibold mb-0">
-                {{ selectedClub()?.nombre }}
-              </p>
-            </div>
-          }
+          <div class="mb-4">
+            <label class="form-label">ID Club</label>
+            <input
+              type="text"
+              class="form-control"
+              [value]="session.getClubId() || ''"
+              readonly
+            />
+          </div>
         </div>
       </div>
 
       <!-- Sección: Tipo de Usuario -->
       <div class="fk-box p-4 rounded mb-4">
-        <div class="mb-4">
-          <label for="id_tipousuario" class="form-label">Tipo de Usuario<span class="text-danger">*</span></label>
-          <select
-            id="id_tipousuario"
-            style="cursor: pointer"
-            class="form-select"
-            [class.is-invalid]="id_tipousuario?.invalid && id_tipousuario?.touched"
-            [class.is-valid]="id_tipousuario?.valid && id_tipousuario?.touched"
-            formControlName="id_tipousuario"
-          >
-            <option [ngValue]="null" disabled>Selecciona un tipo de usuario</option>
-            @for (tipousuario of tipousuarios(); track tipousuario.id) {
-              <option [ngValue]="tipousuario.id">{{ tipousuario.descripcion }}</option>
+        <div *ngIf="!session.isClubAdmin()">
+          <div class="mb-4">
+            <label for="id_tipousuario" class="form-label">Tipo de Usuario<span class="text-danger">*</span></label>
+            <select
+              id="id_tipousuario"
+              style="cursor: pointer"
+              class="form-select"
+              [class.is-invalid]="id_tipousuario?.invalid && id_tipousuario?.touched"
+              [class.is-valid]="id_tipousuario?.valid && id_tipousuario?.touched"
+              formControlName="id_tipousuario"
+            >
+              <option [ngValue]="null" disabled>Selecciona un tipo de usuario</option>
+              @for (tipousuario of tipousuarios(); track tipousuario.id) {
+                <option [ngValue]="tipousuario.id">{{ tipousuario.descripcion }}</option>
+              }
+            </select>
+            @if (id_tipousuario?.invalid && id_tipousuario?.touched) {
+              <div class="invalid-feedback">
+                <span>Debe seleccionar un tipo de usuario.</span>
+              </div>
             }
-          </select>
-          @if (id_tipousuario?.invalid && id_tipousuario?.touched) {
-            <div class="invalid-feedback">
-              <span>Debe seleccionar un tipo de usuario.</span>
+          </div>
+
+          <div class="d-flex gap-3 align-items-end flex-wrap">
+            <button type="button" class="btn btn-info" (click)="openTipousuarioFinderModal()">
+              <i class="bi bi-search me-2"></i>Buscar
+            </button>
+            <div>
+              <label for="display_id_tipousuario" class="form-label">ID Tipo</label>
+              <input
+                type="text"
+                class="form-control"
+                id="display_id_tipousuario"
+                [value]="displayIdTipousuario() || ''"
+                readonly
+              />
             </div>
-          }
+            @if (selectedTipousuario()) {
+              <div class="grow">
+                <label class="form-label">Descripción</label>
+                <p class="form-control-plaintext fw-semibold mb-0">
+                  {{ selectedTipousuario()?.descripcion }}
+                </p>
+              </div>
+            }
+          </div>
         </div>
 
-        <div class="d-flex gap-3 align-items-end flex-wrap">
-          <button type="button" class="btn btn-info" (click)="openTipousuarioFinderModal()">
-            <i class="bi bi-search me-2"></i>Buscar
-          </button>
-          <div>
-            <label for="display_id_tipousuario" class="form-label">ID Tipo</label>
+        <div *ngIf="session.isClubAdmin()">
+          <div class="mb-4">
+            <label class="form-label">Tipo de Usuario</label>
             <input
               type="text"
               class="form-control"
-              id="display_id_tipousuario"
-              [value]="displayIdTipousuario() || ''"
+              [value]="selectedTipousuario()?.descripcion || 'Usuario'"
               readonly
             />
           </div>
-          @if (selectedTipousuario()) {
-            <div class="grow">
-              <label class="form-label">Descripción</label>
-              <p class="form-control-plaintext fw-semibold mb-0">
-                {{ selectedTipousuario()?.descripcion }}
-              </p>
-            </div>
-          }
+          <div class="mb-4">
+            <label class="form-label">ID Tipo</label>
+            <input
+              type="text"
+              class="form-control"
+              [value]="selectedTipousuario()?.id || 3"
+              readonly
+            />
+          </div>
         </div>
       </div>
 
