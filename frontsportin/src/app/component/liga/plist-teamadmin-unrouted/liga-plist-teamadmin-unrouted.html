@@ -1,0 +1,80 @@
+<div>
+  @if (message()) {
+    <div class="d-flex justify-content-center my-2">
+      <div class="alert alert-success w-100 text-center" role="alert">
+        {{ message() }}
+      </div>
+    </div>
+  }
+
+  @if (equipo() <= 0) {
+    <div class="d-flex justify-content-center my-2">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Buscar por nombre"
+        aria-label="Search"
+        (input)="onSearchNombre($event.target.value)"
+        [value]="nombre()"
+        name="searchNombre"
+      />
+    </div>
+  }
+
+  <div class="d-flex justify-content-center my-1">
+    <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
+    @if (equipo() > 0) {
+      <small class="text-muted ms-3">Filtro: id de equipo = {{ equipo() }}</small>
+      <a class="ms-2" [routerLink]="['/liga']" role="button" title="Quitar filtro"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro</a>
+    }
+    @if (nombre().length > 0) {
+      <small class="text-muted ms-3">Filtro: nombre contiene "{{ nombre() }}"</small>
+    }
+  </div>
+
+  @if (totalRecords() > 0) {
+    <div class="container-fluid p-0 my-1">
+      <div class="controls-row mb-2">
+        <div class="col-control left">
+          <app-paginacion [numPage]="numPage()" [numPages]="oPage()?.totalPages || 1" (pageChange)="goToPage($event)"></app-paginacion>
+        </div>
+        <div class="col-control right">
+          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="w-100 d-flex justify-content-center">
+          @if (!isDialogMode()) {
+            <a class="btn btn-primary new-btn" [routerLink]="['/liga/new']" role="button"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span class="d-none d-sm-inline">Crear Liga</span></a>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @for (oLiga of oPage()?.content; track oLiga.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header">
+            <h5 class="card-title mb-0">{{ oLiga.nombre || 'Liga ' + oLiga.id }}</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>ID:</strong> {{ oLiga.id }}</p>
+            <p><strong>Equipo:</strong>
+              @if (oLiga.equipo) {
+                <a [routerLink]="['/equipo/view', oLiga.equipo.id]">{{ oLiga.equipo.nombre || 'Equipo ' + oLiga.equipo.id }}</a>
+              } @else { <span class="text-muted">Sin equipo</span> }
+            </p>
+            <p><strong>Partidos:</strong> {{ oLiga.partidos }}</p>
+            <p><strong>Nombre:</strong> {{ oLiga.nombre }}</p>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a [routerLink]="['/liga/view', oLiga.id]" class="btn btn-outline-secondary btn-sm">Ver</a>
+            <app-botonera-actions-plist [id]="oLiga.id" strEntity="liga"></app-botonera-actions-plist>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

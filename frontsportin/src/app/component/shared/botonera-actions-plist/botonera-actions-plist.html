@@ -6,20 +6,22 @@
     title="Ver"
     ><i class="bi bi-eye" aria-hidden="true"></i
   ></a>
-  <a
-    *ngIf="canEdit"
-    class="btn btn-warning btn-sm"
-    [routerLink]="['/', strEntity, 'edit', id]"
-    role="button"
-    title="Editar"
-    ><i class="bi bi-pencil" aria-hidden="true"></i
-  ></a>
-  <a
-    *ngIf="canDelete"
-    class="btn btn-danger btn-sm"
-    [routerLink]="['/', strEntity, 'delete', id]"
-    role="button"
-    title="Eliminar"
-    ><i class="bi bi-trash" aria-hidden="true"></i
-  ></a>
+  @if (canEdit) {
+    <a
+      class="btn btn-warning btn-sm"
+      [routerLink]="['/', strEntity, 'edit', id]"
+      role="button"
+      title="Editar"
+      ><i class="bi bi-pencil" aria-hidden="true"></i
+    ></a>
+  }
+  @if (canDelete) {
+    <a
+      class="btn btn-danger btn-sm"
+      [routerLink]="['/', strEntity, 'delete', id]"
+      role="button"
+      title="Eliminar"
+      ><i class="bi bi-trash" aria-hidden="true"></i
+    ></a>
+  }
 </div>

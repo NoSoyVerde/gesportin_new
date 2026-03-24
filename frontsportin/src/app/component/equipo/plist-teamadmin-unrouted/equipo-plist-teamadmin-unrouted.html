@@ -1,0 +1,94 @@
+<div>
+  <div class="d-flex justify-content-center my-2">
+    <input
+      class="form-control me-2"
+      type="search"
+      placeholder="Buscar por nombre"
+      aria-label="Search"
+      (input)="onSearchNombre($event.target.value)"
+      [value]="nombre()"
+      name="searchNombre"
+    />
+  </div>
+
+  <div class="d-flex justify-content-center my-3">
+    <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
+    @if (categoria() > 0) {
+      <small class="text-muted ms-3">Filtro: id de categoría = {{ categoria() }}</small>
+      <a class="ms-2" [routerLink]="['/equipo']" role="button" title="Quitar filtro"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro</a>
+    }
+    @if (usuario() > 0) {
+      <small class="text-muted ms-3">Filtro: id de usuario = {{ usuario() }}</small>
+      <a class="ms-2" [routerLink]="['/equipo']" role="button" title="Quitar filtro"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro</a>
+    }
+    @if (nombre().length > 0) {
+      <small class="text-muted ms-3">Filtro: nombre contiene "{{ nombre() }}"</small>
+    }
+  </div>
+
+  @if (totalRecords() > 0) {
+    <div class="container-fluid p-0 my-1">
+      <div class="controls-row mb-2">
+        <div class="col-control left">
+          <app-paginacion [numPage]="numPage()" [numPages]="oPage()?.totalPages || 1" (pageChange)="goToPage($event)"></app-paginacion>
+        </div>
+        <div class="col-control right">
+          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="w-100 d-flex justify-content-center">
+          @if (!isDialogMode()) {
+            <a class="btn btn-primary new-btn" [routerLink]="['/equipo/new']" role="button"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span class="d-none d-sm-inline">Crear Equipo</span></a>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @for (oEquipo of oPage()?.content; track oEquipo.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header">
+            <h5 class="card-title mb-0">{{ oEquipo.nombre || 'Equipo ' + oEquipo.id }}</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>ID:</strong> {{ oEquipo.id }}</p>
+            <p><strong>Categoría:</strong>
+              @if (oEquipo.categoria) {
+                <a [routerLink]="['/categoria/view', oEquipo.categoria.id]">{{ oEquipo.categoria.nombre || 'Categoria ' + oEquipo.categoria.id }}</a>
+              } @else { Sin categoría }
+            </p>
+            <p><strong>Entrenador:</strong>
+              @if (oEquipo.entrenador) {
+                <a [routerLink]="['/usuario/view', oEquipo.entrenador.id]">{{ oEquipo.entrenador.nombre }} {{ oEquipo.entrenador.apellido1 }}</a>
+              } @else { Sin entrenador }
+            </p>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              @if (oEquipo.jugadores === 0) {
+                <span class="badge bg-secondary opacity-75"><i class="bi bi-x-circle me-1"></i>0 jugadores</span>
+              } @else {
+                <a [routerLink]="['/jugador/equipo', oEquipo.id]" class="badge bg-primary text-decoration-none"><i class="bi bi-person-fill me-1"></i>{{ oEquipo.jugadores }} jugadores</a>
+              }
+              @if (oEquipo.cuotas === 0) {
+                <span class="badge bg-secondary opacity-75"><i class="bi bi-x-circle me-1"></i>0 cuotas</span>
+              } @else {
+                <a [routerLink]="['/cuota/equipo', oEquipo.id]" class="badge bg-primary text-decoration-none"><i class="bi bi-credit-card me-1"></i>{{ oEquipo.cuotas }} cuotas</a>
+              }
+              @if (oEquipo.ligas === 0) {
+                <span class="badge bg-secondary opacity-75"><i class="bi bi-x-circle me-1"></i>0 ligas</span>
+              } @else {
+                <a [routerLink]="['/liga/equipo', oEquipo.id]" class="badge bg-primary text-decoration-none"><i class="bi bi-trophy me-1"></i>{{ oEquipo.ligas }} ligas</a>
+              }
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a [routerLink]="['/equipo/view', oEquipo.id]" class="btn btn-outline-secondary btn-sm">Ver</a>
+            <app-botonera-actions-plist [id]="oEquipo.id ?? 0" strEntity="equipo"></app-botonera-actions-plist>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -6,8 +6,7 @@ import { SessionService } from "../service/session";
 @Injectable({
     providedIn: 'root'
 })
-
-export class AdminGuard implements CanActivate {
+export class ClubAdminGuard implements CanActivate {
 
     constructor(private oSessionService: SessionService,
         private oRouter: Router) { }
@@ -17,20 +16,14 @@ export class AdminGuard implements CanActivate {
             return of(this.oRouter.createUrlTree(['/login']));
         }
 
-        // full administrators always allowed
-        if (this.oSessionService.isAdmin()) {
-            return of(true);
-        }
-
-        // team/club admins are allowed only when the route explicitly opts in
-        const allowClub = route.data?.['allowClubAdmin'] === true;
-        if (allowClub && this.oSessionService.isClubAdmin()) {
-            return of(true);
-        }
-
-        // Important: avoid redirecting to '/' because it is also guarded and can loop.
+        // Only team/club admins allowed
         if (this.oSessionService.isClubAdmin()) {
-            return of(this.oRouter.createUrlTree(['/club/teamadmin']));
+            return of(true);
+        }
+
+        // Full admins → redirect to admin club list
+        if (this.oSessionService.isAdmin()) {
+            return of(this.oRouter.createUrlTree(['/club']));
         }
 
         return of(this.oRouter.createUrlTree(['/login']));

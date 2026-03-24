@@ -1,0 +1,98 @@
+<div>
+  <div class="d-flex justify-content-center my-2">
+    <input
+      class="form-control me-2"
+      type="search"
+      placeholder="Buscar por nombre"
+      aria-label="Search"
+      (input)="onSearchName($event.target.value)"
+      [value]="nombre()"
+      name="searchNombre"
+    />
+  </div>
+
+  <div class="d-flex justify-content-center my-1">
+    <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
+    @if (temporada() > 0) {
+      <small class="text-muted ms-3">Filtro: id de temporada = {{ temporada() }}</small>
+      <a class="ms-2" [routerLink]="['/categoria']" role="button" title="Quitar filtro">
+        <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
+      </a>
+    }
+    @if (nombre().length > 0) {
+      <small class="text-muted ms-3">Filtro: nombre contiene "{{ nombre() }}"</small>
+      <a class="ms-2" (click)="clearSearchFilter()" role="button" style="cursor: pointer" title="Quitar filtro de búsqueda">
+        <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
+      </a>
+    }
+  </div>
+
+  @if (totalRecords() > 0) {
+    <div class="container-fluid p-0 my-1">
+      <div class="controls-row mb-2">
+        <div class="col-control left">
+          <app-paginacion
+            [numPage]="numPage()"
+            [numPages]="oPage()?.totalPages || 1"
+            (pageChange)="goToPage($event)"
+          ></app-paginacion>
+        </div>
+        <div class="col-control right">
+          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="w-100 d-flex justify-content-center">
+          @if (!isDialogMode()) {
+            <a class="btn btn-primary new-btn" [routerLink]="['/categoria/new']" role="button">
+              <i class="bi bi-plus-circle" aria-hidden="true"></i>
+              <span class="d-none d-sm-inline">Crear Categoría</span>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @for (oCategoria of oPage()?.content; track oCategoria.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header">
+            <h5 class="card-title mb-0">ID {{ oCategoria.id }}</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text"><strong>Nombre:</strong> {{ oCategoria.nombre }}</p>
+            <p class="card-text">
+              <strong>Temporada:</strong>
+              @if (oCategoria.temporada?.id) {
+                <a [routerLink]="['/temporada/view', oCategoria.temporada?.id]">
+                  {{ oCategoria.temporada?.descripcion || ('Temporada ' + oCategoria.temporada?.id) }}
+                </a>
+              } @else { Sin temporada }
+            </p>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              @if (oCategoria.equipos === 0) {
+                <span class="badge bg-secondary opacity-75">
+                  <i class="bi bi-x-circle me-1"></i>0 equipos
+                </span>
+              } @else {
+                <a
+                  [routerLink]="['/equipo/categoria', oCategoria.id]"
+                  class="badge bg-primary text-decoration-none"
+                  title="Ver equipos"
+                >
+                  <i class="bi bi-people-fill me-1"></i>{{ oCategoria.equipos }} equipos
+                </a>
+              }
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a [routerLink]="['/categoria/view', oCategoria.id]" class="btn btn-sm btn-outline-secondary">Ver</a>
+            <app-botonera-actions-plist [id]="oCategoria.id" strEntity="categoria"></app-botonera-actions-plist>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

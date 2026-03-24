@@ -1,0 +1,110 @@
+<div>
+
+  <!-- Aviso (mensaje desde queryParams) -->
+  @if (message()) {
+    <div class="d-flex justify-content-center my-2">
+      <div class="alert alert-success w-100 text-center" role="alert">
+        {{ message() }}
+      </div>
+    </div>
+  }
+
+  <!-- Total registros -->
+  <div class="d-flex justify-content-center my-1">
+    <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
+  </div>
+
+  <!-- Paginación y RPP si hay registros -->
+  @if (totalRecords() > 0) {
+    <div class="container-fluid p-0 my-1">
+      <div class="controls-row mb-2">
+        <div class="col-control left">
+          <app-paginacion
+            [numPage]="numPage()"
+            [numPages]="oPage()?.totalPages || 1"
+            (pageChange)="goToPage($event)"
+          ></app-paginacion>
+        </div>
+        <div class="col-control right">
+          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Cards -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @for (oClub of oPage()?.content; track oClub.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-building fs-5" aria-hidden="true"></i>
+            <strong class="text-truncate">{{ oClub.nombre }}</strong>
+          </div>
+          <div class="card-body pb-2">
+            <ul class="list-unstyled mb-3">
+              <li class="mb-1">
+                <i class="bi bi-hash text-muted me-1"></i>
+                <span class="text-muted">ID:</span> {{ oClub.id }}
+              </li>
+            </ul>
+            <!-- Contadores con enlaces -->
+            <div class="d-flex flex-wrap gap-2">
+              @if (oClub.temporadas === 0) {
+                <span class="badge bg-secondary opacity-75">
+                  <i class="bi bi-calendar me-1"></i>0 temporadas
+                </span>
+              } @else {
+                <a [routerLink]="['/temporada/club', oClub.id]"
+                   class="badge bg-primary text-decoration-none">
+                  <i class="bi bi-calendar me-1"></i>{{ oClub.temporadas }} temporadas
+                </a>
+              }
+
+              @if (oClub.noticias === 0) {
+                <span class="badge bg-secondary opacity-75">
+                  <i class="bi bi-newspaper me-1"></i>0 noticias
+                </span>
+              } @else {
+                <a [routerLink]="['/noticia/club', oClub.id]"
+                   class="badge bg-primary text-decoration-none">
+                  <i class="bi bi-newspaper me-1"></i>{{ oClub.noticias }} noticias
+                </a>
+              }
+
+              @if (oClub.tipoarticulos === 0) {
+                <span class="badge bg-secondary opacity-75">
+                  <i class="bi bi-bookmark-fill me-1"></i>0 tipos art.
+                </span>
+              } @else {
+                <a [routerLink]="['/tipoarticulo/club', oClub.id]"
+                   class="badge bg-primary text-decoration-none">
+                  <i class="bi bi-bookmark-fill me-1"></i>{{ oClub.tipoarticulos }} tipos art.
+                </a>
+              }
+
+              @if (oClub.usuarios === 0) {
+                <span class="badge bg-secondary opacity-75">
+                  <i class="bi bi-people me-1"></i>0 usuarios
+                </span>
+              } @else {
+                <a [routerLink]="['/usuario/club', oClub.id]"
+                   class="badge bg-primary text-decoration-none">
+                  <i class="bi bi-people me-1"></i>{{ oClub.usuarios }} usuarios
+                </a>
+              }
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-end gap-2">
+            <a [routerLink]="['/club/view', oClub.id]"
+               class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-eye" aria-hidden="true"></i>
+              <span class="d-none d-sm-inline ms-1">Ver</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
