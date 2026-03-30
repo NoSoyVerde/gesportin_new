@@ -37,3 +37,7 @@ Load the detailed guidance based on on context:
 ## Fichero de referecnia
 * Reference: [references/references.md](references/references.md)
 * Load When: Siempre que tengas que desarrollar o modificar ficheros de referencia para modelos de inteligencia artificial en .github/references.
+
+## Diseño de UI para el perfil Administrador
+* Reference: [references/diseño.md](references/diseño.md)
+* Load When: Siempre que tengas que desarrollar o modificar vistas (plist, detail, form) del perfil Administrador (tipousuario id=1) en el frontend, para mantener el diseño unificado de la aplicación.

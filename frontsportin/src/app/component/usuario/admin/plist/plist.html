@@ -13,6 +13,30 @@
 
   <div class="d-flex justify-content-center my-1">
     <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
+    @if (id_tipousuario && id_tipousuario > 0) {
+      <small class="text-muted ms-3">Filtro: id de tipo de usuario = {{ id_tipousuario }}</small>
+      @if (!isDialogMode()) {
+        <a class="ms-2" [routerLink]="['/usuario']" role="button" title="Quitar filtro">
+          <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
+        </a>
+      }
+    }
+    @if (id_rol && id_rol > 0) {
+      <small class="text-muted ms-3">Filtro: id de rol = {{ id_rol }}</small>
+      @if (!isDialogMode()) {
+        <a class="ms-2" [routerLink]="['/usuario']" role="button" title="Quitar filtro">
+          <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
+        </a>
+      }
+    }
+    @if (id_club && id_club > 0) {
+      <small class="text-muted ms-3">Filtro: id de club = {{ id_club }}</small>
+      @if (!isDialogMode()) {
+        <a class="ms-2" [routerLink]="['/usuario']" role="button" title="Quitar filtro">
+          <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
+        </a>
+      }
+    }
     @if (nombre() && nombre().length > 0) {
       <small class="text-muted ms-3">Filtro: búsqueda contiene "{{ nombre() }}"</small>
     }

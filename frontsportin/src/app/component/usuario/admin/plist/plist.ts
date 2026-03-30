@@ -20,6 +20,10 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
   styleUrl: './plist.css',
 })
 export class UsuarioAdminPlist {
+  id_tipousuario?: number;
+  id_rol?: number;
+  id_club?: number;
+
   oPage = signal<IPage<IUsuario> | null>(null);
   numPage = signal<number>(0);
   numRpp = signal<number>(10);
@@ -36,6 +40,21 @@ export class UsuarioAdminPlist {
   session = inject(SessionService);
 
   ngOnInit() {
+    const idTipo = this.route.snapshot.paramMap.get('id_tipousuario');
+    if (idTipo) {
+      this.id_tipousuario = Number(idTipo);
+    }
+
+    const idRol = this.route.snapshot.paramMap.get('id_rol');
+    if (idRol) {
+      this.id_rol = Number(idRol);
+    }
+
+    const idClub = this.route.snapshot.paramMap.get('id_club');
+    if (idClub) {
+      this.id_club = Number(idClub);
+    }
+
     this.searchSubscription = this.searchSubject
       .pipe(debounceTime(debounceTimeSearch), distinctUntilChanged())
       .subscribe((searchTerm: string) => {
@@ -64,9 +83,9 @@ export class UsuarioAdminPlist {
         orderField,
         this.orderDirection(),
         this.nombre(),
-        0,
-        0,
-        0,
+        this.id_tipousuario ?? 0,
+        this.id_rol ?? 0,
+        this.id_club ?? 0,
       )
       .subscribe({
         next: (data) => {
