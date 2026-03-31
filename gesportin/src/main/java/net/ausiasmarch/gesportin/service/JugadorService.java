@@ -181,9 +181,12 @@ public class JugadorService {
     public Long count() {
         if (oSessionService.isEquipoAdmin()) {
             Long myClub = oSessionService.getIdClub();
-            if (myClub == null) return 0L;
-            // approximate by counting equipos or users? simplest: count players whose equipo.club == myClub
-            return oJugadorRepository.findByEquipoCategoriaTemporadaClubId(myClub, Pageable.ofSize(1)).getTotalElements();
+            if (myClub == null)
+                return 0L;
+            // approximate by counting equipos or users? simplest: count players whose
+            // equipo.club == myClub
+            return oJugadorRepository.findByEquipoCategoriaTemporadaClubId(myClub, Pageable.ofSize(1))
+                    .getTotalElements();
         }
         return oJugadorRepository.count();
     }
@@ -212,7 +215,8 @@ public class JugadorService {
                     oJugadorRepository.existsByEquipoIdAndUsuarioId(equipo.getId(), oUsuarioEntity.getId())) {
                 oUsuarioEntity = oUsuarioService.getOneRandom();
                 equipo = oEquipoService.getOneRandomFromClub(oUsuarioEntity.getClub().getId());
-                if (++intentos >= 100) break;
+                if (++intentos >= 100)
+                    break;
             }
             if (equipo == null ||
                     oJugadorRepository.existsByEquipoIdAndUsuarioId(equipo.getId(), oUsuarioEntity.getId())) {
@@ -250,6 +254,7 @@ public class JugadorService {
             oSessionService.checkSameClub(clubEquipo);
         }
         String nombreFiltro = (nombre != null && !nombre.isBlank()) ? nombre : null;
-        return oJugadorRepository.findUsuariosDisponiblesParaEquipo(idEquipo, nombreFiltro, pageable);
+        return oJugadorRepository.findUsuariosDisponiblesParaEquipo(idEquipo, nombreFiltro, nombreFiltro, nombreFiltro,
+                pageable);
     }
 }

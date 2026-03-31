@@ -35,8 +35,12 @@ public interface JugadorRepository extends JpaRepository<JugadorEntity, Long> {
     @Query("SELECT u FROM UsuarioEntity u " +
            "WHERE u.club.id = (SELECT e.categoria.temporada.club.id FROM EquipoEntity e WHERE e.id = :equipoId) " +
            "AND u.id NOT IN (SELECT j.usuario.id FROM JugadorEntity j WHERE j.equipo.id = :equipoId) " +
-           "AND (:nombre IS NULL OR LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')))")
+           "AND ((:nombre IS NULL OR LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
+           "OR (:apellido1 IS NULL OR LOWER(u.apellido1) LIKE LOWER(CONCAT('%', :apellido1, '%'))) " +
+           "OR (:apellido2 IS NULL OR LOWER(u.apellido2) LIKE LOWER(CONCAT('%', :apellido2, '%'))))")
     Page<UsuarioEntity> findUsuariosDisponiblesParaEquipo(
             @Param("equipoId") Long equipoId,
             @Param("nombre") String nombre,
+            @Param("apellido1") String apellido1,
+            @Param("apellido2") String apellido2,
             Pageable pageable);}

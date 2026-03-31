@@ -8,13 +8,12 @@ import { debounceTimeSearch } from '../../../../environment/environment';
 import { JugadorService } from '../../../../service/jugador-service';
 import { IUsuario } from '../../../../model/usuario';
 import { IPage } from '../../../../model/plist';
-import { BotoneraRpp } from '../../../shared/botonera-rpp/botonera-rpp';
 import { Paginacion } from '../../../shared/paginacion/paginacion';
 
 @Component({
   selector: 'app-jugador-usuario-disponible-plist',
   standalone: true,
-  imports: [CommonModule, BotoneraRpp, Paginacion],
+  imports: [CommonModule, Paginacion],
   templateUrl: './plist.html',
 })
 export class UsuarioDisponiblePlist implements OnInit, OnDestroy {
