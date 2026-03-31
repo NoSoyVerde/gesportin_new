@@ -9,15 +9,21 @@ import { NoticiaService } from '../../../../service/noticia';
 import { SessionService } from '../../../../service/session';
 import { DatetimePipe } from '../../../../pipe/datetime-pipe';
 import { TrimPipe } from '../../../../pipe/trim-pipe';
+import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-noticia-teamadmin-plist',
-  imports: [Paginacion, BotoneraRpp, RouterLink, DatetimePipe, TrimPipe],
+  imports: [Paginacion, BotoneraRpp, RouterLink, DatetimePipe, TrimPipe, BreadcrumbComponent],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })
 export class NoticiaTeamadminPlist {
   @Input() id_club?: number;
+
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Mis Clubes', route: '/club/teamadmin' },
+    { label: 'Noticias' },
+  ];
 
   oPage = signal<IPage<INoticia> | null>(null);
   numPage = signal<number>(0);

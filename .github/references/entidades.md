@@ -56,7 +56,7 @@ Sin FK. Datos fijos del sistema.
 | id | descripcion |
 |---|---|
 | 1 | Administrador |
-| 2 | Administrador de equipo |
+| 2 | Administrador de club |
 | 3 | Usuario |
 
 ```json
@@ -508,7 +508,7 @@ Expande: `categoria` (→ `temporada` → `club`), `entrenador` (→ `tipousuari
   },
   "entrenador": {
     "id": 2, "nombre": "...",
-    "tipousuario": { "id": 2, "descripcion": "Administrador de equipo", "usuarios": 0 },
+    "tipousuario": { "id": 2, "descripcion": "Administrador de club", "usuarios": 0 },
     "rolusuario": { ... },
     "club": { "id": 1, ... },
     ...

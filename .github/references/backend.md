@@ -383,7 +383,7 @@ Ejemplo: `id_tipousuario`, `id_club`, `id_equipo`.
 | `tipousuario.id` | Rol | Método de comprobación |
 |---|---|---|
 | 1 | **Administrador** | `oSessionService.isAdmin()` |
-| 2 | **Administrador de equipo** | `oSessionService.isEquipoAdmin()` |
+| 2 | **Administrador de club** | `oSessionService.isEquipoAdmin()` |
 | 3 | **Usuario** | `oSessionService.isUsuario()` |
 | (sin sesión) | **Anónimo / sin autenticar** | `!oSessionService.isSessionActive()` |
 
@@ -398,7 +398,7 @@ Ejemplo: `id_tipousuario`, `id_club`, `id_equipo`.
 | `getIdUsuario()` | Devuelve el `id` del usuario logado |
 | `getIdClub()` | Devuelve el `id` del club del usuario logado |
 | `checkSameClub(Long clubId)` | Lanza `UnauthorizedException` si `isEquipoAdmin()` o `isUsuario()` y el club no coincide con el suyo |
-| `denyEquipoAdmin()` | Lanza `UnauthorizedException` si el usuario es administrador de equipo |
+| `denyEquipoAdmin()` | Lanza `UnauthorizedException` si el usuario es Administrador de club |
 | `denyUsuario()` | Lanza `UnauthorizedException` si el usuario es de tipo usuario |
 | `requireAdmin()` | Lanza `UnauthorizedException` si el usuario NO es administrador |
 

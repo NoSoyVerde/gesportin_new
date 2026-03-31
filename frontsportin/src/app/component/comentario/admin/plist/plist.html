@@ -23,20 +23,22 @@
 
   <div class="d-flex justify-content-center my-1">
     <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
-    @if (idNoticia() > 0) {
-      <small class="text-muted ms-3">Filtro: id de noticia = {{ idNoticia() }}</small>
-      @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/comentario']" role="button" title="Quitar filtro">
-          <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
-        </a>
+    @if (showFilterInfo) {
+      @if (idNoticia() > 0) {
+        <small class="text-muted ms-3">Filtro: id de noticia = {{ idNoticia() }}</small>
+        @if (!isDialogMode()) {
+          <a class="ms-2" [routerLink]="strRole ? ['/comentario', strRole] : ['/comentario']" role="button" title="Quitar filtro">
+            <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
+          </a>
+        }
       }
-    }
-    @if (idUsuario() > 0) {
-      <small class="text-muted ms-3">Filtro: id de usuario = {{ idUsuario() }}</small>
-      @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/comentario']" role="button" title="Quitar filtro">
-          <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
-        </a>
+      @if (idUsuario() > 0) {
+        <small class="text-muted ms-3">Filtro: id de usuario = {{ idUsuario() }}</small>
+        @if (!isDialogMode()) {
+          <a class="ms-2" [routerLink]="strRole ? ['/comentario', strRole] : ['/comentario']" role="button" title="Quitar filtro">
+            <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
+          </a>
+        }
       }
     }
     @if (contenido() && contenido().length > 0) {
@@ -46,8 +48,8 @@
 
   <div class="d-flex my-1">
     <div class="w-100 d-flex justify-content-center">
-      @if (!session.isClubAdmin()) {
-        <a class="btn btn-primary new-btn" [routerLink]="['/comentario/new']" role="button">
+      @if (!session.isClubAdmin() || strRole) {
+        <a class="btn btn-primary new-btn" [routerLink]="strRole ? ['/comentario', strRole, 'new'] : ['/comentario/new']" [queryParams]="id_noticia ? { id_noticia: id_noticia } : {}" role="button">
           <i class="bi bi-plus-circle me-2" aria-hidden="true"></i><span class="d-none d-sm-inline">Crear comentario</span>
         </a>
       }
@@ -138,24 +140,24 @@
                         <th scope="row" class="text-center align-middle">{{ oComentario.id }}</th>
                         <td class="align-middle text-truncate">{{ oComentario.contenido | trim: 40 }}</td>
                         <td class="d-none d-md-table-cell align-middle">
-                          <a [routerLink]="['/usuario/view', oComentario.usuario.id]">
+                          <a [routerLink]="strRole ? ['/usuario', strRole, 'view', oComentario.usuario.id] : ['/usuario/view', oComentario.usuario.id]">
                             {{ oComentario.usuario.nombre }} {{ oComentario.usuario.apellido1 }} {{ oComentario.usuario.apellido2 }} ({{ oComentario.usuario.id }})
                           </a>
                           <a
                             class="btn btn-warning btn-sm ms-2 float-end"
-                            [routerLink]="['/comentario/usuario', oComentario.usuario.id]"
+                            [routerLink]="strRole ? ['/comentario', strRole, 'usuario', oComentario.usuario.id] : ['/comentario/usuario', oComentario.usuario.id]"
                             role="button"
                             title="Filtrar por usuario"
                             ><i class="bi bi-funnel-fill" aria-hidden="true"></i
                           ></a>
                         </td>
                         <td class="d-none d-md-table-cell align-middle">
-                          <a [routerLink]="['/noticia/view', oComentario.noticia.id]">
+                          <a [routerLink]="strRole ? ['/noticia', strRole, 'view', oComentario.noticia.id] : ['/noticia/view', oComentario.noticia.id]">
                             {{ oComentario.noticia.titulo | trim: 20 }} ({{ oComentario.noticia.id }})
                           </a>
                           <a
                             class="btn btn-warning btn-sm ms-2 float-end"
-                            [routerLink]="['/comentario/noticia', oComentario.noticia.id]"
+                            [routerLink]="strRole ? ['/comentario', strRole, 'noticia', oComentario.noticia.id] : ['/comentario/noticia', oComentario.noticia.id]"
                             role="button"
                             title="Filtrar por noticia"
                             ><i class="bi bi-funnel-fill" aria-hidden="true"></i
@@ -163,7 +165,7 @@
                         </td>
                         <td>
                           <div class="d-flex justify-content-center">
-                            <app-botonera-actions-plist [id]="oComentario.id" strEntity="comentario"></app-botonera-actions-plist>
+                            <app-botonera-actions-plist [id]="oComentario.id" strEntity="comentario" [strRole]="strRole"></app-botonera-actions-plist>
                           </div>
                         </td>
                       </tr>

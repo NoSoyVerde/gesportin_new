@@ -23,6 +23,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 export class CarritoAdminPlist {
   @Input() id_usuario?: number;
   @Input() id_articulo?: number;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<ICarrito> | null>(null);
   numPage = signal<number>(0);

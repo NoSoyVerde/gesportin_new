@@ -18,7 +18,7 @@
     @if (id_articulo && id_articulo > 0) {
       <small class="text-muted ms-3">Filtro: id de artículo = {{ id_articulo }}</small>
       @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/compra']" role="button" title="Quitar filtro">
+        <a class="ms-2" [routerLink]="strRole ? ['/compra', strRole] : ['/compra']" role="button" title="Quitar filtro">
           <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
         </a>
       }
@@ -26,7 +26,7 @@
     @if (id_factura && id_factura > 0) {
       <small class="text-muted ms-3">Filtro: id de factura = {{ id_factura }}</small>
       @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/compra']" role="button" title="Quitar filtro">
+        <a class="ms-2" [routerLink]="strRole ? ['/compra', strRole] : ['/compra']" role="button" title="Quitar filtro">
           <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
         </a>
       }
@@ -38,8 +38,8 @@
 
   <div class="d-flex my-1">
     <div class="w-100 d-flex justify-content-center">
-      @if (!session.isClubAdmin()) {
-        <a class="btn btn-primary new-btn" [routerLink]="['/compra/new']" role="button">
+      @if (!session.isClubAdmin() || strRole) {
+        <a class="btn btn-primary new-btn" [routerLink]="strRole ? ['/compra', strRole, 'new'] : ['/compra/new']" [queryParams]="id_articulo ? { id_articulo: id_articulo } : {}" role="button">
           <i class="bi bi-plus-circle me-2" aria-hidden="true"></i><span class="d-none d-sm-inline">Crear compra</span>
         </a>
       }
@@ -134,20 +134,20 @@
                           @if (isDialogMode()) {
                             {{ oCompra.articulo.descripcion || 'N/A' }}
                           } @else {
-                            <a [routerLink]="['/articulo/view', oCompra.articulo.id]">{{ oCompra.articulo.descripcion || 'N/A' }}</a>
-                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/compra/articulo', oCompra.articulo.id]" role="button" title="Filtrar por artículo"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                            <a [routerLink]="strRole ? ['/articulo', strRole, 'view', oCompra.articulo.id] : ['/articulo/view', oCompra.articulo.id]">{{ oCompra.articulo.descripcion || 'N/A' }}</a>
+                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/compra', strRole, 'articulo', oCompra.articulo.id] : ['/compra/articulo', oCompra.articulo.id]" role="button" title="Filtrar por artículo"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                           }
                         </td>
                         <td>
                           @if (isDialogMode()) {
                             Factura {{ oCompra.factura.id }}
                           } @else {
-                            <a [routerLink]="['/factura/view', oCompra.factura.id]">Factura {{ oCompra.factura.id }}</a>
-                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/compra/factura', oCompra.factura.id]" role="button" title="Filtrar por factura"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                            <a [routerLink]="strRole ? ['/factura', strRole, 'view', oCompra.factura.id] : ['/factura/view', oCompra.factura.id]">Factura {{ oCompra.factura.id }}</a>
+                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/compra', strRole, 'factura', oCompra.factura.id] : ['/compra/factura', oCompra.factura.id]" role="button" title="Filtrar por factura"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                           }
                         </td>
                         <td class="text-center">
-                          <app-botonera-actions-plist [id]="oCompra.id" strEntity="compra"></app-botonera-actions-plist>
+                          <app-botonera-actions-plist [id]="oCompra.id" strEntity="compra" [strRole]="strRole"></app-botonera-actions-plist>
                         </td>
                       </tr>
                     }

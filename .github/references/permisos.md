@@ -11,7 +11,7 @@ En gesportin, los perfiles y permisos se gestionan a través de roles. Cada rol 
 * Tiene acceso completo a todas las funcionalidades del sistema, incluyendo la gestión de usuarios, configuración del sistema y acceso a todos los datos. 
 * No puede crear ni borrar tipos de usuario en la tabla tipousuario.
 
-### 2. **Administrador de equipo**
+### 2. **Administrador de club**
 * (tabla: tipousuario, id:2) 
 * Puede gestionar:
   * Las temporadas de su club (crud completo pero sólo de temporadas de su club),

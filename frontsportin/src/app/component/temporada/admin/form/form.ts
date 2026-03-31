@@ -19,6 +19,7 @@ import { ClubAdminPlist } from '../../../club/admin/plist/plist';
 })
 export class TemporadaAdminForm implements OnInit {
   id = input<number>(0);
+  returnUrl = input<string>('/temporada');
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
@@ -97,7 +98,7 @@ export class TemporadaAdminForm implements OnInit {
           this.submitting.set(false);
           if (this.temporadaForm) this.temporadaForm.markAsPristine();
           this.snackBar.open('Se ha guardado correctamente', 'Cerrar', { duration: 3000 });
-          this.router.navigate(['/temporada']);
+          this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.submitting.set(false);
@@ -112,7 +113,7 @@ export class TemporadaAdminForm implements OnInit {
           this.submitting.set(false);
           if (this.temporadaForm) this.temporadaForm.markAsPristine();
           this.snackBar.open('Se ha creado correctamente', 'Cerrar', { duration: 3000 });
-          this.router.navigate(['/temporada']);
+          this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.submitting.set(false);

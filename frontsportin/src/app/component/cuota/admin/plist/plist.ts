@@ -22,6 +22,8 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 })
 export class CuotaAdminPlist {
   @Input() id_equipo?: number;
+  @Input() showFilterInfo = true;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<ICuota> | null>(null);
   numPage = signal<number>(0);

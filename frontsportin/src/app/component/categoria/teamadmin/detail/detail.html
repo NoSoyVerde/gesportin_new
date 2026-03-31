@@ -1,0 +1,98 @@
+<div class="container py-3">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 border rounded bg-light p-2 mb-3">
+    <div>
+      <div class="text-uppercase small text-muted fw-semibold">Categorías</div>
+      <div class="fw-bold">Detalle de categoría</div>
+      <div class="text-muted small">Panel administrador de club</div>
+    </div>
+    <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2" [routerLink]="'/categoria/teamadmin'">
+      <i class="bi bi-arrow-left"></i> Volver
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="text-center py-4">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
+      <p class="text-muted small mt-2 mb-0">Cargando detalle...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+      <i class="bi bi-exclamation-triangle-fill"></i> {{ error() }}
+    </div>
+  }
+
+  @if (!loading() && !error() && oCategoria()) {
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
+        <i class="bi bi-diagram-3-fill"></i>
+        <span class="fw-semibold">{{ oCategoria()?.nombre }}</span>
+        <span class="badge bg-white text-primary ms-auto">ID {{ oCategoria()?.id }}</span>
+      </div>
+      <div class="card-body">
+        <div class="row g-1 mb-3">
+          <div class="col-5 text-muted small text-uppercase">ID</div>
+          <div class="col-7 fw-semibold small">{{ oCategoria()?.id }}</div>
+          <div class="col-5 text-muted small text-uppercase">Nombre</div>
+          <div class="col-7 fw-semibold small">{{ oCategoria()?.nombre }}</div>
+          <div class="col-5 text-muted small text-uppercase">Equipos</div>
+          <div class="col-7 fw-semibold small">@if ((oCategoria()?.equipos ?? 0) > 0) { <a [routerLink]="[session.isClubAdmin() ? '/equipo/teamadmin/categoria' : '/equipo/teamadmin/categoria', oCategoria()?.id]" class="text-decoration-none">{{ oCategoria()?.equipos }}</a> } @else { 0 <a [routerLink]="['/equipo/teamadmin/new']" [queryParams]="{ id_categoria: oCategoria()?.id }" class="btn btn-outline-success btn-sm ms-1 py-0 px-1" title="Crear equipo para esta categoría"><i class="bi bi-plus-lg"></i></a> }</div>
+        </div>
+        <div class="card border-start border-3 border-info mt-3">
+          <div class="card-header py-1 d-flex align-items-center gap-2 bg-info bg-opacity-10">
+            <i class="bi bi-calendar3 text-info small"></i>
+            <span class="text-uppercase small fw-semibold text-info">Temporada</span>
+            <a [routerLink]="['/temporada/teamadmin/view', oCategoria()?.temporada?.id]" class="ms-auto badge bg-info text-white text-decoration-none small">
+              {{ oCategoria()?.temporada?.descripcion }} <span class="opacity-75 ms-1">#{{oCategoria()?.temporada?.id}}</span>
+              <i class="bi bi-box-arrow-up-right ms-1"></i>
+            </a>
+          </div>
+          <div class="card-body p-2">
+            <div class="row g-1">
+              <div class="col-5 text-muted small text-uppercase">ID</div>
+              <div class="col-7 fw-semibold small">{{ oCategoria()?.temporada?.id }}</div>
+              <div class="col-5 text-muted small text-uppercase">Descripción</div>
+              <div class="col-7 fw-semibold small">{{ oCategoria()?.temporada?.descripcion }}</div>
+              <div class="col-5 text-muted small text-uppercase">Categorías</div>
+              <div class="col-7 fw-semibold small">@if ((oCategoria()?.temporada?.categorias ?? 0) > 0) { <a [routerLink]="['/categoria/teamadmin/temporada', oCategoria()?.temporada?.id]" class="text-decoration-none">{{ oCategoria()?.temporada?.categorias }}</a> } @else { 0 }</div>
+            </div>
+            <div class="card border-start border-3 border-success mt-3">
+              <div class="card-header py-1 d-flex align-items-center gap-2 bg-success bg-opacity-10">
+                <i class="bi bi-building-fill text-success small"></i>
+                <span class="text-uppercase small fw-semibold text-success">Club</span>
+                <a [routerLink]="['/club/teamadmin/view', oCategoria()?.temporada?.club?.id]" class="ms-auto badge bg-success text-white text-decoration-none small">
+                  {{ oCategoria()?.temporada?.club?.nombre }} <span class="opacity-75 ms-1">#{{oCategoria()?.temporada?.club?.id}}</span>
+                  <i class="bi bi-box-arrow-up-right ms-1"></i>
+                </a>
+              </div>
+              <div class="card-body p-2">
+                <div class="row g-1">
+                  <div class="col-5 text-muted small text-uppercase">ID</div>
+                  <div class="col-7 fw-semibold small">{{ oCategoria()?.temporada?.club?.id }}</div>
+                  <div class="col-5 text-muted small text-uppercase">Nombre</div>
+                  <div class="col-7 fw-semibold small">{{ oCategoria()?.temporada?.club?.nombre }}</div>
+                  <div class="col-5 text-muted small text-uppercase">Dirección</div>
+                  <div class="col-7 fw-semibold small">{{ oCategoria()?.temporada?.club?.direccion }}</div>
+                  <div class="col-5 text-muted small text-uppercase">Teléfono</div>
+                  <div class="col-7 fw-semibold small">{{ oCategoria()?.temporada?.club?.telefono }}</div>
+                  <div class="col-5 text-muted small text-uppercase">Fecha alta</div>
+                  <div class="col-7 fw-semibold small">{{ oCategoria()?.temporada?.club?.fechaAlta | datetime }}</div>
+                  <div class="col-5 text-muted small text-uppercase">Temporadas</div>
+                  <div class="col-7 fw-semibold small">@if ((oCategoria()?.temporada?.club?.temporadas ?? 0) > 0) { <a [routerLink]="['/temporada/teamadmin/club', oCategoria()?.temporada?.club?.id]" class="text-decoration-none">{{ oCategoria()?.temporada?.club?.temporadas }}</a> } @else { 0 }</div>
+                  <div class="col-5 text-muted small text-uppercase">Noticias</div>
+                  <div class="col-7 fw-semibold small">@if ((oCategoria()?.temporada?.club?.noticias ?? 0) > 0) { <a [routerLink]="['/noticia/teamadmin/club', oCategoria()?.temporada?.club?.id]" class="text-decoration-none">{{ oCategoria()?.temporada?.club?.noticias }}</a> } @else { 0 }</div>
+                  <div class="col-5 text-muted small text-uppercase">Tipos artículo</div>
+                  <div class="col-7 fw-semibold small">@if ((oCategoria()?.temporada?.club?.tipoarticulos ?? 0) > 0) { <a [routerLink]="['/tipoarticulo/teamadmin/club', oCategoria()?.temporada?.club?.id]" class="text-decoration-none">{{ oCategoria()?.temporada?.club?.tipoarticulos }}</a> } @else { 0 }</div>
+                  <div class="col-5 text-muted small text-uppercase">Usuarios</div>
+                  <div class="col-7 fw-semibold small">@if ((oCategoria()?.temporada?.club?.usuarios ?? 0) > 0) { <a [routerLink]="['/usuario/teamadmin/club', oCategoria()?.temporada?.club?.id]" class="text-decoration-none">{{ oCategoria()?.temporada?.club?.usuarios }}</a> } @else { 0 }</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  }
+</div>

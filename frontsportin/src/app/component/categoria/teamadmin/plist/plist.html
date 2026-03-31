@@ -1,4 +1,5 @@
 <div>
+  <app-breadcrumb [items]="breadcrumbItems()"></app-breadcrumb>
   <div class="d-flex justify-content-center my-2">
     <input
       class="form-control me-2"
@@ -13,12 +14,6 @@
 
   <div class="d-flex justify-content-center my-1">
     <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
-    @if (temporada > 0) {
-      <small class="text-muted ms-3">Filtro: id de temporada = {{ temporada }}</small>
-      <a class="ms-2" [routerLink]="['/categoria/teamadmin']" role="button" title="Quitar filtro">
-        <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
-      </a>
-    }
     @if (nombre().length > 0) {
       <small class="text-muted ms-3">Filtro: nombre contiene "{{ nombre() }}"</small>
       <a class="ms-2" (click)="clearSearchFilter()" role="button" style="cursor: pointer" title="Quitar filtro de búsqueda">
@@ -44,7 +39,7 @@
       <div class="d-flex">
         <div class="w-100 d-flex justify-content-center">
           @if (!isDialogMode()) {
-            <a class="btn btn-primary new-btn" [routerLink]="['/categoria/new']" role="button">
+            <a class="btn btn-primary new-btn" [routerLink]="['/categoria/teamadmin/new']" [queryParams]="temporada > 0 ? { id_temporada: temporada } : {}" role="button">
               <i class="bi bi-plus-circle" aria-hidden="true"></i>
               <span class="d-none d-sm-inline">Crear Categoría</span>
             </a>
@@ -88,8 +83,8 @@
             </div>
           </div>
           <div class="card-footer d-flex justify-content-between">
-            <a [routerLink]="['/categoria/view', oCategoria.id]" class="btn btn-sm btn-outline-secondary">Ver</a>
-            <app-botonera-actions-plist [id]="oCategoria.id" strEntity="categoria"></app-botonera-actions-plist>
+            <a [routerLink]="['/categoria/teamadmin/view', oCategoria.id]" class="btn btn-sm btn-outline-secondary">Ver</a>
+            <app-botonera-actions-plist [id]="oCategoria.id" strEntity="categoria" strRole="teamadmin"></app-botonera-actions-plist>
           </div>
         </div>
       </div>

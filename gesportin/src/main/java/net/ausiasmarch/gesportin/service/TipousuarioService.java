@@ -19,7 +19,7 @@ public class TipousuarioService {
     SessionService oSessionService;
 
     private static final String[] TIPOS = {
-        "Administrador", "Administrador de equipo", "Usuario"
+        "Administrador", "Administrador de club", "Usuario"
     };
 
     public TipousuarioEntity get(Long id) {

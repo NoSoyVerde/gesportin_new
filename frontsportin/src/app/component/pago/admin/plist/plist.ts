@@ -23,6 +23,8 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 export class PagoAdminPlist {
   @Input() id_cuota?: number;
   @Input() id_jugador?: number;
+  @Input() showFilterInfo = true;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<IPago> | null>(null);
   numPage = signal<number>(0);

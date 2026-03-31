@@ -121,7 +121,7 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
 | id | descripcion |
 |---|---|
 | 1 | Administrador |
-| 2 | Administrador de equipo |
+| 2 | Administrador de club |
 | 3 | Usuario |
 
 ---

@@ -1,0 +1,166 @@
+<div>
+  <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="mb-3">
+      <label for="id" class="form-label">ID</label>
+      <input id="id" type="text" class="form-control" formControlName="id" readonly />
+    </div>
+
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+      <input
+        id="nombre"
+        type="text"
+        class="form-control"
+        formControlName="nombre"
+        [class.is-invalid]="nombre?.invalid && nombre?.touched"
+      />
+      @if (nombre?.invalid && nombre?.touched) {
+        <div class="invalid-feedback">
+          @if (nombre?.errors?.['required']) { <span>Nombre es obligatorio.</span> }
+          @if (nombre?.errors?.['minlength']) { <span>Debe tener al menos 3 caracteres.</span> }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="apellido1" class="form-label">Apellido 1</label>
+      <input
+        id="apellido1"
+        type="text"
+        class="form-control"
+        formControlName="apellido1"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="apellido2" class="form-label">Apellido 2</label>
+      <input
+        id="apellido2"
+        type="text"
+        class="form-control"
+        formControlName="apellido2"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+      <input
+        id="username"
+        type="text"
+        class="form-control"
+        formControlName="username"
+        [class.is-invalid]="username?.invalid && username?.touched"
+      />
+      @if (username?.invalid && username?.touched) {
+        <div class="invalid-feedback">
+          @if (username?.errors?.['required']) { <span>Username es obligatorio.</span> }
+          @if (username?.errors?.['minlength']) { <span>Debe tener al menos 3 caracteres.</span> }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3" *ngIf="!(id() > 0)">
+      <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+      <input
+        id="password"
+        type="password"
+        class="form-control"
+        formControlName="password"
+        [class.is-invalid]="password?.invalid && password?.touched"
+      />
+      @if (password?.invalid && password?.touched) {
+        <div class="invalid-feedback">
+          @if (password?.errors?.['required']) { <span>Contraseña es obligatoria.</span> }
+          @if (password?.errors?.['minlength']) { <span>Debe tener al menos 6 caracteres.</span> }
+        </div>
+      }
+    </div>
+
+    <div class="p-3 rounded mb-3" style="background-color: #f8f9fa; border-left: 4px solid #0d6efd;">
+      <div class="mb-2">
+        <label class="form-label">Tipo de Usuario <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" [value]="selectedTipousuario()?.descripcion || ''" readonly />
+      </div>
+      <div class="d-flex gap-3 align-items-end">
+        @if (!sessionService.isClubAdmin()) {
+        <button type="button" class="btn btn-info" (click)="openTipousuarioFinderModal()">
+          <i class="bi bi-search me-2"></i>Buscar
+        </button>
+        }
+        <div>
+          <label class="form-label">ID Tipo</label>
+          <input type="text" class="form-control" [value]="id_tipousuario?.value || ''" readonly />
+        </div>
+        @if (selectedTipousuario()) {
+          <div class="flex-grow-1">
+            <label class="form-label">Descripción</label>
+            <p class="form-control-plaintext fw-semibold mb-0">{{ selectedTipousuario()?.descripcion }}</p>
+          </div>
+        }
+      </div>
+      @if (id_tipousuario?.invalid && id_tipousuario?.touched) {
+        <div class="text-danger small mt-1">Tipo de usuario es obligatorio.</div>
+      }
+    </div>
+
+    <div class="p-3 rounded mb-3" style="background-color: #f8f9fa; border-left: 4px solid #0d6efd;">
+      <div class="mb-2">
+        <label class="form-label">Rol de Usuario <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" [value]="selectedRolusuario()?.descripcion || ''" readonly />
+      </div>
+      <div class="d-flex gap-3 align-items-end">
+        <button type="button" class="btn btn-info" (click)="openRolusuarioFinderModal()">
+          <i class="bi bi-search me-2"></i>Buscar
+        </button>
+        <div>
+          <label class="form-label">ID Rol</label>
+          <input type="text" class="form-control" [value]="id_rolusuario?.value || ''" readonly />
+        </div>
+        @if (selectedRolusuario()) {
+          <div class="flex-grow-1">
+            <label class="form-label">Descripción</label>
+            <p class="form-control-plaintext fw-semibold mb-0">{{ selectedRolusuario()?.descripcion }}</p>
+          </div>
+        }
+      </div>
+      @if (id_rolusuario?.invalid && id_rolusuario?.touched) {
+        <div class="text-danger small mt-1">Rol de usuario es obligatorio.</div>
+      }
+    </div>
+
+    <div class="p-3 rounded mb-3" style="background-color: #f8f9fa; border-left: 4px solid #0d6efd;">
+      <div class="mb-2">
+        <label class="form-label">Club <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" [value]="selectedClub()?.nombre || ''" readonly />
+      </div>
+      <div class="d-flex gap-3 align-items-end">
+        @if (!sessionService.isClubAdmin()) {
+        <button type="button" class="btn btn-info" (click)="openClubFinderModal()">
+          <i class="bi bi-search me-2"></i>Buscar
+        </button>
+        }
+        <div>
+          <label class="form-label">ID Club</label>
+          <input type="text" class="form-control" [value]="id_club?.value || ''" readonly />
+        </div>
+        @if (selectedClub()) {
+          <div class="flex-grow-1">
+            <label class="form-label">Nombre</label>
+            <p class="form-control-plaintext fw-semibold mb-0">{{ selectedClub()?.nombre }}</p>
+          </div>
+        }
+      </div>
+      @if (id_club?.invalid && id_club?.touched) {
+        <div class="text-danger small mt-1">Club es obligatorio.</div>
+      }
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="submitting() || usuarioForm.invalid">
+        @if (submitting()) { <span class="spinner-border spinner-border-sm me-2"></span> }
+        {{ id() > 0 ? 'Guardar' : 'Crear' }}
+      </button>
+    </div>
+  </form>
+</div>

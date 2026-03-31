@@ -1,4 +1,5 @@
 <div>
+  <app-breadcrumb [items]="breadcrumbItems"></app-breadcrumb>
   <!-- Búsqueda por descripción -->
   <div class="d-flex justify-content-center my-2">
     <input
@@ -40,7 +41,7 @@
 
   <div class="d-flex my-1">
     <div class="w-100 d-flex justify-content-center">
-      <a class="btn btn-primary new-btn" [routerLink]="['/temporada/new']" role="button">
+      <a class="btn btn-primary new-btn" [routerLink]="['/temporada/teamadmin/new']" role="button">
         <i class="bi bi-plus-circle" aria-hidden="true"></i>
         <span class="d-none d-sm-inline">Nueva Temporada</span>
       </a>
@@ -59,7 +60,7 @@
             <p class="card-text"><strong>Descripción:</strong> {{ oTemporada.descripcion }}</p>
             <p class="card-text">
               <strong>Club:</strong>
-              <a [routerLink]="['/club/view', oTemporada.club.id]">{{ oTemporada.club.nombre | trim: 20 }} ({{ oTemporada.club.id }})</a>
+              <a [routerLink]="['/club/teamadmin/view', oTemporada.club.id]">{{ oTemporada.club.nombre | trim: 20 }} ({{ oTemporada.club.id }})</a>
             </p>
             <div class="d-flex flex-wrap gap-2 align-items-center">
               @if (oTemporada.categorias === 0) {
@@ -81,7 +82,7 @@
             <a [routerLink]="['/categoria/teamadmin/temporada', oTemporada.id]" class="btn btn-sm btn-outline-secondary">
               Ver categorías
             </a>
-            <app-botonera-actions-plist [id]="oTemporada.id" strEntity="temporada"></app-botonera-actions-plist>
+            <app-botonera-actions-plist [id]="oTemporada.id" strEntity="temporada" strRole="teamadmin"></app-botonera-actions-plist>
           </div>
         </div>
       </div>

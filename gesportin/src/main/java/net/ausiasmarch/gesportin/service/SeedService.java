@@ -115,7 +115,7 @@ public class SeedService {
 
         entityManager.createNativeQuery(
                 "INSERT INTO tipousuario (id, descripcion) VALUES " +
-                "(1, 'Administrador'), (2, 'Administrador de equipo'), (3, 'Usuario')")
+                "(1, 'Administrador'), (2, 'Administrador de club'), (3, 'Usuario')")
                 .executeUpdate();
 
         entityManager.createNativeQuery(
@@ -160,7 +160,7 @@ public class SeedService {
             tipo1 = oTipousuarioRepository.save(t1);
 
             TipousuarioEntity t2 = new TipousuarioEntity();
-            t2.setDescripcion("Administrador de equipo");
+            t2.setDescripcion("Administrador de club");
             tipo2 = oTipousuarioRepository.save(t2);
 
             TipousuarioEntity t3 = new TipousuarioEntity();
@@ -173,7 +173,7 @@ public class SeedService {
             java.util.List<TipousuarioEntity> tipos = oTipousuarioRepository.findAll();
             tipo1 = tipos.stream().filter(t -> "Administrador".equals(t.getDescripcion()))
                     .findFirst().orElse(tipos.get(0));
-            tipo2 = tipos.stream().filter(t -> "Administrador de equipo".equals(t.getDescripcion()))
+            tipo2 = tipos.stream().filter(t -> "Administrador de club".equals(t.getDescripcion()))
                     .findFirst().orElse(tipos.size() > 1 ? tipos.get(1) : tipo1);
             tipo3 = tipos.stream().filter(t -> "Usuario".equals(t.getDescripcion()))
                     .findFirst().orElse(tipos.size() > 2 ? tipos.get(2) : tipo1);

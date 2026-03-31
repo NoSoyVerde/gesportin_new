@@ -30,8 +30,8 @@
 
   <div class="d-flex my-1">
     <div class="w-100 d-flex justify-content-center">
-      @if (!session.isClubAdmin()) {
-        <a class="btn btn-primary new-btn" [routerLink]="['/partido/new']" role="button">
+      @if (!session.isClubAdmin() || strRole) {
+        <a class="btn btn-primary new-btn" [routerLink]="strRole ? ['/partido', strRole, 'new'] : ['/partido/new']" [queryParams]="liga ? { id_liga: liga } : {}" role="button">
           <i class="bi bi-plus-circle me-2" aria-hidden="true"></i><span class="d-none d-sm-inline">Crear partido</span>
         </a>
       }

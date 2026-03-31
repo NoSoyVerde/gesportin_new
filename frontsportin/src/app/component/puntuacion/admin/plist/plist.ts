@@ -33,6 +33,7 @@ export class PuntuacionAdminPlist {
 
   @Input() id_noticia?: number;
   @Input() id_usuario?: number;
+  @Input() strRole: string = '';
 
   noticia = signal<number>(0);
   usuario = signal<number>(0);

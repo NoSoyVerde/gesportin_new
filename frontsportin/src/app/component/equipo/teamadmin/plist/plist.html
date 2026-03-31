@@ -1,4 +1,5 @@
 <div>
+  <app-breadcrumb [items]="breadcrumbItems()"></app-breadcrumb>
   <div class="d-flex justify-content-center my-2">
     <input
       class="form-control me-2"
@@ -13,14 +14,6 @@
 
   <div class="d-flex justify-content-center my-3">
     <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
-    @if (categoria > 0) {
-      <small class="text-muted ms-3">Filtro: id de categoría = {{ categoria }}</small>
-      <a class="ms-2" [routerLink]="['/equipo/teamadmin']" role="button" title="Quitar filtro"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro</a>
-    }
-    @if (usuario > 0) {
-      <small class="text-muted ms-3">Filtro: id de usuario = {{ usuario }}</small>
-      <a class="ms-2" [routerLink]="['/equipo/teamadmin']" role="button" title="Quitar filtro"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro</a>
-    }
     @if (nombre().length > 0) {
       <small class="text-muted ms-3">Filtro: nombre contiene "{{ nombre() }}"</small>
     }
@@ -39,7 +32,7 @@
       <div class="d-flex">
         <div class="w-100 d-flex justify-content-center">
           @if (!isDialogMode()) {
-            <a class="btn btn-primary new-btn" [routerLink]="['/equipo/new']" role="button"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span class="d-none d-sm-inline">Crear Equipo</span></a>
+            <a class="btn btn-primary new-btn" [routerLink]="['/equipo/teamadmin/new']" [queryParams]="categoria > 0 ? { id_categoria: categoria } : {}" role="button"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span class="d-none d-sm-inline">Crear Equipo</span></a>
           }
         </div>
       </div>
@@ -84,8 +77,8 @@
             </div>
           </div>
           <div class="card-footer d-flex justify-content-between">
-            <a [routerLink]="['/equipo/view', oEquipo.id]" class="btn btn-outline-secondary btn-sm">Ver</a>
-            <app-botonera-actions-plist [id]="oEquipo.id ?? 0" strEntity="equipo"></app-botonera-actions-plist>
+            <a [routerLink]="['/equipo/teamadmin/view', oEquipo.id]" class="btn btn-outline-secondary btn-sm">Ver</a>
+            <app-botonera-actions-plist [id]="oEquipo.id ?? 0" strEntity="equipo" strRole="teamadmin"></app-botonera-actions-plist>
           </div>
         </div>
       </div>

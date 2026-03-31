@@ -25,6 +25,8 @@ export class ComentarioAdminPlist implements OnDestroy {
 
   @Input() id_usuario?: number;
   @Input() id_noticia?: number;
+  @Input() showFilterInfo = true;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<IComentario> | null>(null);
   numPage = signal<number>(0);

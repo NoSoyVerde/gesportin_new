@@ -111,7 +111,7 @@ export class AdminDataToolsPage implements OnInit {
     try {
       const n = await firstValueFrom(this.svc.reset());
       this.log(`  ✓ Reset completado. Registros creados en seed: ${n}`);
-      this.log('    · Tipo Usuario: 1-Administrador, 2-Administrador de equipo, 3-Usuario');
+      this.log('    · Tipo Usuario: 1-Administrador, 2-Administrador de club, 3-Usuario');
       this.log('    · Rol Usuario:  1-Presidente');
       this.log('    · Club:         1-Gesportin');
       this.log('    · Usuarios:     admin / clubadmin / usuario  (contraseña: ausias)');

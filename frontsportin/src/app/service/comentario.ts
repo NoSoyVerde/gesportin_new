@@ -62,17 +62,14 @@ export class ComentarioService {
     }
 
     update(comentario: Partial<IComentario>): Observable<number> {
-        this.security.forbidClubAdminActions();
         const body = this.sanitizer.sanitize(comentario, { nestedIdFields: ['noticia', 'usuario'] });
         return this.oHttp.put<number>(serverURL + '/comentario', body);
     }
     create(comentario: Partial<IComentario>): Observable<number> {
-        this.security.forbidClubAdminActions();
         const body = this.sanitizer.sanitize(comentario, { nestedIdFields: ['noticia', 'usuario'] });
         return this.oHttp.post<number>(this.URL, body);
     }
     delete(id: number): Observable<number> {
-        this.security.forbidClubAdminActions();
         return this.oHttp.delete<number>(`${this.URL}/${id}`);
     }
 }

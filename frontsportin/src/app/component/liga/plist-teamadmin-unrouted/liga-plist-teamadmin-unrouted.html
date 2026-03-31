@@ -1,4 +1,5 @@
 <div>
+  <app-breadcrumb [items]="breadcrumbItems()"></app-breadcrumb>
   @if (message()) {
     <div class="d-flex justify-content-center my-2">
       <div class="alert alert-success w-100 text-center" role="alert">
@@ -23,10 +24,6 @@
 
   <div class="d-flex justify-content-center my-1">
     <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
-    @if (equipo() > 0) {
-      <small class="text-muted ms-3">Filtro: id de equipo = {{ equipo() }}</small>
-      <a class="ms-2" [routerLink]="['/liga']" role="button" title="Quitar filtro"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro</a>
-    }
     @if (nombre().length > 0) {
       <small class="text-muted ms-3">Filtro: nombre contiene "{{ nombre() }}"</small>
     }
@@ -45,7 +42,7 @@
       <div class="d-flex">
         <div class="w-100 d-flex justify-content-center">
           @if (!isDialogMode()) {
-            <a class="btn btn-primary new-btn" [routerLink]="['/liga/new']" role="button"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span class="d-none d-sm-inline">Crear Liga</span></a>
+            <a class="btn btn-primary new-btn" [routerLink]="['/liga/teamadmin/new']" [queryParams]="equipo() > 0 ? { id_equipo: equipo() } : {}" role="button"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span class="d-none d-sm-inline">Crear Liga</span></a>
           }
         </div>
       </div>

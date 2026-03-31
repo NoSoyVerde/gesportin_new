@@ -36,7 +36,7 @@ src/app/
 │   │   │   ├── plist/     # Listado paginado
 │   │   │   ├── form/      # Formulario de creación/edición
 │   │   │   └── detail/    # Detalle de un registro
-│   │   └── teamadmin/     # Componentes para rol administrador de equipo
+│   │   └── teamadmin/     # Componentes para rol Administrador de club
 │   │       └── plist/
 │   └── shared/            # Componentes compartidos entre entidades
 │       ├── botonera-actions-plist/

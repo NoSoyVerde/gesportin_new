@@ -21,6 +21,7 @@ import { TemporadaAdminPlist } from '../../../temporada/admin/plist/plist';
 })
 export class CategoriaAdminForm implements OnInit {
   id = input<number>(0);
+  returnUrl = input<string>('/categoria');
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
@@ -145,7 +146,7 @@ export class CategoriaAdminForm implements OnInit {
         next: () => {
           this.snackBar.open('Categoría actualizada exitosamente', 'Cerrar', { duration: 4000 });
           this.submitting.set(false);
-          this.router.navigate(['/categoria']);
+          this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error actualizando la categoría');
@@ -159,7 +160,7 @@ export class CategoriaAdminForm implements OnInit {
         next: () => {
           this.snackBar.open('Categoría creada exitosamente', 'Cerrar', { duration: 4000 });
           this.submitting.set(false);
-          this.router.navigate(['/categoria']);
+          this.router.navigate([this.returnUrl()]);
         },
         error: (err: HttpErrorResponse) => {
           this.error.set('Error creando la categoría');
@@ -172,6 +173,6 @@ export class CategoriaAdminForm implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/categoria']);
+    this.router.navigate([this.returnUrl()]);
   }
 }

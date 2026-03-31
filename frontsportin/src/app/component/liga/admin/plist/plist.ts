@@ -22,6 +22,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 })
 export class LigaAdminPlist {
   @Input() equipo?: number;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<ILiga> | null>(null);
   numPage = signal<number>(0);

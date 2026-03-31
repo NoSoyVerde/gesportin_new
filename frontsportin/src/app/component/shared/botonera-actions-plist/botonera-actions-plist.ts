@@ -14,20 +14,21 @@ export class BotoneraActionsPlist {
 
   @Input() id: number = 0;
   @Input() strEntity: string = '';
+  @Input() strRole: string = '';
 
   private session: SessionService = inject(SessionService);
   private security = inject(SecurityService);
 
-  // Entities that club-admins may not edit/delete
+  // Entities that club-admins may not edit or delete at all
   private clubForbidden = new Set([
     'club',
     'carrito',
-    'comentario',
-    'comentarioart',
     'puntuacion',
+  ]);
+
+  // Entities that club-admins may edit but not delete
+  private clubNoDelete = new Set([
     'factura',
-    'compra',
-    'usuario',
   ]);
 
   get canEdit(): boolean {
@@ -38,7 +39,7 @@ export class BotoneraActionsPlist {
   }
 
   get canDelete(): boolean {
-    if (this.session.isClubAdmin() && this.clubForbidden.has(this.strEntity)) {
+    if (this.session.isClubAdmin() && (this.clubForbidden.has(this.strEntity) || this.clubNoDelete.has(this.strEntity))) {
       return false;
     }
     return true;

@@ -18,7 +18,7 @@
     @if (id_articulo && id_articulo > 0) {
       <small class="text-muted ms-3">Filtro: id de artículo = {{ id_articulo }}</small>
       @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/carrito']" role="button" title="Quitar filtro">
+        <a class="ms-2" [routerLink]="strRole ? ['/carrito', strRole] : ['/carrito']" role="button" title="Quitar filtro">
           <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
         </a>
       }
@@ -26,7 +26,7 @@
     @if (id_usuario && id_usuario > 0) {
       <small class="text-muted ms-3">Filtro: id de usuario = {{ id_usuario }}</small>
       @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/carrito']" role="button" title="Quitar filtro">
+        <a class="ms-2" [routerLink]="strRole ? ['/carrito', strRole] : ['/carrito']" role="button" title="Quitar filtro">
           <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
         </a>
       }
@@ -121,20 +121,20 @@
                           @if (isDialogMode()) {
                             {{ oCarrito.articulo.descripcion || 'N/A' }}
                           } @else {
-                            <a [routerLink]="['/articulo/view', oCarrito.articulo.id]">{{ oCarrito.articulo.descripcion || 'N/A' }}</a>
-                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/carrito/articulo', oCarrito.articulo.id]" role="button" title="Filtrar por artículo"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                            <a [routerLink]="strRole ? ['/articulo', strRole, 'view', oCarrito.articulo.id] : ['/articulo/view', oCarrito.articulo.id]">{{ oCarrito.articulo.descripcion || 'N/A' }}</a>
+                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/carrito', strRole, 'articulo', oCarrito.articulo.id] : ['/carrito/articulo', oCarrito.articulo.id]" role="button" title="Filtrar por artículo"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                           }
                         </td>
                         <td>
                           @if (isDialogMode()) {
                             {{ oCarrito.usuario.nombre }} {{ oCarrito.usuario.apellido1 }} {{ oCarrito.usuario.apellido2 }}
                           } @else {
-                            <a [routerLink]="['/usuario/view', oCarrito.usuario.id]">{{ oCarrito.usuario.nombre }} {{ oCarrito.usuario.apellido1 }} {{ oCarrito.usuario.apellido2 }}</a>
-                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/carrito/usuario', oCarrito.usuario.id]" role="button" title="Filtrar por usuario"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                            <a [routerLink]="strRole ? ['/usuario', strRole, 'view', oCarrito.usuario.id] : ['/usuario/view', oCarrito.usuario.id]">{{ oCarrito.usuario.nombre }} {{ oCarrito.usuario.apellido1 }} {{ oCarrito.usuario.apellido2 }}</a>
+                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/carrito', strRole, 'usuario', oCarrito.usuario.id] : ['/carrito/usuario', oCarrito.usuario.id]" role="button" title="Filtrar por usuario"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                           }
                         </td>
                         <td class="text-center">
-                          <app-botonera-actions-plist [id]="oCarrito.id" strEntity="carrito"></app-botonera-actions-plist>
+                          <app-botonera-actions-plist [id]="oCarrito.id" strEntity="carrito" [strRole]="strRole"></app-botonera-actions-plist>
                         </td>
                       </tr>
                     }

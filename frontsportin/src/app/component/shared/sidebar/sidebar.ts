@@ -62,6 +62,9 @@ export class SidebarComponent {
     const cuotaRoute = isClubAdmin ? '/cuota/teamadmin' : '/cuota';
     const carritoRoute = isClubAdmin ? '/carrito/teamadmin' : '/carrito';
     const pagoRoute = isClubAdmin ? '/pago/teamadmin' : '/pago';
+    const puntuacionRoute = isClubAdmin ? '/puntuacion/teamadmin' : '/puntuacion';
+    const comentarioartRoute = isClubAdmin ? '/comentarioart/teamadmin' : '/comentarioart';
+    const usuarioRoute = isClubAdmin ? '/usuario/teamadmin' : '/usuario';
 
     items.push(
       {
@@ -70,7 +73,7 @@ export class SidebarComponent {
         children: [
           { label: 'Noticias', icon: 'pencil-square', route: noticiaRoute },
           { label: 'Comentarios', icon: 'chat-left-text', route: comentarioRoute },
-          { label: 'Puntuaciones', icon: 'star-fill', route: '/puntuacion' },
+          { label: 'Puntuaciones', icon: 'star-fill', route: puntuacionRoute },
         ],
       },
       {
@@ -96,10 +99,20 @@ export class SidebarComponent {
           { label: 'Compras', icon: 'cart-fill', route: compraRoute },
           { label: 'Facturas', icon: 'receipt', route: facturaRoute },
           { label: 'Carritos', icon: 'bag-check', route: carritoRoute },
-          { label: 'Comentarios de Artículos', icon: 'chat-dots', route: '/comentarioart' },
+          { label: 'Comentarios de Artículos', icon: 'chat-dots', route: comentarioartRoute },
         ],
       },
     );
+
+    if (isClubAdmin) {
+      items.push({
+        label: 'Usuarios',
+        icon: 'people',
+        children: [
+          { label: 'Usuarios', icon: 'people', route: usuarioRoute },
+        ],
+      });
+    }
 
     if (isAdmin) {
       items.push({

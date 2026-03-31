@@ -22,6 +22,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 })
 export class TipoarticuloAdminPlist {
   @Input() id_club?: number;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<ITipoarticulo> | null>(null);
   numPage = signal<number>(0);

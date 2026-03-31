@@ -77,7 +77,7 @@ Las entidades deben crearse en este orden para respetar las FK:
 |---|---|
 | `id_categoria` | La categoría debe pertenecer al mismo club del equipo (`categoria.temporada.id_club`). |
 | `id_entrenador` | Debe ser un `usuario` con `id_club` igual al club del equipo (`equipo.categoria.temporada.id_club`). |
-| `id_entrenador` | El usuario asignado como entrenador debe tener `id_tipousuario = 2` (Administrador de equipo). |
+| `id_entrenador` | El usuario asignado como entrenador debe tener `id_tipousuario = 2` (Administrador de club). |
 
 ---
 

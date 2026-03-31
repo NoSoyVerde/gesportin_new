@@ -23,6 +23,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 export class CompraAdminPlist {
   @Input() id_articulo?: number;
   @Input() id_factura?: number;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<ICompra> | null>(null);
   numPage = signal<number>(0);

@@ -11,15 +11,21 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TrimPipe } from '../../../../pipe/trim-pipe';
 import { SessionService } from '../../../../service/session';
 import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/botonera-actions-plist';
+import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-temporada-teamadmin-plist',
-  imports: [BotoneraRpp, Paginacion, RouterLink, TrimPipe, BotoneraActionsPlist],
+  imports: [BotoneraRpp, Paginacion, RouterLink, TrimPipe, BotoneraActionsPlist, BreadcrumbComponent],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })
 export class TemporadaTeamadminPlist {
   @Input() id_club?: number;
+
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Mis Clubes', route: '/club/teamadmin' },
+    { label: 'Temporadas' },
+  ];
 
   oPage = signal<IPage<ITemporada> | null>(null);
   numPage = signal<number>(0);

@@ -12,7 +12,7 @@
     @if (noticia() > 0) {
       <small class="text-muted ms-3">Filtro: id de noticia = {{ noticia() }}</small>
       @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/puntuacion']" role="button" title="Quitar filtro">
+        <a class="ms-2" [routerLink]="strRole ? ['/puntuacion', strRole] : ['/puntuacion']" role="button" title="Quitar filtro">
           <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
         </a>
       }
@@ -20,7 +20,7 @@
     @if (usuario() > 0) {
       <small class="text-muted ms-3">Filtro: id de usuario = {{ usuario() }}</small>
       @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/puntuacion']" role="button" title="Quitar filtro">
+        <a class="ms-2" [routerLink]="strRole ? ['/puntuacion', strRole] : ['/puntuacion']" role="button" title="Quitar filtro">
           <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
         </a>
       }
@@ -112,20 +112,20 @@
                             @if (isDialogMode()) {
                               {{ p.usuario.nombre }} {{ p.usuario.apellido1 }} {{ p.usuario.apellido2 }}
                             } @else {
-                              <a [routerLink]="['/usuario/view', p.usuario.id]">{{ p.usuario.nombre }} {{ p.usuario.apellido1 }} {{ p.usuario.apellido2 }}</a>
-                              <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/puntuacion/usuario', p.usuario.id]" role="button" title="Filtrar por usuario"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                              <a [routerLink]="strRole ? ['/usuario', strRole, 'view', p.usuario.id] : ['/usuario/view', p.usuario.id]">{{ p.usuario.nombre }} {{ p.usuario.apellido1 }} {{ p.usuario.apellido2 }}</a>
+                              <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/puntuacion', strRole, 'usuario', p.usuario.id] : ['/puntuacion/usuario', p.usuario.id]" role="button" title="Filtrar por usuario"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                             }
                           </td>
                           <td>
                             @if (isDialogMode()) {
                               {{ p.noticia.titulo }}
                             } @else {
-                              <a [routerLink]="['/noticia/view', p.noticia.id]">{{ p.noticia.titulo }}</a>
-                              <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/puntuacion/noticia', p.noticia.id]" role="button" title="Filtrar por noticia"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                              <a [routerLink]="strRole ? ['/noticia', strRole, 'view', p.noticia.id] : ['/noticia/view', p.noticia.id]">{{ p.noticia.titulo }}</a>
+                              <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/puntuacion', strRole, 'noticia', p.noticia.id] : ['/puntuacion/noticia', p.noticia.id]" role="button" title="Filtrar por noticia"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                             }
                           </td>
                           <td class="text-center">
-                            <app-botonera-actions-plist [id]="p.id" strEntity="puntuacion"></app-botonera-actions-plist>
+                            <app-botonera-actions-plist [id]="p.id" strEntity="puntuacion" [strRole]="strRole"></app-botonera-actions-plist>
                           </td>
                         </tr>
                       }

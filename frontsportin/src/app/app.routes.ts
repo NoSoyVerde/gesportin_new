@@ -123,6 +123,70 @@ import { UsuarioAdminViewPage } from './page/usuario/admin/view/view';
 import { UsuarioAdminNewPage } from './page/usuario/admin/new/new';
 import { UsuarioAdminEditPage } from './page/usuario/admin/edit/edit';
 import { UsuarioTeamadminPlistPage } from './page/usuario/teamadmin/plist/plist';
+import { TemporadaTeamadminViewPage } from './page/temporada/teamadmin/view/view';
+import { TemporadaTeamadminNewPage } from './page/temporada/teamadmin/new/new';
+import { TemporadaTeamadminEditPage } from './page/temporada/teamadmin/edit/edit';
+import { TemporadaTeamadminDeletePage } from './page/temporada/teamadmin/delete/delete';
+import { CategoriaTeamadminViewPage } from './page/categoria/teamadmin/view/view';
+import { CategoriaTeamadminNewPage } from './page/categoria/teamadmin/new/new';
+import { CategoriaTeamadminEditPage } from './page/categoria/teamadmin/edit/edit';
+import { CategoriaTeamadminDeletePage } from './page/categoria/teamadmin/delete/delete';
+import { EquipoTeamadminViewPage } from './page/equipo/teamadmin/view/view';
+import { EquipoTeamadminNewPage } from './page/equipo/teamadmin/new/new';
+import { EquipoTeamadminEditPage } from './page/equipo/teamadmin/edit/edit';
+import { EquipoTeamadminDeletePage } from './page/equipo/teamadmin/delete/delete';
+import { LigaTeamadminViewPage } from './page/liga/teamadmin/view/view';
+import { LigaTeamadminNewPage } from './page/liga/teamadmin/new/new';
+import { LigaTeamadminEditPage } from './page/liga/teamadmin/edit/edit';
+import { LigaTeamadminDeletePage } from './page/liga/teamadmin/delete/delete';
+import { PartidoTeamadminViewPage } from './page/partido/teamadmin/view/view';
+import { PartidoTeamadminNewPage } from './page/partido/teamadmin/new/new';
+import { PartidoTeamadminEditPage } from './page/partido/teamadmin/edit/edit';
+import { PartidoTeamadminDeletePage } from './page/partido/teamadmin/delete/delete';
+import { JugadorTeamadminViewPage } from './page/jugador/teamadmin/view/view';
+import { JugadorTeamadminNewPage } from './page/jugador/teamadmin/new/new';
+import { JugadorTeamadminEditPage } from './page/jugador/teamadmin/edit/edit';
+import { JugadorTeamadminDeletePage } from './page/jugador/teamadmin/delete/delete';
+import { CuotaTeamadminViewPage } from './page/cuota/teamadmin/view/view';
+import { CuotaTeamadminNewPage } from './page/cuota/teamadmin/new/new';
+import { CuotaTeamadminEditPage } from './page/cuota/teamadmin/edit/edit';
+import { CuotaTeamadminDeletePage } from './page/cuota/teamadmin/delete/delete';
+import { PagoTeamadminViewPage } from './page/pago/teamadmin/view/view';
+import { PagoTeamadminNewPage } from './page/pago/teamadmin/new/new';
+import { PagoTeamadminEditPage } from './page/pago/teamadmin/edit/edit';
+import { PagoTeamadminDeletePage } from './page/pago/teamadmin/delete/delete';
+import { NoticiaTeamadminViewPage } from './page/noticia/teamadmin/view/view';
+import { NoticiaTeamadminNewPage } from './page/noticia/teamadmin/new/new';
+import { NoticiaTeamadminEditPage } from './page/noticia/teamadmin/edit/edit';
+import { NoticiaTeamadminDeletePage } from './page/noticia/teamadmin/delete/delete';
+import { TipoarticuloTeamadminViewPage } from './page/tipoarticulo/teamadmin/view/view';
+import { TipoarticuloTeamadminNewPage } from './page/tipoarticulo/teamadmin/new/new';
+import { TipoarticuloTeamadminEditPage } from './page/tipoarticulo/teamadmin/edit/edit';
+import { TipoarticuloTeamadminDeletePage } from './page/tipoarticulo/teamadmin/delete/delete';
+import { ArticuloTeamadminViewPage } from './page/articulo/teamadmin/view/view';
+import { ArticuloTeamadminNewPage } from './page/articulo/teamadmin/new/new';
+import { ArticuloTeamadminEditPage } from './page/articulo/teamadmin/edit/edit';
+import { ArticuloTeamadminDeletePage } from './page/articulo/teamadmin/delete/delete';
+import { UsuarioTeamadminViewPage } from './page/usuario/teamadmin/view/view';
+import { UsuarioTeamadminNewPage } from './page/usuario/teamadmin/new/new';
+import { UsuarioTeamadminEditPage } from './page/usuario/teamadmin/edit/edit';
+import { UsuarioTeamadminDeletePage } from './page/usuario/teamadmin/delete/delete';
+import { ClubTeamadminViewPage } from './page/club/teamadmin/view/view';
+import { CarritoTeamadminViewPage } from './page/carrito/teamadmin/view/view';
+import { ComentarioTeamadminViewPage } from './page/comentario/teamadmin/view/view';
+import { ComentarioTeamadminNewPage } from './page/comentario/teamadmin/new/new';
+import { ComentarioTeamadminEditPage } from './page/comentario/teamadmin/edit/edit';
+import { ComentarioTeamadminDeletePage } from './page/comentario/teamadmin/delete/delete';
+import { ComentarioartTeamadminPlistPage } from './page/comentarioart/teamadmin/plist/plist';
+import { ComentarioartTeamadminViewPage } from './page/comentarioart/teamadmin/view/view';
+import { CompraTeamadminViewPage } from './page/compra/teamadmin/view/view';
+import { CompraTeamadminNewPage } from './page/compra/teamadmin/new/new';
+import { CompraTeamadminEditPage } from './page/compra/teamadmin/edit/edit';
+import { CompraTeamadminDeletePage } from './page/compra/teamadmin/delete/delete';
+import { PuntuacionTeamadminViewPage } from './page/puntuacion/teamadmin/view/view';
+import { FacturaTeamadminViewPage } from './page/factura/teamadmin/view/view';
+import { FacturaTeamadminNewPage } from './page/factura/teamadmin/new/new';
+import { FacturaTeamadminEditPage } from './page/factura/teamadmin/edit/edit';
 import { AdminGuard } from './guards/admin.guard';
 import { ClubAdminGuard } from './guards/club-admin.guard';
 import { UsuarioGuard } from './guards/usuario.guard';
@@ -327,12 +391,14 @@ export const routes: Routes = [
   { path: 'categoria/teamadmin/temporada/:id_temporada', component: CategoriaTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'equipo/teamadmin', component: EquipoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'equipo/teamadmin/categoria/:id_categoria', component: EquipoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'equipo/teamadmin/usuario/:id_usuario', component: EquipoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'liga/teamadmin', component: LigaTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'liga/teamadmin/equipo/:id_equipo', component: LigaTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'partido/teamadmin', component: PartidoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'partido/teamadmin/liga/:id_liga', component: PartidoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'jugador/teamadmin', component: JugadorTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'jugador/teamadmin/equipo/:id_equipo', component: JugadorTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'jugador/teamadmin/usuario/:id_usuario', component: JugadorTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'cuota/teamadmin', component: CuotaTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'cuota/teamadmin/equipo/:id_equipo', component: CuotaTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'pago/teamadmin', component: PagoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
@@ -343,12 +409,90 @@ export const routes: Routes = [
   { path: 'articulo/teamadmin', component: ArticuloTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'articulo/teamadmin/tipoarticulo/:id_tipoarticulo', component: ArticuloTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'factura/teamadmin', component: FacturaTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'factura/teamadmin/usuario/:id_usuario', component: FacturaTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'puntuacion/teamadmin', component: PuntuacionTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'puntuacion/teamadmin/usuario/:id_usuario', component: PuntuacionTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'puntuacion/teamadmin/noticia/:id_noticia', component: PuntuacionTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'compra/teamadmin', component: CompraTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'compra/teamadmin/articulo/:id_articulo', component: CompraTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'compra/teamadmin/factura/:id_factura', component: CompraTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'carrito/teamadmin', component: CarritoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'carrito/teamadmin/articulo/:id_articulo', component: CarritoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'carrito/teamadmin/usuario/:id_usuario', component: CarritoTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'comentario/teamadmin', component: ComentarioTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentario/teamadmin/noticia/:id_noticia', component: ComentarioTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentario/teamadmin/usuario/:id_usuario', component: ComentarioTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'tipoarticulo/teamadmin', component: TipoarticuloTeamadminPlistPage, canActivate: [ClubAdminGuard] },
   { path: 'tipoarticulo/teamadmin/club/:id_club', component: TipoarticuloTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  // Teamadmin CRUD routes
+  { path: 'temporada/teamadmin/view/:id', component: TemporadaTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'temporada/teamadmin/new', component: TemporadaTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'temporada/teamadmin/edit/:id', component: TemporadaTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'temporada/teamadmin/delete/:id', component: TemporadaTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'categoria/teamadmin/view/:id', component: CategoriaTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'categoria/teamadmin/new', component: CategoriaTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'categoria/teamadmin/edit/:id', component: CategoriaTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'categoria/teamadmin/delete/:id', component: CategoriaTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'equipo/teamadmin/view/:id', component: EquipoTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'equipo/teamadmin/new', component: EquipoTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'equipo/teamadmin/edit/:id', component: EquipoTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'equipo/teamadmin/delete/:id', component: EquipoTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'liga/teamadmin/view/:id', component: LigaTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'liga/teamadmin/new', component: LigaTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'liga/teamadmin/edit/:id', component: LigaTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'liga/teamadmin/delete/:id', component: LigaTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'partido/teamadmin/view/:id', component: PartidoTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'partido/teamadmin/new', component: PartidoTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'partido/teamadmin/edit/:id', component: PartidoTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'partido/teamadmin/delete/:id', component: PartidoTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'jugador/teamadmin/view/:id', component: JugadorTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'jugador/teamadmin/new', component: JugadorTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'jugador/teamadmin/edit/:id', component: JugadorTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'jugador/teamadmin/delete/:id', component: JugadorTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'cuota/teamadmin/view/:id', component: CuotaTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'cuota/teamadmin/new', component: CuotaTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'cuota/teamadmin/edit/:id', component: CuotaTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'cuota/teamadmin/delete/:id', component: CuotaTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'pago/teamadmin/view/:id', component: PagoTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'pago/teamadmin/new', component: PagoTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'pago/teamadmin/edit/:id', component: PagoTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'pago/teamadmin/delete/:id', component: PagoTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'noticia/teamadmin/view/:id', component: NoticiaTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'noticia/teamadmin/new', component: NoticiaTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'noticia/teamadmin/edit/:id', component: NoticiaTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'noticia/teamadmin/delete/:id', component: NoticiaTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'tipoarticulo/teamadmin/view/:id', component: TipoarticuloTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'tipoarticulo/teamadmin/new', component: TipoarticuloTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'tipoarticulo/teamadmin/edit/:id', component: TipoarticuloTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'tipoarticulo/teamadmin/delete/:id', component: TipoarticuloTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'articulo/teamadmin/view/:id', component: ArticuloTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'articulo/teamadmin/new', component: ArticuloTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'articulo/teamadmin/edit/:id', component: ArticuloTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'articulo/teamadmin/delete/:id', component: ArticuloTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'usuario/teamadmin/view/:id', component: UsuarioTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'usuario/teamadmin/new', component: UsuarioTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'usuario/teamadmin/edit/:id', component: UsuarioTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'usuario/teamadmin/delete/:id', component: UsuarioTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  // Teamadmin view-only entity routes
+  { path: 'club/teamadmin/view/:id', component: ClubTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'carrito/teamadmin/view/:id', component: CarritoTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentario/teamadmin/view/:id', component: ComentarioTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentario/teamadmin/new', component: ComentarioTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentario/teamadmin/edit/:id', component: ComentarioTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentario/teamadmin/delete/:id', component: ComentarioTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'comentarioart/teamadmin', component: ComentarioartTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentarioart/teamadmin/articulo/:id_articulo', component: ComentarioartTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentarioart/teamadmin/usuario/:id_usuario', component: ComentarioartTeamadminPlistPage, canActivate: [ClubAdminGuard] },
+  { path: 'comentarioart/teamadmin/view/:id', component: ComentarioartTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'compra/teamadmin/view/:id', component: CompraTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'compra/teamadmin/new', component: CompraTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'compra/teamadmin/edit/:id', component: CompraTeamadminEditPage, canActivate: [ClubAdminGuard] },
+  { path: 'compra/teamadmin/delete/:id', component: CompraTeamadminDeletePage, canActivate: [ClubAdminGuard] },
+  { path: 'puntuacion/teamadmin/view/:id', component: PuntuacionTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  // Factura teamadmin (CRUD except delete)
+  { path: 'factura/teamadmin/view/:id', component: FacturaTeamadminViewPage, canActivate: [ClubAdminGuard] },
+  { path: 'factura/teamadmin/new', component: FacturaTeamadminNewPage, canActivate: [ClubAdminGuard] },
+  { path: 'factura/teamadmin/edit/:id', component: FacturaTeamadminEditPage, canActivate: [ClubAdminGuard] },
   // Usuario (perfil 3) routes
   { path: 'mi', component: MiHomePage, canActivate: [UsuarioGuard] },
   { path: 'mi/noticias', component: NoticiaUsuarioPlistPage, canActivate: [UsuarioGuard] },

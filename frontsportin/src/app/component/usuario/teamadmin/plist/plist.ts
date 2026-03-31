@@ -1,5 +1,5 @@
 import { Component, computed, inject, Input, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ModalRef } from '../../../shared/modal/modal-ref';
@@ -11,16 +11,23 @@ import { IPage } from '../../../../model/plist';
 import { UsuarioService } from '../../../../service/usuarioService';
 import { Paginacion } from '../../../shared/paginacion/paginacion';
 import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/botonera-actions-plist';
+import { BotoneraRpp } from '../../../shared/botonera-rpp/botonera-rpp';
+import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/breadcrumb/breadcrumb';
 
 @Component({
   standalone: true,
   selector: 'app-usuario-teamadmin-plist',
-  imports: [Paginacion, BotoneraActionsPlist],
+  imports: [RouterLink, Paginacion, BotoneraActionsPlist, BotoneraRpp, BreadcrumbComponent],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })
 export class UsuarioTeamadminPlist {
   @Input() id_club?: number;
+
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Mis Clubes', route: '/club/teamadmin' },
+    { label: 'Usuarios' },
+  ];
 
   oPage = signal<IPage<IUsuario> | null>(null);
   numPage = signal<number>(0);
@@ -33,9 +40,8 @@ export class UsuarioTeamadminPlist {
   orderDirection = signal<'asc' | 'desc'>('asc');
 
   private usuarioService = inject(UsuarioService);
-  private route = inject(ActivatedRoute);
   private modalRef = inject(MODAL_REF, { optional: true });
-  private session = inject(SessionService);
+  session = inject(SessionService);
 
   ngOnInit() {
     this.searchSubscription = this.searchSubject

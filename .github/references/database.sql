@@ -285,7 +285,7 @@ CREATE TABLE `tipousuario` (
 
 INSERT INTO `tipousuario` (`id`, `descripcion`) VALUES
 (1, 'Administrador'),
-(2, 'Administrador de equipo'),
+(2, 'Administrador de club'),
 (3, 'Usuario');
 
 -- --------------------------------------------------------

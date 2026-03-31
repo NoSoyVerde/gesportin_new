@@ -22,6 +22,8 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 })
 export class ArticuloAdminPlist {
   @Input() id_tipoarticulo?: number;
+  @Input() showFilterInfo = true;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<IArticulo> | null>(null);
   numPage = signal<number>(0);

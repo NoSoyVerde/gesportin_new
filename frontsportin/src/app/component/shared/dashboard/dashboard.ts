@@ -71,157 +71,44 @@ export class DashboardComponent implements OnInit {
     private rolusuarioService: RolusuarioService,
     private security: SecurityService
   ) {}
-  cards: DashboardCard[] = [
-    {
-      title: 'Clubes',
-      icon: 'building',
-      count: 0,
-      color: 'primary',
-      route: '/club'
-    },
-    {
-      title: 'Noticias',
-      icon: 'newspaper',
-      count: 0,
-      color: 'warning',
-      route: '/noticia'
-    },
-    {
-      title: 'Comentarios',
-      icon: 'chat-left-text',
-      count: 0,
-      color: 'info',
-      route: '/comentario'
-    },
-    {
-      title: 'Puntuaciones',
-      icon: 'star-fill',
-      count: 0,
-      color: 'secondary',
-      route: '/puntuacion'
-    },
-    {
-      title: 'Temporadas',
-      icon: 'calendar',
-      count: 0,
-      color: 'danger',
-      route: '/temporada'
-    },
-    {
-      title: 'Categorías',
-      icon: 'tags',
-      count: 0,
-      color: 'success',
-      route: '/categoria'
-    },
-    {
-      title: 'Equipos',
-      icon: 'people-fill',
-      count: 0,
-      color: 'primary',
-      route: '/equipo'
-    },
-    {
-      title: 'Ligas',
-      icon: 'trophy',
-      count: 0,
-      color: 'warning',
-      route: '/liga'
-    },
-    {
-      title: 'Partidos',
-      icon: 'play-fill',
-      count: 0,
-      color: 'info',
-      route: '/partido'
-    },
-    {
-      title: 'Jugadores',
-      icon: 'person-fill',
-      count: 0,
-      color: 'secondary',
-      route: '/jugador'
-    },
-    {
-      title: 'Cuotas',
-      icon: 'credit-card',
-      count: 0,
-      color: 'danger',
-      route: '/cuota'
-    },
-    {
-      title: 'Pagos',
-      icon: 'cash-coin',
-      count: 0,
-      color: 'success',
-      route: '/pago'
-    },
-    {
-      title: 'Artículos',
-      icon: 'bag-fill',
-      count: 0,
-      color: 'primary',
-      route: '/articulo'
-    },
-    {
-      title: 'Tipos de Artículo',
-      icon: 'bookmark-fill',
-      count: 0,
-      color: 'warning',
-      route: '/tipoarticulo'
-    },
-    {
-      title: 'Compras',
-      icon: 'cart-fill',
-      count: 0,
-      color: 'info',
-      route: '/compra'
-    },
-    {
-      title: 'Facturas',
-      icon: 'receipt',
-      count: 0,
-      color: 'secondary',
-      route: '/factura'
-    },
-    {
-      title: 'Carritos',
-      icon: 'bag-check',
-      count: 0,
-      color: 'danger',
-      route: '/carrito'
-    },
-    {
-      title: 'Comentarios Artículos',
-      icon: 'chat-dots',
-      count: 0,
-      color: 'success',
-      route: '/comentarioart'
-    },
-    {
-      title: 'Usuarios',
-      icon: 'people',
-      count: 0,
-      color: 'primary',
-      route: '/usuario'
-    },
-    {
-      title: 'Tipos de Usuario',
-      icon: 'tags-fill',
-      count: 0,
-      color: 'warning',
-      route: '/tipousuario'
-    },
-    {
-      title: 'Roles',
-      icon: 'shield-check',
-      count: 0,
-      color: 'info',
-      route: '/rolusuario'
+  cards: DashboardCard[] = [];
+
+  private buildCards(): DashboardCard[] {
+    const r = this.security.isClubAdmin() ? '/teamadmin' : '';
+    const allCards: DashboardCard[] = [
+      { title: 'Clubes', icon: 'building', count: 0, color: 'primary', route: r ? '/club/teamadmin' : '/club' },
+      { title: 'Noticias', icon: 'newspaper', count: 0, color: 'warning', route: '/noticia' + r },
+      { title: 'Comentarios', icon: 'chat-left-text', count: 0, color: 'info', route: '/comentario' + r },
+      { title: 'Puntuaciones', icon: 'star-fill', count: 0, color: 'secondary', route: '/puntuacion' + r },
+      { title: 'Temporadas', icon: 'calendar', count: 0, color: 'danger', route: '/temporada' + r },
+      { title: 'Categorías', icon: 'tags', count: 0, color: 'success', route: '/categoria' + r },
+      { title: 'Equipos', icon: 'people-fill', count: 0, color: 'primary', route: '/equipo' + r },
+      { title: 'Ligas', icon: 'trophy', count: 0, color: 'warning', route: '/liga' + r },
+      { title: 'Partidos', icon: 'play-fill', count: 0, color: 'info', route: '/partido' + r },
+      { title: 'Jugadores', icon: 'person-fill', count: 0, color: 'secondary', route: '/jugador' + r },
+      { title: 'Cuotas', icon: 'credit-card', count: 0, color: 'danger', route: '/cuota' + r },
+      { title: 'Pagos', icon: 'cash-coin', count: 0, color: 'success', route: '/pago' + r },
+      { title: 'Artículos', icon: 'bag-fill', count: 0, color: 'primary', route: '/articulo' + r },
+      { title: 'Tipos de Artículo', icon: 'bookmark-fill', count: 0, color: 'warning', route: '/tipoarticulo' + r },
+      { title: 'Compras', icon: 'cart-fill', count: 0, color: 'info', route: '/compra' + r },
+      { title: 'Facturas', icon: 'receipt', count: 0, color: 'secondary', route: '/factura' + r },
+      { title: 'Carritos', icon: 'bag-check', count: 0, color: 'danger', route: '/carrito' + r },
+      { title: 'Comentarios Artículos', icon: 'chat-dots', count: 0, color: 'success', route: '/comentarioart' + r },
+      { title: 'Usuarios', icon: 'people', count: 0, color: 'primary', route: '/usuario' + r },
+    ];
+
+    if (!this.security.isClubAdmin()) {
+      allCards.push(
+        { title: 'Tipos de Usuario', icon: 'tags-fill', count: 0, color: 'warning', route: '/tipousuario' },
+        { title: 'Roles', icon: 'shield-check', count: 0, color: 'info', route: '/rolusuario' },
+      );
     }
-  ];
+
+    return allCards;
+  }
 
   ngOnInit() {
+    this.cards = this.buildCards();
     this.loadCounts();
   }
 
@@ -290,30 +177,34 @@ export class DashboardComponent implements OnInit {
 
   loadCounts() {
     forkJoin(this.buildCountRequests()).subscribe({
-      next: (counts) => {
-        this.cards = [
-          { ...this.cards[0], count: counts.clubes },
-          { ...this.cards[1], count: counts.noticias },
-          { ...this.cards[2], count: counts.comentarios },
-          { ...this.cards[3], count: counts.puntuaciones },
-          { ...this.cards[4], count: counts.temporadas },
-          { ...this.cards[5], count: counts.categorias },
-          { ...this.cards[6], count: counts.equipos },
-          { ...this.cards[7], count: counts.ligas },
-          { ...this.cards[8], count: counts.partidos },
-          { ...this.cards[9], count: counts.jugadores },
-          { ...this.cards[10], count: counts.cuotas },
-          { ...this.cards[11], count: counts.pagos },
-          { ...this.cards[12], count: counts.articulos },
-          { ...this.cards[13], count: counts.tiposArticulo },
-          { ...this.cards[14], count: counts.compras },
-          { ...this.cards[15], count: counts.facturas },
-          { ...this.cards[16], count: counts.carritos },
-          { ...this.cards[17], count: counts.comentariosArt },
-          { ...this.cards[18], count: counts.usuarios },
-          { ...this.cards[19], count: counts.tiposUsuario },
-          { ...this.cards[20], count: counts.roles }
-        ];
+      next: (counts: Record<string, number>) => {
+        const countMap: Record<string, number> = {
+          'Clubes': counts['clubes'],
+          'Noticias': counts['noticias'],
+          'Comentarios': counts['comentarios'],
+          'Puntuaciones': counts['puntuaciones'],
+          'Temporadas': counts['temporadas'],
+          'Categorías': counts['categorias'],
+          'Equipos': counts['equipos'],
+          'Ligas': counts['ligas'],
+          'Partidos': counts['partidos'],
+          'Jugadores': counts['jugadores'],
+          'Cuotas': counts['cuotas'],
+          'Pagos': counts['pagos'],
+          'Artículos': counts['articulos'],
+          'Tipos de Artículo': counts['tiposArticulo'],
+          'Compras': counts['compras'],
+          'Facturas': counts['facturas'],
+          'Carritos': counts['carritos'],
+          'Comentarios Artículos': counts['comentariosArt'],
+          'Usuarios': counts['usuarios'],
+          'Tipos de Usuario': counts['tiposUsuario'],
+          'Roles': counts['roles'],
+        };
+        this.cards = this.cards.map(card => ({
+          ...card,
+          count: countMap[card.title] ?? 0
+        }));
         this.loading.set(false);
         this.cdr.markForCheck();
       },

@@ -24,6 +24,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 export class ComentarioartAdminPlist {
   @Input() id_articulo?: number;
   @Input() id_usuario?: number;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<IComentarioart> | null>(null);
   numPage = signal<number>(0);

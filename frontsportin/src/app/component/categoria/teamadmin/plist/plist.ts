@@ -8,19 +8,27 @@ import { debounceTimeSearch } from '../../../../environment/environment';
 import { ICategoria } from '../../../../model/categoria';
 import { IPage } from '../../../../model/plist';
 import { CategoriaService } from '../../../../service/categoria';
+import { TemporadaService } from '../../../../service/temporada';
 import { BotoneraRpp } from '../../../shared/botonera-rpp/botonera-rpp';
 import { Paginacion } from '../../../shared/paginacion/paginacion';
 import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/botonera-actions-plist';
+import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-categoria-teamadmin-plist',
-  imports: [BotoneraRpp, Paginacion, RouterLink, BotoneraActionsPlist],
+  imports: [BotoneraRpp, Paginacion, RouterLink, BotoneraActionsPlist, BreadcrumbComponent],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
   standalone: true,
 })
 export class CategoriaTeamadminPlist {
   @Input() temporada: number = 0;
+
+  breadcrumbItems = signal<BreadcrumbItem[]>([
+    { label: 'Mis Clubes', route: '/club/teamadmin' },
+    { label: 'Temporadas', route: '/temporada/teamadmin' },
+    { label: 'Categorías' },
+  ]);
 
   oPage = signal<IPage<ICategoria> | null>(null);
   numPage = signal<number>(0);
@@ -36,9 +44,23 @@ export class CategoriaTeamadminPlist {
   private searchSubscription?: Subscription;
 
   private oCategoriaService = inject(CategoriaService);
+  private oTemporadaService = inject(TemporadaService);
   private modalRef = inject(MODAL_REF, { optional: true });
 
   ngOnInit(): void {
+    if (this.temporada > 0) {
+      this.oTemporadaService.get(this.temporada).subscribe({
+        next: (t) => {
+          this.breadcrumbItems.set([
+            { label: 'Mis Clubes', route: '/club/teamadmin' },
+            { label: 'Temporadas', route: '/temporada/teamadmin' },
+            { label: t.descripcion, route: `/temporada/teamadmin/view/${t.id}` },
+            { label: 'Categorías' },
+          ]);
+        },
+        error: () => {},
+      });
+    }
     this.searchSubscription = this.searchSubject
       .pipe(debounceTime(debounceTimeSearch), distinctUntilChanged())
       .subscribe((searchTerm) => {

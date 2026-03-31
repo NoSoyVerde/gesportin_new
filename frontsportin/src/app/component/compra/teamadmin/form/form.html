@@ -1,0 +1,103 @@
+<div>
+  <form [formGroup]="compraForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="mb-3">
+      <label for="id" class="form-label">ID</label>
+      <input id="id" type="text" class="form-control" formControlName="id" readonly />
+    </div>
+
+    <div class="mb-3">
+      <label for="cantidad" class="form-label">Cantidad <span class="text-danger">*</span></label>
+      <input
+        id="cantidad"
+        type="number"
+        class="form-control"
+        formControlName="cantidad"
+        [class.is-invalid]="cantidad?.invalid && cantidad?.touched"
+      />
+      @if (cantidad?.invalid && cantidad?.touched) {
+        <div class="invalid-feedback">
+          @if (cantidad?.errors?.['required']) { <span>Cantidad es obligatoria.</span> }
+          @if (cantidad?.errors?.['min']) { <span>Cantidad debe ser mayor a 0.</span> }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="precio" class="form-label">Precio <span class="text-danger">*</span></label>
+      <input
+        id="precio"
+        type="number"
+        step="0.01"
+        class="form-control"
+        formControlName="precio"
+        [class.is-invalid]="precio?.invalid && precio?.touched"
+      />
+      @if (precio?.invalid && precio?.touched) {
+        <div class="invalid-feedback">
+          @if (precio?.errors?.['required']) { <span>Precio es obligatorio.</span> }
+          @if (precio?.errors?.['min']) { <span>Precio debe ser mayor a 0.</span> }
+        </div>
+      }
+    </div>
+
+    <div class="p-3 rounded mb-3" style="background-color: #f8f9fa; border-left: 4px solid #0d6efd;">
+      <div class="mb-2">
+        <label class="form-label">Artículo <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" [value]="selectedArticulo()?.descripcion || ''" readonly />
+      </div>
+      <div class="d-flex gap-3 align-items-end">
+        @if (idArticulo() <= 0) {
+          <button type="button" class="btn btn-info" (click)="openArticuloFinderModal()">
+            <i class="bi bi-search me-2"></i>Buscar
+          </button>
+        }
+        <div>
+          <label class="form-label">ID Artículo</label>
+          <input type="text" class="form-control" [value]="id_articulo?.value || ''" readonly />
+        </div>
+        @if (selectedArticulo()) {
+          <div class="flex-grow-1">
+            <label class="form-label">Descripción</label>
+            <p class="form-control-plaintext fw-semibold mb-0">{{ selectedArticulo()?.descripcion }}</p>
+          </div>
+        }
+      </div>
+      @if (id_articulo?.invalid && id_articulo?.touched) {
+        <div class="text-danger small mt-1">El artículo es obligatorio.</div>
+      }
+    </div>
+
+    <div class="p-3 rounded mb-3" style="background-color: #f8f9fa; border-left: 4px solid #0d6efd;">
+      <div class="mb-2">
+        <label class="form-label">Factura <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" [value]="selectedFactura() ? 'Factura #' + selectedFactura()?.id : ''" readonly />
+      </div>
+      <div class="d-flex gap-3 align-items-end">
+        <button type="button" class="btn btn-info" (click)="openFacturaFinderModal()">
+          <i class="bi bi-search me-2"></i>Buscar
+        </button>
+        <div>
+          <label class="form-label">ID Factura</label>
+          <input type="text" class="form-control" [value]="id_factura?.value || ''" readonly />
+        </div>
+        @if (selectedFactura()) {
+          <div class="flex-grow-1">
+            <label class="form-label">Usuario</label>
+            <p class="form-control-plaintext fw-semibold mb-0">{{ selectedFactura()?.usuario?.nombre }} {{ selectedFactura()?.usuario?.apellido1 }}</p>
+          </div>
+        }
+      </div>
+      @if (id_factura?.invalid && id_factura?.touched) {
+        <div class="text-danger small mt-1">La factura es obligatoria.</div>
+      }
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="submitting() || compraForm.invalid">
+        @if (submitting()) { <span class="spinner-border spinner-border-sm me-2"></span> }
+        {{ id() > 0 ? 'Guardar' : 'Crear' }}
+      </button>
+    </div>
+  </form>
+</div>

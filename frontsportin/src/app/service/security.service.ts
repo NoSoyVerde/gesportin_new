@@ -41,7 +41,7 @@ export class SecurityService {
    */
   forbidClubAdminActions(): void {
     if (this.session.isClubAdmin()) {
-      throw new Error('Acción no permitida para administrador de equipo');
+      throw new Error('Acción no permitida para Administrador de club');
     }
   }
 

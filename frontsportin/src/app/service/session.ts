@@ -56,7 +56,7 @@ export class SessionService {
   }
 
   /**
-   * Tipo 2: administrador de equipo/club.
+   * Tipo 2: Administrador de club/club.
    * alias más explícito para la seguridad que se pide en los requisitos.
    */
   isClubAdmin(): boolean {

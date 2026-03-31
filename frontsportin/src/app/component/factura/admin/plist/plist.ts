@@ -22,6 +22,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 })
 export class FacturaAdminPlist {
   @Input() id_usuario?: number;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<IFactura> | null>(null);
   numPage = signal<number>(0);

@@ -15,7 +15,7 @@
 
   <div class="d-flex justify-content-center my-1">
     <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
-    @if (id_equipo && id_equipo > 0) {
+    @if (showFilterInfo && id_equipo && id_equipo > 0) {
       <small class="text-muted ms-3">Filtro: id de equipo = {{ id_equipo }}</small>
       @if (!isDialogMode()) {
         <a class="ms-2" [routerLink]="['/cuota']" role="button" title="Quitar filtro">
@@ -30,8 +30,8 @@
 
   <div class="d-flex my-1">
     <div class="w-100 d-flex justify-content-center">
-      @if (!session.isClubAdmin()) {
-        <a class="btn btn-primary new-btn" [routerLink]="['/cuota/new']" role="button">
+      @if (!session.isClubAdmin() || strRole) {
+        <a class="btn btn-primary new-btn" [routerLink]="strRole ? ['/cuota', strRole, 'new'] : ['/cuota/new']" [queryParams]="id_equipo ? { id_equipo: id_equipo } : {}" role="button">
           <i class="bi bi-plus-circle me-2" aria-hidden="true"></i><span class="d-none d-sm-inline">Crear cuota</span>
         </a>
       }

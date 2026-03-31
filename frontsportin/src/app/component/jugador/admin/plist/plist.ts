@@ -23,6 +23,8 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 export class JugadorAdminPlist {
   @Input() id_usuario?: number;
   @Input() id_equipo?: number;
+  @Input() showFilterInfo = true;
+  @Input() strRole: string = '';
 
   oPage = signal<IPage<IJugador> | null>(null);
   numPage = signal<number>(0);

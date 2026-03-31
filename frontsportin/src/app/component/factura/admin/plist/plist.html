@@ -18,7 +18,7 @@
     @if (id_usuario && id_usuario > 0) {
       <small class="text-muted ms-3">Filtro: id de usuario = {{ id_usuario }}</small>
       @if (!isDialogMode()) {
-        <a class="ms-2" [routerLink]="['/factura']" role="button" title="Quitar filtro">
+        <a class="ms-2" [routerLink]="strRole ? ['/factura', strRole] : ['/factura']" role="button" title="Quitar filtro">
           <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtro
         </a>
       }
@@ -30,8 +30,8 @@
 
   <div class="d-flex my-1">
     <div class="w-100 d-flex justify-content-center">
-      @if (!session.isClubAdmin()) {
-        <a class="btn btn-primary new-btn" [routerLink]="['/factura/new']" role="button">
+      @if (!session.isClubAdmin() || strRole) {
+        <a class="btn btn-primary new-btn" [routerLink]="strRole ? ['/factura', strRole, 'new'] : ['/factura/new']" role="button">
           <i class="bi bi-plus-circle me-2" aria-hidden="true"></i><span class="d-none d-sm-inline">Crear factura</span>
         </a>
       }
@@ -113,8 +113,8 @@
                           @if (isDialogMode()) {
                             {{ oFactura.usuario.nombre }} {{ oFactura.usuario.apellido1 }} {{ oFactura.usuario.apellido2 }}
                           } @else {
-                            <a [routerLink]="['/usuario/view', oFactura.usuario.id]">{{ oFactura.usuario.nombre }} {{ oFactura.usuario.apellido1 }} {{ oFactura.usuario.apellido2 }}</a>
-                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/factura/usuario', oFactura.usuario.id]" role="button" title="Filtrar por usuario"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                            <a [routerLink]="strRole ? ['/usuario', strRole, 'view', oFactura.usuario.id] : ['/usuario/view', oFactura.usuario.id]">{{ oFactura.usuario.nombre }} {{ oFactura.usuario.apellido1 }} {{ oFactura.usuario.apellido2 }}</a>
+                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="strRole ? ['/factura', strRole, 'usuario', oFactura.usuario.id] : ['/factura/usuario', oFactura.usuario.id]" role="button" title="Filtrar por usuario"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                           }
                         </td>
                         <td class="text-center">
@@ -124,7 +124,7 @@
                             @if (!oFactura.compras || oFactura.compras === 0) {
                               <i class="bi bi-ban" aria-hidden="true"></i>
                             } @else {
-                              <a [routerLink]="['/compra/factura', oFactura.id]">{{ oFactura.compras }}</a>
+                              <a [routerLink]="strRole ? ['/compra', strRole, 'factura', oFactura.id] : ['/compra/factura', oFactura.id]">{{ oFactura.compras }}</a>
                             }
                           }
                         </td>
@@ -136,7 +136,7 @@
                               </button>
                             </div>
                           } @else {
-                            <app-botonera-actions-plist [id]="oFactura.id" strEntity="factura"></app-botonera-actions-plist>
+                            <app-botonera-actions-plist [id]="oFactura.id" strEntity="factura" [strRole]="strRole"></app-botonera-actions-plist>
                           }
                         </td>
                       </tr>

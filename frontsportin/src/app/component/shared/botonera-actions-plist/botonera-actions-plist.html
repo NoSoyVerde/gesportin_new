@@ -1,27 +1,57 @@
 <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-  <a
-    class="btn btn-primary btn-sm"
-    [routerLink]="['/', strEntity, 'view', id]"
-    role="button"
-    title="Ver"
-    ><i class="bi bi-eye" aria-hidden="true"></i
-  ></a>
-  @if (canEdit) {
+  @if (strRole) {
     <a
-      class="btn btn-warning btn-sm"
-      [routerLink]="['/', strEntity, 'edit', id]"
+      class="btn btn-primary btn-sm"
+      [routerLink]="['/', strEntity, strRole, 'view', id]"
       role="button"
-      title="Editar"
-      ><i class="bi bi-pencil" aria-hidden="true"></i
+      title="Ver"
+      ><i class="bi bi-eye" aria-hidden="true"></i
+    ></a>
+  } @else {
+    <a
+      class="btn btn-primary btn-sm"
+      [routerLink]="['/', strEntity, 'view', id]"
+      role="button"
+      title="Ver"
+      ><i class="bi bi-eye" aria-hidden="true"></i
     ></a>
   }
+  @if (canEdit) {
+    @if (strRole) {
+      <a
+        class="btn btn-warning btn-sm"
+        [routerLink]="['/', strEntity, strRole, 'edit', id]"
+        role="button"
+        title="Editar"
+        ><i class="bi bi-pencil" aria-hidden="true"></i
+      ></a>
+    } @else {
+      <a
+        class="btn btn-warning btn-sm"
+        [routerLink]="['/', strEntity, 'edit', id]"
+        role="button"
+        title="Editar"
+        ><i class="bi bi-pencil" aria-hidden="true"></i
+      ></a>
+    }
+  }
   @if (canDelete) {
-    <a
-      class="btn btn-danger btn-sm"
-      [routerLink]="['/', strEntity, 'delete', id]"
-      role="button"
-      title="Eliminar"
-      ><i class="bi bi-trash" aria-hidden="true"></i
-    ></a>
+    @if (strRole) {
+      <a
+        class="btn btn-danger btn-sm"
+        [routerLink]="['/', strEntity, strRole, 'delete', id]"
+        role="button"
+        title="Eliminar"
+        ><i class="bi bi-trash" aria-hidden="true"></i
+      ></a>
+    } @else {
+      <a
+        class="btn btn-danger btn-sm"
+        [routerLink]="['/', strEntity, 'delete', id]"
+        role="button"
+        title="Eliminar"
+        ><i class="bi bi-trash" aria-hidden="true"></i
+      ></a>
+    }
   }
 </div>

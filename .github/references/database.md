@@ -44,7 +44,7 @@ Define el tipo / rol del usuario en el sistema.
 | id | descripcion |
 |---|---|
 | 1 | Administrador |
-| 2 | Administrador de equipo |
+| 2 | Administrador de club |
 | 3 | Usuario |
 
 ---
