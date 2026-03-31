@@ -106,6 +106,11 @@ public int getJugadores() {
 - Campos de texto obligatorios: `@NotBlank` + `@Column(nullable = false)`.
 - Campos de objeto/primitivo obligatorio: `@NotNull` + `@Column(nullable = false)`.
 - Longitudes: `@Size(min = 3, max = 255)` (o el máximo que corresponda).
+- **Unicidad de relaciones en `JugadorEntity`**: un mismo `UsuarioEntity` no puede estar asignado como jugador dos veces en el mismo `EquipoEntity`. Esta regla se implementa a nivel de servicio (no con `@UniqueConstraint` JPA) para poder devolver un mensaje de error legible:
+  - En `create`: tras resolver las FK, verificar con `oJugadorRepository.existsByEquipoIdAndUsuarioId(equipoId, usuarioId)`; si devuelve `true` → `throw new GeneralException("El usuario ya está asignado como jugador en este equipo")`.
+  - En `update`: verificar con `oJugadorRepository.existsByEquipoIdAndUsuarioIdAndIdNot(equipoId, usuarioId, jugadorId)` para excluir el propio registro; si devuelve `true` → misma excepción.
+  - En `fill`: mismo chequeo antes de guardar para evitar datos inconsistentes; si después de 100 intentos no se encuentra combinación válida, saltarse la iteración con `continue`.
+  - **Patrón generalizable**: aplicar este patrón en cualquier entidad donde exista unicidad compuesta entre dos FK (p.ej. evitar que un usuario puntúe dos veces la misma noticia, o tenga el mismo artículo dos veces en el carrito).
 
 ### 3.6 Fechas
 

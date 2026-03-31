@@ -3,8 +3,11 @@ package net.ausiasmarch.gesportin.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import net.ausiasmarch.gesportin.entity.JugadorEntity;
+import net.ausiasmarch.gesportin.entity.UsuarioEntity;
 
 public interface JugadorRepository extends JpaRepository<JugadorEntity, Long> {
     Page<JugadorEntity> findByPosicionContainingIgnoreCase(String posicion, Pageable pageable);
@@ -23,4 +26,17 @@ public interface JugadorRepository extends JpaRepository<JugadorEntity, Long> {
         // this default implementation is not executed by Spring Data; we’ll call one of the above
         throw new UnsupportedOperationException();
     }
-}
+    // Unicidad: un usuario no puede estar dos veces como jugador en el mismo equipo
+    boolean existsByEquipoIdAndUsuarioId(Long equipoId, Long usuarioId);
+
+    boolean existsByEquipoIdAndUsuarioIdAndIdNot(Long equipoId, Long usuarioId, Long excludeId);
+
+    // Usuarios del club del equipo que aún no están asignados como jugadores en ese equipo
+    @Query("SELECT u FROM UsuarioEntity u " +
+           "WHERE u.club.id = (SELECT e.categoria.temporada.club.id FROM EquipoEntity e WHERE e.id = :equipoId) " +
+           "AND u.id NOT IN (SELECT j.usuario.id FROM JugadorEntity j WHERE j.equipo.id = :equipoId) " +
+           "AND (:nombre IS NULL OR LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')))")
+    Page<UsuarioEntity> findUsuariosDisponiblesParaEquipo(
+            @Param("equipoId") Long equipoId,
+            @Param("nombre") String nombre,
+            Pageable pageable);}

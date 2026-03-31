@@ -541,6 +541,53 @@ export class EntidadAdminDetail implements OnInit {
 
 `BotoneraActionsPlist` gestiona automáticamente la visibilidad de editar/borrar según el rol. Pasar el nombre de la entidad en minúsculas: `strEntity="usuario"`, `strEntity="club"`, etc.
 
+### 6.10 Patrón «selector FK restringido» (usando `MODAL_DATA`)
+
+Cuando un formulario necesita seleccionar una FK con candidatos filtrados por el contexto (por ejemplo, solo usuarios no asignados ya en un equipo), en lugar de abrir el plist genérico, se sigue este patrón:
+
+**1. Crear un plist modal específico** (`component/<entidad>/<rol>/<contexto>-plist/plist.ts`) que:
+- Inyecte `MODAL_DATA` (opcional, tipado como el DTO de contexto) y `MODAL_REF` (opcional).
+- Llame a un endpoint de backend que aplique el filtro de disponibilidad (p.ej. `/jugador/usuariosDisponibles?id_equipo=X`).
+- Presente tabla con clic en fila → `modalRef?.close(entidad)`.
+
+```typescript
+export interface MiContextoData { id_padre: number; }
+
+export class MiSelectorPlist implements OnInit {
+  private readonly modalData = inject(MODAL_DATA, { optional: true }) as MiContextoData | null;
+  private readonly modalRef = inject(MODAL_REF, { optional: true }) as ModalRef<MiContextoData, IEntidad | null> | null;
+  private readonly oServicio = inject(MiServicio);
+  // ...
+  getPage(): void {
+    this.oServicio.getEntidadesDisponibles(this.modalData?.id_padre ?? 0, ...).subscribe(...);
+  }
+  onSelect(entidad: IEntidad): void { this.modalRef?.close(entidad); }
+  onCancel(): void { this.modalRef?.close(null); }
+}
+```
+
+**2. En el form que abre el modal**, pasar los datos de contexto como `config.data`:
+
+```typescript
+openSelectorModal(): void {
+  const idPadre = this.form.get('id_padre')?.value;
+  const ref = this.modalService.open<MiContextoData, IEntidad | null>(
+    MiSelectorPlist,
+    { data: { id_padre: Number(idPadre) || 0 } }
+  );
+  ref.afterClosed$.subscribe((entidad: IEntidad | null) => {
+    if (entidad?.id != null) {
+      this.form.patchValue({ id_entidad: entidad.id });
+      this.selectedEntidad.set(entidad);
+    }
+  });
+}
+```
+
+**3. El endpoint de backend** vive bajo la base de la entidad que tiene la restricción (no bajo la entidad filtrada). Por convención: `GET /<entidad-raíz>/entidadesDisponibles?id_padre=X`.
+
+> **Implementación de referencia**: `GET /jugador/usuariosDisponibles?id_equipo={X}` + `UsuarioDisponiblePlist` en `component/usuario/teamadmin/usuario-disponible-plist/`.
+
 ---
 
 ## 7. Páginas (`page/`)

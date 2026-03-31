@@ -430,6 +430,9 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
 | POST | `/fill/{cantidad}` | — | Long |
 | DELETE | `/empty` | — | Long |
 | GET | `/count` | — | Long |
+| GET | `/usuariosDisponibles` | `id_equipo` (obligatorio), `nombre` (opcional) | `Page<UsuarioEntity>` |
+
+> **`GET /jugador/usuariosDisponibles`**: devuelve los usuarios del club propietario del equipo que aún **no están asignados** como jugadores en ese equipo, paginados. Se usa en el formulario de nuevo jugador (perfil teamadmin) para filtrar la ventana modal de selección de usuario. Requiere al menos `id_equipo`. El parámetro `nombre` aplica un `LIKE` sobre el nombre del usuario.
 
 ---
 

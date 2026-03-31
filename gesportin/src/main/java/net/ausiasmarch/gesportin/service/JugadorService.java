@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import net.ausiasmarch.gesportin.entity.EquipoEntity;
 import net.ausiasmarch.gesportin.entity.JugadorEntity;
 import net.ausiasmarch.gesportin.entity.UsuarioEntity;
+import net.ausiasmarch.gesportin.exception.GeneralException;
 import net.ausiasmarch.gesportin.exception.ResourceNotFoundException;
 import net.ausiasmarch.gesportin.exception.UnauthorizedException;
 import net.ausiasmarch.gesportin.repository.JugadorRepository;
@@ -122,6 +123,11 @@ public class JugadorService {
         oJugadorEntity.setEquipo(oEquipoService.get(oJugadorEntity.getEquipo().getId()));
         oJugadorEntity.setUsuario(oUsuarioService.get(oJugadorEntity.getUsuario().getId()));
 
+        if (oJugadorRepository.existsByEquipoIdAndUsuarioId(
+                oJugadorEntity.getEquipo().getId(), oJugadorEntity.getUsuario().getId())) {
+            throw new GeneralException("El usuario ya está asignado como jugador en este equipo");
+        }
+
         return oJugadorRepository.save(oJugadorEntity);
     }
 
@@ -141,12 +147,20 @@ public class JugadorService {
             oSessionService.checkSameClub(clubNewUsr);
             oSessionService.checkSameClub(clubNewEq);
         }
+        UsuarioEntity nuevoUsuario = oUsuarioService.get(oJugadorEntity.getUsuario().getId());
+        EquipoEntity nuevoEquipo = oEquipoService.get(oJugadorEntity.getEquipo().getId());
+
+        if (oJugadorRepository.existsByEquipoIdAndUsuarioIdAndIdNot(
+                nuevoEquipo.getId(), nuevoUsuario.getId(), oJugadorEntity.getId())) {
+            throw new GeneralException("El usuario ya está asignado como jugador en este equipo");
+        }
+
         oJugadorExistente.setDorsal(oJugadorEntity.getDorsal());
         oJugadorExistente.setPosicion(oJugadorEntity.getPosicion());
         oJugadorExistente.setCapitan(oJugadorEntity.getCapitan());
         oJugadorExistente.setImagen(oJugadorEntity.getImagen());
-        oJugadorExistente.setUsuario(oUsuarioService.get(oJugadorEntity.getUsuario().getId()));
-        oJugadorExistente.setEquipo(oEquipoService.get(oJugadorEntity.getEquipo().getId()));
+        oJugadorExistente.setUsuario(nuevoUsuario);
+        oJugadorExistente.setEquipo(nuevoEquipo);
         return oJugadorRepository.save(oJugadorExistente);
     }
 
@@ -192,11 +206,19 @@ public class JugadorService {
             oJugador.setImagen(null);
             // ptes de asignar el usuario y el equipo
             UsuarioEntity oUsuarioEntity = oUsuarioService.getOneRandom();
-            while (oEquipoService.getOneRandomFromClub(oUsuarioEntity.getClub().getId()) == null) {
-                oUsuarioEntity = oUsuarioService.getOneRandom();
-            }            
-            oJugador.setUsuario(oUsuarioEntity);
             EquipoEntity equipo = oEquipoService.getOneRandomFromClub(oUsuarioEntity.getClub().getId());
+            int intentos = 0;
+            while (equipo == null ||
+                    oJugadorRepository.existsByEquipoIdAndUsuarioId(equipo.getId(), oUsuarioEntity.getId())) {
+                oUsuarioEntity = oUsuarioService.getOneRandom();
+                equipo = oEquipoService.getOneRandomFromClub(oUsuarioEntity.getClub().getId());
+                if (++intentos >= 100) break;
+            }
+            if (equipo == null ||
+                    oJugadorRepository.existsByEquipoIdAndUsuarioId(equipo.getId(), oUsuarioEntity.getId())) {
+                continue;
+            }
+            oJugador.setUsuario(oUsuarioEntity);
             oJugador.setEquipo(equipo);
             oJugadorRepository.save(oJugador);
         }
@@ -220,5 +242,14 @@ public class JugadorService {
         int index = (int) (Math.random() * count);
         var page = oJugadorRepository.findByEquipoId(equipoId, Pageable.ofSize(1).withPage(index));
         return page.hasContent() ? page.getContent().get(0) : null;
+    }
+
+    public Page<UsuarioEntity> getUsuariosDisponibles(Long idEquipo, String nombre, Pageable pageable) {
+        if (oSessionService.isEquipoAdmin() || oSessionService.isUsuario()) {
+            Long clubEquipo = oEquipoService.get(idEquipo).getCategoria().getTemporada().getClub().getId();
+            oSessionService.checkSameClub(clubEquipo);
+        }
+        String nombreFiltro = (nombre != null && !nombre.isBlank()) ? nombre : null;
+        return oJugadorRepository.findUsuariosDisponiblesParaEquipo(idEquipo, nombreFiltro, pageable);
     }
 }

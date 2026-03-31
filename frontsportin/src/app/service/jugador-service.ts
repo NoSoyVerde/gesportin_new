@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { serverURL } from '../environment/environment';
 import { IJugador } from '../model/jugador';
+import { IUsuario } from '../model/usuario';
 import { PayloadSanitizerService } from './payload-sanitizer';
 import { IPage } from '../model/plist';
 
@@ -83,5 +84,20 @@ export class JugadorService {
 
   count(): Observable<number> {
     return this.http.get<number>(serverURL + '/jugador/count');
+  }
+
+  getUsuariosDisponibles(
+    idEquipo: number,
+    page: number = 0,
+    rpp: number = 1000,
+    order: string = 'id',
+    direction: string = 'asc',
+    nombre: string = '',
+  ): Observable<IPage<IUsuario>> {
+    let url = serverURL + `/jugador/usuariosDisponibles?id_equipo=${idEquipo}&page=${page}&size=${rpp}&sort=${order},${direction}`;
+    if (nombre && nombre.length > 0) {
+      url += `&nombre=${encodeURIComponent(nombre)}`;
+    }
+    return this.http.get<IPage<IUsuario>>(url);
   }
 }

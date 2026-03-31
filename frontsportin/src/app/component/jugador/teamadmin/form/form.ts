@@ -13,7 +13,7 @@ import { IEquipo } from '../../../../model/equipo';
 import { IUsuario } from '../../../../model/usuario';
 import { SessionService } from '../../../../service/session';
 import { EquipoAdminPlist } from '../../../equipo/admin/plist/plist';
-import { UsuarioAdminPlist } from '../../../usuario/admin/plist/plist';
+import { UsuarioDisponiblePlist } from '../../../usuario/teamadmin/usuario-disponible-plist/plist';
 
 @Component({
   selector: 'app-jugador-teamadmin-form',
@@ -143,7 +143,11 @@ export class JugadorTeamadminForm implements OnInit {
   }
 
   openUsuarioFinderModal(): void {
-    const ref = this.modalService.open<unknown, IUsuario | null>(UsuarioAdminPlist);
+    const idEquipo = this.jugadorForm.get('id_equipo')?.value;
+    const ref = this.modalService.open<{ id_equipo: number }, IUsuario | null>(
+      UsuarioDisponiblePlist,
+      { data: { id_equipo: Number(idEquipo) || 0 } },
+    );
     ref.afterClosed$.subscribe((usuario: IUsuario | null) => {
       if (usuario?.id != null) {
         this.jugadorForm.patchValue({ id_usuario: usuario.id });

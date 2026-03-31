@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.ausiasmarch.gesportin.entity.JugadorEntity;
+import net.ausiasmarch.gesportin.entity.UsuarioEntity;
 import net.ausiasmarch.gesportin.service.JugadorService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -69,6 +70,14 @@ public class JugadorApi {
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return ResponseEntity.ok(oJugadorService.count());
+    }
+
+    @GetMapping("/usuariosDisponibles")
+    public ResponseEntity<Page<UsuarioEntity>> getUsuariosDisponibles(
+            @PageableDefault(size = 1000) Pageable pageable,
+            @RequestParam Long id_equipo,
+            @RequestParam(required = false) String nombre) {
+        return ResponseEntity.ok(oJugadorService.getUsuariosDisponibles(id_equipo, nombre, pageable));
     }
 
 }
