@@ -45,7 +45,7 @@ public class ClubEntity {
     private LocalDateTime fechaAlta;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = true)
     private byte[] imagen;
 
     

@@ -68,9 +68,10 @@ Los cuerpos de creación y actualización envían el **objeto completo** con las
   - [17. Tipoarticulo](#17-tipoarticulo)
   - [18. Articulo](#18-articulo)
   - [19. Comentarioart](#19-comentarioart)
-  - [20. Carrito](#20-carrito)
-  - [21. Factura](#21-factura)
-  - [22. Compra](#22-compra)
+  - [20. Puntuacionart](#20-puntuacionart)
+  - [21. Carrito](#21-carrito)
+  - [22. Factura](#22-factura)
+  - [23. Compra](#23-compra)
   - [Resumen de endpoints de utilidad](#resumen-de-endpoints-de-utilidad)
 
 ---
@@ -825,7 +826,43 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
 
 ---
 
-## 20. Carrito
+## 20. Puntuacionart
+
+**Base:** `/puntuacionart`
+
+**Modelo JSON:**
+```json
+{
+  "id": 1,
+  "puntuacion": 5,
+  "articulo": { "id": 3, "descripcion": "...", ... },
+  "usuario": { "id": 5, "nombre": "...", ... }
+}
+```
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| `id` | Long | PK |
+| `puntuacion` | Integer | Valor numérico (1–5) |
+| `articulo` | Object | FK expandida |
+| `usuario` | Object | FK expandida |
+
+**Endpoints:**
+
+| Método | Path | Parámetros opcionales | Respuesta |
+|---|---|---|---|
+| GET | `/{id}` | — | PuntuacionartEntity |
+| GET | `/` | `id_articulo`, `id_usuario` | `Page<PuntuacionartEntity>` (size=1000) |
+| POST | `/` | — (body) | PuntuacionartEntity |
+| PUT | `/` | — (body) | PuntuacionartEntity |
+| DELETE | `/{id}` | — | Long |
+| POST | `/fill/{cantidad}` | — | Long |
+| DELETE | `/empty` | — | Long |
+| GET | `/count` | — | Long |
+
+---
+
+## 21. Carrito
 
 **Base:** `/carrito`
 
@@ -864,7 +901,7 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
 
 ---
 
-## 21. Factura
+## 22. Factura
 
 **Base:** `/factura`
 
@@ -902,7 +939,7 @@ No expone `POST`/`PUT`/`DELETE /{id}`. Solo lectura.
 
 ---
 
-## 22. Compra
+## 23. Compra
 
 **Base:** `/compra`
 

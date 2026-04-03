@@ -315,6 +315,8 @@ Expande: `tipoarticulo` (→ `club`)
 | `imagen` | byte[] | string/null | Base64 blob |
 | `tipoarticulo` | TipoarticuloEntity | object | **EXPANDIDO** (profundidad 2) |
 | `comentarioarts` | int (contador) | number | |
+| `puntuacionarts` | int (contador) | number | Número de puntuaciones |
+| `mediaPuntuacion` | double | number | Promedio de puntuaciones (1-5), 0 si no hay |
 | `compras` | int (contador) | number | |
 | `carritos` | int (contador) | number | |
 
@@ -332,6 +334,8 @@ Expande: `tipoarticulo` (→ `club`)
     "articulos": 0
   },
   "comentarioarts": 3,
+  "puntuacionarts": 12,
+  "mediaPuntuacion": 4.5,
   "compras": 5,
   "carritos": 2
 }
@@ -413,6 +417,36 @@ Expande: `articulo` (→ `tipoarticulo` → `club`), `usuario` (→ `tipousuario
     }
   },
   "usuario": { "id": 5, "tipousuario": {...}, "club": {...}, ... }
+}
+```
+
+---
+
+### `puntuacionart`
+
+Expande: `articulo` (→ `tipoarticulo` → `club`), `usuario` (→ `tipousuario`, `rolusuario`, `club`)
+
+Calificaciones/puntuaciones de artículos por parte de usuarios. Los usuarios pueden valorar artículos con puntuaciones de 1 a 5.
+
+| Campo | Tipo Java | Tipo JSON | Expansión / Notas |
+|---|---|---|---|
+| `id` | Long | number | PK |
+| `puntuacion` | Integer | number | 1–5 estrellas |
+| `articulo` | ArticuloEntity | object | **EXPANDIDO** (profundidad 3) |
+| `usuario` | UsuarioEntity | object | **EXPANDIDO** (profundidad 2) |
+
+```json
+{
+  "id": 1,
+  "puntuacion": 5,
+  "articulo": {
+    "id": 1, "descripcion": "...",
+    "tipoarticulo": {
+      "id": 1, "descripcion": "...",
+      "club": { "id": 1, ... }
+    }
+  },
+  "usuario": { "id": 5, "nombre": "...", "tipousuario": {...}, "club": {...}, ... }
 }
 ```
 

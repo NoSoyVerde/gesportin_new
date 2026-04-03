@@ -283,6 +283,19 @@ Comentario de un usuario sobre un artículo de la tienda.
 
 ---
 
+### `puntuacionart`
+
+Puntuación/valoración de un artículo por parte de un usuario. Los usuarios pueden valorar artículos con puntuaciones de 1 a 5.
+
+| Campo | Tipo | Nulo | Default | Notas |
+|---|---|---|---|---|
+| `id` | bigint | NO | AUTO_INCREMENT | PK |
+| `puntuacion` | int | NO | — | Valor 1–5 |
+| `id_articulo` | bigint | NO | — | FK → articulo |
+| `id_usuario` | bigint | NO | — | FK → usuario |
+
+---
+
 ### `carrito`
 
 Línea del carrito de la compra de un usuario.
