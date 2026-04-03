@@ -57,19 +57,19 @@
             </p>
             <div class="d-flex flex-wrap gap-2 align-items-center">
               @if (oEquipo.jugadores === 0) {
-                <a [routerLink]="['/jugador/teamadmin/new']" [queryParams]="{ id_equipo: oEquipo.id }" class="badge bg-warning text-dark text-decoration-none" title="Crear primer jugador"><i class="bi bi-plus-circle me-1"></i>0 jugadores</a>
+                <a [routerLink]="['/jugador/teamadmin/new']" [queryParams]="{ id_equipo: oEquipo.id }" class="badge big-badge bg-warning text-dark text-decoration-none" title="Crear primer jugador"><i class="bi bi-plus-circle me-1"></i>0 jugadores</a>
               } @else {
-                <a [routerLink]="['/jugador/teamadmin/equipo', oEquipo.id]" class="badge bg-primary text-decoration-none"><i class="bi bi-person-fill me-1"></i>{{ oEquipo.jugadores }} jugadores</a>
+                <a [routerLink]="['/jugador/teamadmin/equipo', oEquipo.id]" class="badge big-badge bg-primary text-decoration-none"><i class="bi bi-person-fill me-1"></i>{{ oEquipo.jugadores }} jugadores</a>
               }
               @if (oEquipo.cuotas === 0) {
-                <a [routerLink]="['/cuota/teamadmin/new']" [queryParams]="{ id_equipo: oEquipo.id }" class="badge bg-warning text-dark text-decoration-none" title="Crear primera cuota"><i class="bi bi-plus-circle me-1"></i>0 cuotas</a>
+                <a [routerLink]="['/cuota/teamadmin/new']" [queryParams]="{ id_equipo: oEquipo.id }" class="badge big-badge bg-warning text-dark text-decoration-none" title="Crear primera cuota"><i class="bi bi-plus-circle me-1"></i>0 cuotas</a>
               } @else {
-                <a [routerLink]="['/cuota/teamadmin/equipo', oEquipo.id]" class="badge bg-primary text-decoration-none"><i class="bi bi-credit-card me-1"></i>{{ oEquipo.cuotas }} cuotas</a>
+                <a [routerLink]="['/cuota/teamadmin/equipo', oEquipo.id]" class="badge big-badge bg-primary text-decoration-none"><i class="bi bi-credit-card me-1"></i>{{ oEquipo.cuotas }} cuotas</a>
               }
               @if (oEquipo.ligas === 0) {
-                <a [routerLink]="['/liga/teamadmin/new']" [queryParams]="{ id_equipo: oEquipo.id }" class="badge bg-warning text-dark text-decoration-none" title="Crear primera liga"><i class="bi bi-plus-circle me-1"></i>0 ligas</a>
+                <a [routerLink]="['/liga/teamadmin/new']" [queryParams]="{ id_equipo: oEquipo.id }" class="badge big-badge bg-warning text-dark text-decoration-none" title="Crear primera liga"><i class="bi bi-plus-circle me-1"></i>0 ligas</a>
               } @else {
-                <a [routerLink]="['/liga/teamadmin/equipo', oEquipo.id]" class="badge bg-primary text-decoration-none"><i class="bi bi-trophy me-1"></i>{{ oEquipo.ligas }} ligas</a>
+                <a [routerLink]="['/liga/teamadmin/equipo', oEquipo.id]" class="badge big-badge bg-primary text-decoration-none"><i class="bi bi-trophy me-1"></i>{{ oEquipo.ligas }} ligas</a>
               }
             </div>
           </div>

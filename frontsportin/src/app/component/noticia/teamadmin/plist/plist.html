@@ -62,24 +62,24 @@
             <!-- Contadores con enlaces -->
             <div class="d-flex flex-wrap gap-2">
               @if (!oNoticia.comentarios || oNoticia.comentarios === 0) {
-                <span class="badge bg-secondary opacity-75">
+                <span class="badge big-badge bg-secondary opacity-75">
                   <i class="bi bi-chat-left-text me-1"></i>0 comentarios
                 </span>
               } @else {
                 <a [routerLink]="['/comentario/teamadmin/noticia', oNoticia.id]"
-                   class="badge bg-primary text-decoration-none">
+                   class="badge big-badge bg-primary text-decoration-none">
                   <i class="bi bi-chat-left-text me-1"></i>{{ oNoticia.comentarios }} comentarios
                 </a>
               }
 
               @if (!oNoticia.puntuaciones || oNoticia.puntuaciones === 0) {
-                <span class="badge bg-secondary opacity-75">
+                <span class="badge big-badge bg-secondary opacity-75">
                   <i class="bi bi-star-fill me-1"></i>0 puntuaciones
                 </span>
               } @else {
                 <a [routerLink]="['/puntuacion/noticia', oNoticia.id]"
-                   class="badge bg-primary text-decoration-none">
-                  <i class="bi bi-star-fill me-1"></i>{{ oNoticia.puntuaciones }} puntuaciones
+                   class="badge big-badge bg-primary text-decoration-none">
+                  <i class="bi bi-star-fill me-1"></i>{{ oNoticia.puntuaciones }} ({{ oNoticia.mediaPuntuacion | number: '1.1' }}/5)
                 </a>
               }
             </div>

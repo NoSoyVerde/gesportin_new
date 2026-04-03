@@ -70,4 +70,12 @@ public class NoticiaEntity {
     public int getPuntuaciones() {
         return puntuaciones != null ? puntuaciones.size() : 0;
     }
+
+    public double getMediaPuntuacion() {
+        if (puntuaciones == null || puntuaciones.isEmpty()) return 0.0;
+        return puntuaciones.stream()
+                .mapToInt(PuntuacionEntity::getPuntuacion)
+                .average()
+                .orElse(0.0);
+    }
 }

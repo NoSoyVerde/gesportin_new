@@ -1,6 +1,7 @@
 import { Component, signal, computed, inject, Input } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DecimalPipe } from '@angular/common';
 import { Paginacion } from '../../../shared/paginacion/paginacion';
 import { IPage } from '../../../../model/plist';
 import { INoticia } from '../../../../model/noticia';
@@ -11,7 +12,7 @@ import { TrimPipe } from '../../../../pipe/trim-pipe';
 
 @Component({
   selector: 'app-noticia-teamadmin-plist',
-  imports: [Paginacion, RouterLink, DatetimePipe, TrimPipe],
+  imports: [Paginacion, RouterLink, DatetimePipe, TrimPipe, DecimalPipe],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })

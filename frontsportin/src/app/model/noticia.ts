@@ -10,6 +10,7 @@ export interface INoticia{
   club: IClub;
   comentarios: number;
   puntuaciones: number | null;
+  mediaPuntuacion: number;
 }
 
 

@@ -68,7 +68,7 @@
                 <a
                   [routerLink]="['/partido/teamadmin/new']"
                   [queryParams]="{ id_liga: oLiga.id }"
-                  class="badge bg-warning text-dark text-decoration-none"
+                  class="badge big-badge bg-warning text-dark text-decoration-none"
                   title="Crear primer partido"
                 >
                   <i class="bi bi-plus-circle me-1"></i>0 partidos
@@ -76,7 +76,7 @@
               } @else {
                 <a
                   [routerLink]="['/partido/teamadmin/liga', oLiga.id]"
-                  class="badge bg-primary text-decoration-none"
+                  class="badge big-badge bg-primary text-decoration-none"
                   title="Ver partidos"
                 >
                   <i class="bi bi-flag-fill me-1"></i>{{ oLiga.partidos }} partidos
