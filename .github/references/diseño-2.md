@@ -1923,3 +1923,163 @@ La entidad Temporada aplica todos los patrones de diseño del perfil teamadmin:
 
 Para implementar nuevas entidades en el perfil teamadmin, tomar Temporada como referencia
 de implementación y adaptar los nombres de entidades, campos y relaciones según corresponda.
+
+---
+
+## 15. Referencia de implementación — Categoría (listado filtrado por temporada)
+
+La entidad **Categoría** demuestra el patrón de listado filtrado por una entidad padre jerárquica.
+Es más compleja que Temporada: el breadcrumb debe mostrar toda la cadena (Club → Temporada → Categorías),
+cargando dinámicamente el nombre de la Temporada padre.
+
+### 15.1 Diseño de la página plist
+
+La página `/categoria/teamadmin/temporada/:id_temporada` sigue el mismo diseño que Temporada:
+
+```html
+<!-- page/categoria/teamadmin/plist/plist.html -->
+<div class="container-fluid">
+  <app-breadcrumb [items]="breadcrumbItems()"></app-breadcrumb>
+  <div class="d-flex justify-content-center my-3">
+    <h1 class="mb-0"><i class="bi bi-tags me-2" aria-hidden="true"></i>Mis Categorías</h1>
+  </div>
+  <app-categoria-teamadmin-plist [id_temporada]="id_temporada()"></app-categoria-teamadmin-plist>
+</div>
+```
+
+### 15.2 Page component (`.ts`) — Breadcrumb dinámico con profundidad 2
+
+El TypeScript carga la Temporada padre para extraer su nombre y el del Club:
+
+```typescript
+// page/categoria/teamadmin/plist/plist.ts
+import { Component, OnInit, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CategoriaTeamadminPlist } from '../../../../component/categoria/teamadmin/plist/plist';
+import { BreadcrumbComponent, BreadcrumbItem } from '../../../../component/shared/breadcrumb/breadcrumb';
+import { TemporadaService } from '../../../../service/temporada';
+
+@Component({
+  selector: 'app-categoria-teamadmin-plist-page',
+  imports: [CategoriaTeamadminPlist, BreadcrumbComponent],
+  templateUrl: './plist.html',
+  styleUrl: './plist.css',
+})
+export class CategoriaTeamadminPlistPage implements OnInit {
+  id_temporada = signal<number>(0);
+
+  breadcrumbItems = signal<BreadcrumbItem[]>([
+    { label: 'Mis Clubes', route: '/club/teamadmin' },
+    { label: 'Temporadas', route: '/temporada/teamadmin' },
+    { label: 'Categorías' },
+  ]);
+
+  constructor(
+    private route: ActivatedRoute,
+    private temporadaService: TemporadaService,
+  ) {}
+
+  ngOnInit(): void {
+    const idParam = this.route.snapshot.paramMap.get('id_temporada');
+    if (idParam) {
+      this.id_temporada.set(Number(idParam));
+      
+      // Cargar la Temporada padre para obtener Club + nombre de Temporada
+      this.temporadaService.get(this.id_temporada()).subscribe({
+        next: (temp) => {
+          const items: BreadcrumbItem[] = [
+            { label: 'Mis Clubes', route: '/club/teamadmin' },
+          ];
+          
+          // Agregar el Club si existe
+          if (temp.club) {
+            items.push({
+              label: temp.club.nombre,
+              route: `/club/teamadmin/view/${temp.club.id}`,
+            });
+          }
+          
+          // Agregar la Temporada
+          items.push({ label: 'Temporadas', route: '/temporada/teamadmin' });
+          items.push({
+            label: temp.descripcion,
+            route: `/temporada/teamadmin/view/${temp.id}`,
+          });
+          
+          // Categorías es el actual (sin ruta)
+          items.push({ label: 'Categorías' });
+          
+          this.breadcrumbItems.set(items);
+        },
+        error: () => {
+          // Mantener el breadcrumb por defecto si hay error
+        },
+      });
+    }
+  }
+}
+```
+
+**Puntos clave:**
+- El breadcrumb comienza siempre con "Mis Clubes".
+- Si la Temporada tiene Club anidado (`temp.club`), se agrega como ítems intermedios.
+- El último ítem "Categorías" no tiene ruta (está activo).
+- Los ítems se construyen en `ngOnInit()` tras cargar la Temporada con el servicio.
+
+### 15.3 Rutas en `app.routes.ts`
+
+```typescript
+// Categoría - Teamadmin
+{ path: 'categoria/teamadmin', 
+  component: CategoriaTeamadminPlistPage, 
+  canActivate: [ClubAdminGuard] },
+{ path: 'categoria/teamadmin/temporada/:id_temporada', 
+  component: CategoriaTeamadminPlistPage, 
+  canActivate: [ClubAdminGuard] },
+{ path: 'categoria/teamadmin/view/:id', 
+  component: CategoriaTeamadminViewPage, 
+  canActivate: [ClubAdminGuard] },
+{ path: 'categoria/teamadmin/new', 
+  component: CategoriaTeamadminNewPage, 
+  canActivate: [ClubAdminGuard] },
+{ path: 'categoria/teamadmin/edit/:id', 
+  component: CategoriaTeamadminEditPage, 
+  canActivate: [ClubAdminGuard] },
+{ path: 'categoria/teamadmin/delete/:id', 
+  component: CategoriaTeamadminDeletePage, 
+  canActivate: [ClubAdminGuard] },
+```
+
+### 15.4 Patrón general — Listados filtrados por jerarquía
+
+**Resumen del patrón aplicable a cualquier entidad filtrada:**
+
+| Nivel | Ruta | Parámetro | Servicio | Campo nombre | Breadcrumb |
+|-------|------|-----------|----------|--------------|-----------|
+| **Temporada** | `/temporada/teamadmin/club/:id_club` | `id_club` | `ClubService.get()` | `club.nombre` | Mis Clubes → {Club} → **Temporadas** |
+| **Categoría** | `/categoria/teamadmin/temporada/:id_temporada` | `id_temporada` | `TemporadaService.get()` | `temp.descripcion`, `temp.club.nombre` | Mis Clubes → {Club} → Temporadas → {Temporada} → **Categorías** |
+| **Equipo** | `/equipo/teamadmin/categoria/:id_categoria` | `id_categoria` | `CategoriaService.get()` | `cat.nombre`, `cat.temporada.descripcion`, `cat.temporada.club.nombre` | Mis Clubes → {Club} → Temporadas → {Temporada} → Categorías → {Categoría} → **Equipos** |
+
+**Algoritmo de construcción del breadcrumb:**
+
+1. Inicializar con valor por defecto: `[{ label: 'Mis Clubes', route: '/club/teamadmin' }, ..., { label: '<Entidad pluralizada>' }]`.
+2. Leer parámetro de ruta (ej. `id_temporada`).
+3. Si parámetro > 0:
+   - Llamar a su servicio padre (ej. `TemporadaService.get(id_temporada)`).
+   - Extraer la cadena de relaciones anidadas (ej. `temp.club`, `temp.descripcion`).
+   - Construir breadcrumb dinámico cargando cada nivel.
+4. Si error o parámetro vacío, mantener valor por defecto.
+
+### 15.5 Conclusión
+
+El patrón de listados filtrados por jerarquía se replica uniformemente en el proyecto:
+- **Temporada** por Club: breadcrumb de profundidad 2.
+- **Categoría** por Temporada: breadcrumb de profundidad 3.
+- **Equipo** por Categoría: breadcrumb de profundidad 4+.
+
+Todos siguen el mismo layout: Breadcrumb → Título centrado → Plist de tarjetas o tabla.
+La única variación es la **profundidad del breadcrumb** y el **servicio padre** necesario
+para cargar los nombres de entidades de cada nivel jerárquico.
+
+Para agregar una nueva relación jerárquica, replicar exactamente this patrón,
+cambiando solo los nombres de entidades y servicios.
