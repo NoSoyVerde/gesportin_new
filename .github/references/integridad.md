@@ -125,6 +125,8 @@ Las entidades deben crearse en este orden para respetar las FK:
 | `id_jugador` | El jugador debe pertenecer al **mismo equipo** que la cuota: `pago.cuota.id_equipo == pago.jugador.id_equipo`. |
 | Unicidad | No crear dos registros de `pago` para el mismo par `(id_cuota, id_jugador)`. |
 
+> **Comportamiento de UI (teamadmin/form):** cuando el formulario de creación de pago recibe un `id_cuota` por parámetro de URL (o se selecciona una cuota en el formulario), el selector de jugador abre el modal filtrando automáticamente por `id_equipo = cuota.equipo.id`, de modo que solo se muestran los jugadores del equipo al que pertenece la cuota.
+
 ---
 
 ### `noticia`

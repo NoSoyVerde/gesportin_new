@@ -143,8 +143,10 @@ export class PagoAdminForm implements OnInit {
     const pagoData: any = {
       cuota: { id: Number(this.pagoForm.value.id_cuota) },
       jugador: { id: Number(this.pagoForm.value.id_jugador) },
-      abonado: Number(this.pagoForm.value.abonado),
-      fecha: this.pagoForm.value.fecha,
+      abonado: Boolean(this.pagoForm.value.abonado),
+      fecha: this.pagoForm.value.fecha?.length === 10
+        ? `${this.pagoForm.value.fecha}T00:00:00`
+        : this.pagoForm.value.fecha,
     };
 
     if (this.isEditMode && this.pago?.id) {

@@ -142,7 +142,9 @@ export class PagoTeamadminForm implements OnInit {
   }
 
   openJugadorFinderModal(): void {
-    const ref = this.modalService.open<unknown, IJugador | null>(JugadorAdminPlist);
+    const equipoId = this.selectedCuota()?.equipo?.id;
+    const config = equipoId ? { data: { id_equipo: equipoId } } : undefined;
+    const ref = this.modalService.open<unknown, IJugador | null>(JugadorAdminPlist, config);
     ref.afterClosed$.subscribe((jugador: IJugador | null) => {
       if (jugador?.id != null) {
         this.pagoForm.patchValue({ id_jugador: jugador.id });
@@ -163,8 +165,10 @@ export class PagoTeamadminForm implements OnInit {
     const pagoData: any = {
       cuota: { id: Number(this.pagoForm.value.id_cuota) },
       jugador: { id: Number(this.pagoForm.value.id_jugador) },
-      abonado: Number(this.pagoForm.value.abonado),
-      fecha: this.pagoForm.value.fecha,
+      abonado: Boolean(this.pagoForm.value.abonado),
+      fecha: this.pagoForm.value.fecha?.length === 10
+        ? `${this.pagoForm.value.fecha}T00:00:00`
+        : this.pagoForm.value.fecha,
     };
 
     if (this.id() > 0) {
