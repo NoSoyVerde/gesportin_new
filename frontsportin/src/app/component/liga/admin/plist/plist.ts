@@ -16,7 +16,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 @Component({
   standalone: true,
   selector: 'app-liga-admin-plist',
-  imports: [Paginacion, RouterLink, BotoneraActionsPlist],
+  imports: [Paginacion, RouterLink, BotoneraRpp, BotoneraActionsPlist],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })

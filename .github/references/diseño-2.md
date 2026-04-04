@@ -236,19 +236,21 @@ Cada entidad gestionada por el Administrador de club sigue esta estructura:
 - `page/<entidad>/teamadmin/edit/` → edit.ts (wrapper del form en modo editar)
 - `page/<entidad>/teamadmin/delete/` → delete.ts + delete.html (confirmación de borrado)
 
-**Nota**: algunas entidades heredan/reusan el componente admin del plist pasando `strRole`
-y breadcrumb. Otras entidades tienen su propio plist teamadmin independiente:
-- Wrapper fino: `<app-breadcrumb [items]="breadcrumbItems()"></app-breadcrumb>` +
-  `<app-<entidad>-admin-plist [filtros] [showFilterInfo]="false" strRole="teamadmin"></app-<entidad>-admin-plist>`.
-  El `@Input() strRole: string = ''` en el plist admin activa la visibilidad del botón crear
-  para el club admin y cambia las rutas a `/<entidad>/teamadmin/...`.
-- Plist propio: implementación completa del plist con layout de tarjetas (ej. equipo, club).
+**Todas las entidades tienen su propio componente `plist` teamadmin independiente** (implementación
+completa con layout de tarjetas). No se reutilizan componentes admin para el listing teamadmin.
+
+Las entidades que **sí** comparten el componente admin para otros usos (formularios modales,
+selección de entidades) siguen el patrón `@Input() strRole: string = ''` en sus `.ts`:
+- El plist admin incluye `@Input() strRole: string = ''` para activar rutas `/teamadmin/...`
+  cuando se usa como selector de entidad en formularios teamadmin.
+- Los formularios teamadmin abren el plist admin en modo diálogo vía `ModalService` para
+  seleccionar registros de entidades relacionadas (ver Sección 8.4).
 
 **Patrón `strRole` en plists admin compartidos**: los plists admin que también usa el club
-admin incluyen en su `.ts` la propiedad `@Input() strRole: string = ''` y en su `.html` modifican
-el botón crear con la condición `@if (!session.isClubAdmin() || strRole)` y la ruta dinámica
-`[routerLink]="strRole ? ['/<entidad>', strRole, 'new'] : ['/<entidad>/new']"`.
-El wrapper teamadmin pasa `strRole="teamadmin"` al componente compartido.
+admin como selector modal incluyen en su `.ts` la propiedad `@Input() strRole: string = ''`
+y en su `.html` modifican el botón crear con la condición `@if (!session.isClubAdmin() || strRole)`
+y la ruta dinámica `[routerLink]="strRole ? ['/<entidad>', strRole, 'new'] : ['/<entidad>/new']"`.  
+El wrapper teamadmin pasa `strRole="teamadmin"` al componente compartido cuando lo abre como modal.
 
 ---
 
@@ -296,22 +298,32 @@ Esto proporciona una navegación más visual y táctil adecuada para el gestor d
 
 ### 4.6 Controles de paginación y rpp
 
-- **Botonera de paginación**: solo se muestra si `totalRecords() > 0` **y** hay más de una
-  página (`oPage()?.totalPages > 1`). Si todos los registros caben en una sola página, la
-  botonera se omite completamente.
-- **Botonera de registros por página (`app-botonera-rpp`)**: **no se muestra** en el perfil
-  teamadmin. El valor de `rpp` está fijado implícitamente a **10** (valor por defecto del
-  backend). No se ofrece selector al usuario.
+- **Botonera de paginación**: se muestra siempre que `totalRecords() > 0` (independientemente
+  del número de páginas). Se omite solo si no hay registros.
+- **Botonera de registros por página (`app-botonera-rpp`)**: se muestra en el perfil teamadmin
+  igual que en el perfil Administrador. El valor por defecto de `numRpp` es **5**.
 - Estructura resultante:
   ```html
-  @if (totalRecords() > 0 && (oPage()?.totalPages ?? 1) > 1) {
+  @if (totalRecords() > 0) {
     <div class="container-fluid p-0 my-1">
       <div class="controls-row mb-2">
         <div class="col-control left">
-          <app-paginacion ...></app-paginacion>
+          <app-paginacion [numPage]="numPage()" [numPages]="oPage()?.totalPages || 1"
+            (pageChange)="goToPage($event)"></app-paginacion>
+        </div>
+        <div class="col-control right">
+          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="changeRpp($event)"></app-botonera-rpp>
         </div>
       </div>
     </div>
+  }
+  ```
+- El componente `.ts` debe importar `BotoneraRpp` y declarar `changeRpp(rpp: number):
+  ```typescript
+  changeRpp(rpp: number): void {
+    this.numRpp.set(rpp);
+    this.numPage.set(0);
+    this.getPage();
   }
   ```
 
@@ -423,11 +435,14 @@ pasando `strRole="teamadmin"`:
 <div class="card-footer d-flex justify-content-between">
   <a [routerLink]="['/<entidad>/teamadmin/view', oEntidad.id]"
      class="btn btn-outline-secondary btn-sm">Ver</a>
-  <app-botonera-actions-plist [id]="oEntidad.id ?? 0"
+  <app-botonera-actions-plist [id]="oEntidad.id"
     strEntity="<entidad>" strRole="teamadmin">
   </app-botonera-actions-plist>
 </div>
 ```
+**Nota**: usar `[id]="oEntidad.id"` sin `?? 0`. Si el modelo declara `id: number` (no nullable),
+el operador `??` produce el error NG8102. Solo usar `?? 0` cuando el modelo declara `id?: number`
+(ej. `IEquipo` tiene `id?: number`).
 
 El componente `BotoneraActionsPlist` genera automáticamente las rutas con el segmento
 `/teamadmin/` cuando recibe `strRole="teamadmin"`, y aplica internamente las restricciones de
@@ -485,7 +500,7 @@ entidades sin registros hijos, se aplica la siguiente regla:
 | Equipo (`/equipo/teamadmin`) | `cuotas` | `/cuota/teamadmin/new` | `id_equipo` |
 | Equipo (`/equipo/teamadmin`) | `ligas` | `/liga/teamadmin/new` | `id_equipo` |
 | Liga (unrouted teamadmin) | `partidos` | `/partido/teamadmin/new` | `id_liga` |
-| Cuota (admin plist, `strRole='teamadmin'`) | `pagos` | `/pago/teamadmin/new` | `id_cuota` |
+| Cuota (teamadmin plist propio) | `pagos` | `/pago/teamadmin/new` | `id_cuota` |
 | Tipo artículo (admin plist, `strRole='teamadmin'`) | `articulos` | `/articulo/teamadmin/new` | `id_tipoarticulo` |
 
 #### Entidades NO convertidas (contenido generado por usuarios finales)
@@ -885,6 +900,8 @@ export class EntidadTeamadminNewPage implements OnInit {
 ### 8.2 `app-paginacion` y `app-botonera-rpp`
 
 Mismo uso que en el perfil Administrador (Secciones 7.1 y 7.2 del perfil id=1).
+- `numRpp` por defecto: **5** en todos los plists teamadmin standalone.
+- La paginación se muestra siempre que `totalRecords() > 0` (no solo cuando hay >1 página).
 
 ### 8.3 `app-botonera-actions-plist`
 

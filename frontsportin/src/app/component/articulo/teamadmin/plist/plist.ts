@@ -1,26 +1,83 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
-import { ArticuloAdminPlist } from '../../../articulo/admin/plist/plist';
-import { TipoarticuloService } from '../../../../service/tipoarticulo';
+import { Component, computed, inject, Input, OnInit, OnDestroy, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+import { MODAL_REF } from '../../../shared/modal/modal.tokens';
+import { debounceTimeSearch } from '../../../../environment/environment';
+import { IArticulo } from '../../../../model/articulo';
+import { IPage } from '../../../../model/plist';
+import { ArticuloService } from '../../../../service/articulo';
+import { Paginacion } from '../../../shared/paginacion/paginacion';
+import { BotoneraRpp } from '../../../shared/botonera-rpp/botonera-rpp';
+import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/botonera-actions-plist';
 
 @Component({
   standalone: true,
   selector: 'app-articulo-teamadmin-plist',
-  imports: [ArticuloAdminPlist],
+  imports: [RouterLink, DecimalPipe, Paginacion, BotoneraRpp, BotoneraActionsPlist],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })
-export class ArticuloTeamadminPlist implements OnInit {
+export class ArticuloTeamadminPlist implements OnInit, OnDestroy {
   @Input() id_tipoarticulo?: number;
 
-  private oTipoarticuloService = inject(TipoarticuloService);
+  oPage = signal<IPage<IArticulo> | null>(null);
+  numPage = signal<number>(0);
+  numRpp = signal<number>(5);
+  descripcion = signal<string>('');
+  orderField = signal<string>('id');
+  orderDirection = signal<'asc' | 'desc'>('asc');
+  totalRecords = computed(() => this.oPage()?.totalElements ?? 0);
+
+  private searchSubject = new Subject<string>();
+  private searchSubscription?: Subscription;
+
+  private articuloService = inject(ArticuloService);
+  private modalRef = inject(MODAL_REF, { optional: true });
 
   ngOnInit(): void {
-    if (this.id_tipoarticulo && this.id_tipoarticulo > 0) {
-      this.oTipoarticuloService.get(this.id_tipoarticulo).subscribe({
-        next: (tipo) => {
-        },
-        error: () => {},
+    this.searchSubscription = this.searchSubject
+      .pipe(debounceTime(debounceTimeSearch), distinctUntilChanged())
+      .subscribe((term) => {
+        this.descripcion.set(term);
+        this.numPage.set(0);
+        this.getPage();
       });
-    }
+    this.getPage();
   }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
+  }
+
+  getPage(): void {
+    this.articuloService
+      .getPage(
+        this.numPage(),
+        this.numRpp(),
+        this.orderField(),
+        this.orderDirection(),
+        this.descripcion(),
+        this.id_tipoarticulo ?? 0,
+      )
+      .subscribe({
+        next: (data: IPage<IArticulo>) => {
+          this.oPage.set(data);
+          if (this.numPage() > 0 && this.numPage() >= data.totalPages) {
+            this.numPage.set(data.totalPages - 1);
+            this.getPage();
+          }
+        },
+        error: (err: HttpErrorResponse) => console.error(err),
+      });
+  }
+
+  onRppChange(n: number): void { this.numRpp.set(n); this.numPage.set(0); this.getPage(); }
+  goToPage(n: number): void { this.numPage.set(n); this.getPage(); }
+  onSearch(value: string): void { this.searchSubject.next(value); }
+
+  isDialogMode(): boolean { return !!this.modalRef; }
+  onSelect(articulo: IArticulo): void { this.modalRef?.close(articulo); }
 }
+

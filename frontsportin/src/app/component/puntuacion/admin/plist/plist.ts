@@ -14,7 +14,7 @@ import { MODAL_REF } from '../../../shared/modal/modal.tokens';
 @Component({
   standalone: true,
   selector: 'app-puntuacion-admin-plist',
-  imports: [Paginacion, RouterLink, BotoneraActionsPlist],
+  imports: [Paginacion, RouterLink, BotoneraRpp, BotoneraActionsPlist],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })

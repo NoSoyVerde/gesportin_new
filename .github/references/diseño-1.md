@@ -476,6 +476,7 @@ Al final del card body de la tarjeta principal, tras las relaciones ManyToOne:
 - Empleado en todo plist cuando `totalRecords() > 0`, siempre junto a `app-paginacion`.
 - `[numRpp]="numRpp()"` — registros por página activos.
 - `(rppChange)="onRppChange($event)"` — output que recibe el nuevo valor.
+- Valor por defecto estándar: `numRpp = signal<number>(5)`. Todos los plists admin usan 5.
 
 ### 7.3 `app-botonera-actions-plist`
 

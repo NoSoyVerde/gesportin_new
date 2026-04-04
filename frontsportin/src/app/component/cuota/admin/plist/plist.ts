@@ -16,7 +16,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 @Component({
   standalone: true,
   selector: 'app-cuota-admin-plist',
-  imports: [RouterLink, Paginacion, BotoneraActionsPlist],
+  imports: [RouterLink, Paginacion, BotoneraRpp, BotoneraActionsPlist],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })
@@ -27,7 +27,7 @@ export class CuotaAdminPlist {
 
   oPage = signal<IPage<ICuota> | null>(null);
   numPage = signal<number>(0);
-  numRpp = signal<number>(10);
+  numRpp = signal<number>(5);
   descripcion = signal<string>('');
   private searchSubject = new Subject<string>();
   private searchSubscription?: Subscription;

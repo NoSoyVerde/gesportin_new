@@ -1,3 +1,105 @@
 <div>
-  <app-articulo-admin-plist [id_tipoarticulo]="id_tipoarticulo" [showFilterInfo]="false" strRole="teamadmin"></app-articulo-admin-plist>
+  @if (id_tipoarticulo == null || id_tipoarticulo <= 0) {
+    <div class="d-flex justify-content-center my-2">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Filtrar por descripción"
+        aria-label="Buscar"
+        (input)="onSearch($any($event.target).value)"
+        [value]="descripcion()"
+        name="searchDescripcion"
+      />
+    </div>
+  }
+
+  <div class="d-flex justify-content-center my-1">
+    <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
+    @if (descripcion().length > 0) {
+      <small class="text-muted ms-3">Filtro: descripción contiene "{{ descripcion() }}"</small>
+    }
+  </div>
+
+  @if (totalRecords() > 0) {
+    <div class="container-fluid p-0 my-1">
+      <div class="controls-row mb-2">
+        <div class="col-control left">
+          <app-paginacion [numPage]="numPage()" [numPages]="oPage()?.totalPages || 1" (pageChange)="goToPage($event)"></app-paginacion>
+        </div>
+        <div class="col-control right">
+          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+        </div>
+      </div>
+      @if (!isDialogMode()) {
+        <div class="d-flex my-1">
+          <div class="w-100 d-flex justify-content-center">
+            <a class="btn btn-primary new-btn"
+               [routerLink]="['/articulo/teamadmin/new']"
+               [queryParams]="id_tipoarticulo ? { id_tipoarticulo: id_tipoarticulo } : {}"
+               role="button">
+              <i class="bi bi-plus-circle" aria-hidden="true"></i>
+              <span class="d-none d-sm-inline">Nuevo artículo</span>
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @for (oArticulo of oPage()?.content; track oArticulo.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm" (click)="onSelect(oArticulo)" [style.cursor]="isDialogMode() ? 'pointer' : 'default'">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-box-seam fs-5" aria-hidden="true"></i>
+            <strong class="text-truncate">{{ oArticulo.descripcion }}</strong>
+          </div>
+          <div class="card-body pb-2">
+            <ul class="list-unstyled mb-3">
+              <li class="mb-1">
+                <i class="bi bi-hash text-muted me-1"></i>
+                <span class="text-muted">ID:</span> {{ oArticulo.id }}
+              </li>
+              <li class="mb-1">
+                <i class="bi bi-tag text-muted me-1"></i>
+                <span class="text-muted">Precio:</span> {{ oArticulo.precio | number:'1.2-2' }} €
+              </li>
+              @if (oArticulo.descuento > 0) {
+                <li class="mb-1">
+                  <i class="bi bi-percent text-muted me-1"></i>
+                  <span class="text-muted">Descuento:</span> {{ oArticulo.descuento }}%
+                </li>
+              }
+            </ul>
+            @if (oArticulo.tipoarticulo) {
+              <p class="mb-1">
+                <strong>Tipo artículo:</strong>
+                <a [routerLink]="['/tipoarticulo/teamadmin/view', oArticulo.tipoarticulo.id]" class="ms-1">
+                  {{ oArticulo.tipoarticulo.descripcion }}
+                </a>
+              </p>
+            }
+            <div class="d-flex flex-wrap gap-2 mt-2">
+              <span class="badge bg-secondary opacity-75">
+                <i class="bi bi-chat-text me-1"></i>{{ oArticulo.comentarioarts }} comentarios
+              </span>
+              <span class="badge bg-secondary opacity-75">
+                <i class="bi bi-cart me-1"></i>{{ oArticulo.compras }} compras
+              </span>
+            </div>
+          </div>
+          @if (!isDialogMode()) {
+            <div class="card-footer d-flex justify-content-end gap-2">
+              <a [routerLink]="['/articulo/teamadmin/view', oArticulo.id]" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-eye" aria-hidden="true"></i>
+                <span class="d-none d-sm-inline ms-1">Ver</span>
+              </a>
+              <app-botonera-actions-plist [id]="oArticulo.id" strEntity="articulo" strRole="teamadmin"></app-botonera-actions-plist>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
 </div>
+

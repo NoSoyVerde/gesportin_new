@@ -17,7 +17,7 @@ import { BotoneraActionsPlist } from '../../../shared/botonera-actions-plist/bot
 @Component({
   standalone: true,
   selector: 'app-comentarioart-admin-plist',
-  imports: [RouterLink, Paginacion, TrimPipe, BotoneraActionsPlist],
+  imports: [RouterLink, Paginacion, BotoneraRpp, TrimPipe, BotoneraActionsPlist],
   templateUrl: './plist.html',
   styleUrl: './plist.css',
 })
@@ -29,7 +29,7 @@ export class ComentarioartAdminPlist {
 
   oPage = signal<IPage<IComentarioart> | null>(null);
   numPage = signal<number>(0);
-  numRpp = signal<number>(10);
+  numRpp = signal<number>(5);
   descripcion = signal<string>('');
   private searchSubject = new Subject<string>();
   private searchSubscription?: Subscription;

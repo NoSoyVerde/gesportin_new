@@ -18,7 +18,7 @@ import { SessionService } from '../../../../service/session';
   selector: 'app-comentario-admin-plist',
   templateUrl: './plist.html',
   styleUrl: './plist.css',
-  imports: [Paginacion, RouterLink, TrimPipe, BotoneraActionsPlist],
+  imports: [Paginacion, RouterLink, TrimPipe, BotoneraRpp, BotoneraActionsPlist],
 })
 export class ComentarioAdminPlist implements OnDestroy {
   session: SessionService = inject(SessionService);
@@ -30,7 +30,7 @@ export class ComentarioAdminPlist implements OnDestroy {
 
   oPage = signal<IPage<IComentario> | null>(null);
   numPage = signal<number>(0);
-  numRpp = signal<number>(10);
+  numRpp = signal<number>(5);
 
   message = signal<string | null>(null);
   totalRecords = computed(() => this.oPage()?.totalElements ?? 0);

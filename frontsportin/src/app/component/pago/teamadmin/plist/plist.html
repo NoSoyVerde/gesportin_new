@@ -1,3 +1,86 @@
 <div>
-  <app-pago-admin-plist [id_cuota]="id_cuota" [id_jugador]="id_jugador" [showFilterInfo]="false" strRole="teamadmin"></app-pago-admin-plist>
+  <div class="d-flex justify-content-center my-1">
+    <small class="text-muted">Total registros: {{ totalRecords() || 0 }}</small>
+  </div>
+
+  @if (totalRecords() > 0) {
+    <div class="container-fluid p-0 my-1">
+      <div class="controls-row mb-2">
+        <div class="col-control left">
+          <app-paginacion [numPage]="numPage()" [numPages]="oPage()?.totalPages || 1" (pageChange)="goToPage($event)"></app-paginacion>
+        </div>
+        <div class="col-control right">
+          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+        </div>
+      </div>
+      @if (!isDialogMode()) {
+        <div class="d-flex my-1">
+          <div class="w-100 d-flex justify-content-center">
+            <a class="btn btn-primary new-btn"
+               [routerLink]="['/pago/teamadmin/new']"
+               [queryParams]="id_cuota ? { id_cuota: id_cuota } : (id_jugador ? { id_jugador: id_jugador } : {})"
+               role="button">
+              <i class="bi bi-plus-circle" aria-hidden="true"></i>
+              <span class="d-none d-sm-inline">Crear pago</span>
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @for (oPago of oPage()?.content; track oPago.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm" (click)="onSelect(oPago)" [style.cursor]="isDialogMode() ? 'pointer' : 'default'">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-credit-card fs-5" aria-hidden="true"></i>
+            <strong class="text-truncate">Pago #{{ oPago.id }}</strong>
+          </div>
+          <div class="card-body pb-2">
+            <ul class="list-unstyled mb-3">
+              <li class="mb-1">
+                <i class="bi bi-hash text-muted me-1"></i>
+                <span class="text-muted">ID:</span> {{ oPago.id }}
+              </li>
+              <li class="mb-1">
+                <i class="bi bi-coin text-muted me-1"></i>
+                <span class="text-muted">Abonado:</span> {{ oPago.abonado }}
+              </li>
+              <li class="mb-1">
+                <i class="bi bi-calendar-event text-muted me-1"></i>
+                <span class="text-muted">Fecha:</span> {{ oPago.fecha }}
+              </li>
+            </ul>
+            @if (oPago.cuota) {
+              <p class="mb-1">
+                <strong>Cuota:</strong>
+                <a [routerLink]="['/cuota/teamadmin/view', oPago.cuota.id]" class="ms-1">
+                  {{ oPago.cuota.descripcion }}
+                </a>
+              </p>
+            }
+            @if (oPago.jugador && oPago.jugador.usuario) {
+              <p class="mb-1">
+                <strong>Jugador:</strong>
+                <a [routerLink]="['/jugador/teamadmin/view', oPago.jugador.id]" class="ms-1">
+                  {{ oPago.jugador.usuario.nombre }} {{ oPago.jugador.usuario.apellido1 }}
+                </a>
+              </p>
+            }
+          </div>
+          @if (!isDialogMode()) {
+            <div class="card-footer d-flex justify-content-end gap-2">
+              <a [routerLink]="['/pago/teamadmin/view', oPago.id]" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-eye" aria-hidden="true"></i>
+                <span class="d-none d-sm-inline ms-1">Ver</span>
+              </a>
+              <app-botonera-actions-plist [id]="oPago.id" strEntity="pago" strRole="teamadmin"></app-botonera-actions-plist>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
 </div>
+
