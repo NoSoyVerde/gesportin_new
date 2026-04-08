@@ -27,7 +27,7 @@
           <app-paginacion [numPage]="numPage()" [numPages]="oPage()?.totalPages || 1" (pageChange)="goToPage($event)"></app-paginacion>
         </div>
         <div class="col-control right">
-          <app-botonera-rpp [numRpp]="numRpp()" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+          <app-botonera-rpp [numRpp]="numRpp()" [options]="[6,12,60]" (rppChange)="onRppChange($event)"></app-botonera-rpp>
         </div>
       </div>
       @if (!isDialogMode()) {
@@ -79,13 +79,18 @@
                 </a>
               </p>
             }
-            <div class="d-flex flex-wrap gap-2 mt-2">
-              <span class="badge bg-secondary opacity-75">
+            <div class="d-flex flex-wrap gap-2 mt-2 align-items-center">
+              @if (oArticulo.mediaPuntuacion > 0) {
+                <span class="badge bg-warning text-dark opacity-75">
+                  <i class="bi bi-star-fill me-1"></i>{{ oArticulo.mediaPuntuacion | number:'1.1-1' }}/5
+                </span>
+              }
+              <a [routerLink]="['/comentarioart/teamadmin/articulo', oArticulo.id]" class="badge bg-secondary opacity-75 text-decoration-none" style="cursor: pointer;" (click)="$event.stopPropagation()">
                 <i class="bi bi-chat-text me-1"></i>{{ oArticulo.comentarioarts }} comentarios
-              </span>
-              <span class="badge bg-secondary opacity-75">
+              </a>
+              <a [routerLink]="['/compra/teamadmin/articulo', oArticulo.id]" class="badge bg-secondary opacity-75 text-decoration-none" style="cursor: pointer;" (click)="$event.stopPropagation()">
                 <i class="bi bi-cart me-1"></i>{{ oArticulo.compras }} compras
-              </span>
+              </a>
             </div>
           </div>
           @if (!isDialogMode()) {

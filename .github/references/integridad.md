@@ -16,6 +16,7 @@ Muy importante cumplirlas para evitar inconsistencias:
 * Las puntuaciones de un club C deben ser realizadas sólo por usuarios del club C.
 * El usuario de un equipo debe pertenecer al club en el que está el equipo.
 * Los artículos de tipos de artículos de un club C sólo pueden ser comentados por usuarios del club C.
+* Los artículos de tipos de artículos de un club C sólo pueden ser valorados por usuarios del club C.
 * Los artículos de tipos de artículos de un club C sólo pueden ser introducidos en el carrito por usuarios del club C.  
 * Los jugadores de un equipo de un club C sólo pueden estar asociados a usuarios del club C.
 * Los pagos de las cuotas de un equipo E sólo pueden ser realizadas por jugadores de ese equipo E. Los jugadores no pueden pagar una cuota dos veces.

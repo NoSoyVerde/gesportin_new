@@ -24,7 +24,7 @@ export class ArticuloTeamadminPlist implements OnInit, OnDestroy {
 
   oPage = signal<IPage<IArticulo> | null>(null);
   numPage = signal<number>(0);
-  numRpp = signal<number>(5);
+  numRpp = signal<number>(6);
   descripcion = signal<string>('');
   orderField = signal<string>('id');
   orderDirection = signal<'asc' | 'desc'>('asc');
